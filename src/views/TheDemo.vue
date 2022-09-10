@@ -35,6 +35,18 @@
       :hasIcon="true"
       placeHolder="Đây là input alert"
     />
+    <div>9. Context menu open</div>
+    <MConntextMenu :hasOpen="true" />
+
+    <br /><br /><br />
+
+    <div>10. Context menu open-up</div>
+
+    <br /><br /><br />
+
+    <MConntextMenu :hasOpen="true" :hasUp="true" />
+    <div>10. Context menu close</div>
+    <MConntextMenu />
   </div>
 </template>
 <script>
@@ -44,10 +56,12 @@ import MISAEnum from "../js/enum.js";
 // import component file
 import MButton from "../components/base/MButton.vue";
 import MInput from "../components/base/MInput.vue";
+import MConntextMenu from "../components/base/MContextMenu.vue";
 export default {
   components: {
     MButton,
     MInput,
+    MConntextMenu,
   },
   data() {
     return {
