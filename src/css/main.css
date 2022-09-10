@@ -28,6 +28,9 @@
   --ColorTableHover: #F8F8F8;
   --ColorSecondTextWhite: #7b8798;
   --ColorAlert: #eb3333;
+  --ColorAlertTwo: #eb3333;
+  --ColorWarning: #FCE100;
+  --ColorNoti: #0075C0;
   --BorderRadius: 4px;
 }
 

@@ -92,7 +92,45 @@
       ]"
     />
 
-    <div>7. Toast message</div>
+    <div>7.1 Toast message thành công</div>
+
+    <div class="toastmessage__container">
+      <MToastMessage
+        language="VI"
+        toastType="SUCCESS"
+        toastText="Công việc đã bị xóa."
+      />
+    </div>
+
+    <div>7.2 Toast message lỗi</div>
+
+    <div class="toastmessage__container">
+      <MToastMessage
+        language="VI"
+        toastType="ERROR"
+        toastText="Có lỗi xảy ra, vui lòng thử lại sau."
+      />
+    </div>
+
+    <div>7.3 Toast message cảnh báo</div>
+
+    <div class="toastmessage__container">
+      <MToastMessage
+        language="VI"
+        toastType="WARNING"
+        toastText="Dữ liệu của bạn đã bị thay đổi bởi người dùng khác."
+      />
+    </div>
+
+    <div>7.4 Toast message thông báo</div>
+
+    <div class="toastmessage__container">
+      <MToastMessage
+        language="VI"
+        toastType="NOTI"
+        toastText="Bạn nên đọc kỹ nội dung trước khi phê duyệt."
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -103,6 +141,7 @@ import MConntextMenu from "../components/base/MContextMenu.vue";
 import MDatePicker from "../components/base/MDatePicker.vue";
 import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
+import MToastMessage from "../components/base/MToastMessage.vue";
 
 export default {
   components: {
@@ -112,18 +151,15 @@ export default {
     MDatePicker,
     MCheckbox,
     MRadioButton,
+    MToastMessage,
   },
   data() {
-    return {};
+    return {
+      language: "VI",
+    };
   },
 };
 </script>
 <style scoped>
-.demo {
-  padding: 20px 10%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 40px;
-  background-color: white;
-}
+@import url("../css/page/demo.css");
 </style>

@@ -21,6 +21,24 @@ var MISAResource = {
       EN: "is existed in system, please try to insert another Id.",
     },
   },
+  ToastMessage: {
+    Success: {
+      VI: "Thành công!",
+      EN: "Successfull!",
+    },
+    Error: {
+      VI: "Lỗi!",
+      EN: "Error!",
+    },
+    Warning: {
+      VI: "Cảnh báo!",
+      EN: "Warning!",
+    },
+    Noti: {
+      VI: "Thông tin!",
+      EN: "Information!",
+    },
+  },
 };
 
 export default MISAResource;

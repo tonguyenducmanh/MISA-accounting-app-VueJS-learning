@@ -10,6 +10,20 @@ var MISAEnum = {
     LabelAlert: "input__label--alert",
     InputAlert: "input__field--alert",
   },
+  // các class được binding vào toastmessage
+  toastmessage: {
+    SUCCESS: "toastmessage__content--success",
+    ERROR: "toastmessage__content--error",
+    WARNING: "toastmessage__content--warning",
+    NOTI: "toastmessage__content--noti",
+  },
+  // các kiểu toastmessage
+  toasttype: {
+    SUCCESS: "SUCCESS",
+    ERROR: "ERROR",
+    WARNING: "WARNING",
+    NOTI: "NOTI",
+  },
   // các mã phím keycode
   keycode: {
     LEFT: 37,

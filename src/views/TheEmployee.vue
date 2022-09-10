@@ -6,4 +6,6 @@ export default {
   name: "TheEmployee",
 };
 </script>
-<style lang=""></style>
+<style scoped>
+@import url("../css/page/employee.css");
+</style>

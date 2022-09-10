@@ -16,8 +16,12 @@ const router = createRouter({
       path: "/",
       component: TheEmployee,
     },
-    // link các trang không tồn tại tới component notfound
-    { path: "/:pathMatch(.*)*", name: "NotFound", component: TheNotFound },
+    {
+      // link các trang không tồn tại tới component notfound
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: TheNotFound,
+    },
   ],
 });
 
