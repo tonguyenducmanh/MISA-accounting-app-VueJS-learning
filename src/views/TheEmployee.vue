@@ -1,5 +1,5 @@
 <template lang="">
-  <div>Đây là trang TheEmployee</div>
+  <div>Đây là trang quản lý nhân viên nàaaaaaaaaaaaaaaaaaaaaaaaa</div>
 </template>
 <script>
 export default {
