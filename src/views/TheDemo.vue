@@ -1,72 +1,120 @@
 <template lang="">
   <div class="demo">
-    <div>1. Button primary</div>
-    <MButton :buttonClass="MISAEnum.button.Primary" />
-    <div>2. Button secondary</div>
-    <MButton :buttonClass="MISAEnum.button.Secondary" />
-    <div>3. Input</div>
-    <MInput placeHolder="Đây là input thường" />
-    <div>4. Input label</div>
+    <div>1.1 Button primary</div>
+
+    <MButton buttonName="Bấm em đi anh ơi" />
+
+    <div>1.2 Button secondary</div>
+
+    <MButton :buttonTwo="true" buttonName="Bấm em đi anh ơi" />
+
+    <div>2.1 Input</div>
+
+    <MInput placeholder="Đây là input thường" />
+
+    <div>2.2 Input label</div>
+
     <MInput
       :hasLabel="true"
       :labelText="'Đây là Input có label'"
-      placeHolder="Đây là input có label"
+      placeholder="Đây là input có label"
     />
-    <div>5. Input icon</div>
-    <MInput :hasIcon="true" placeHolder="Đây là input có icon" />
-    <div>6. Input label icon</div>
+
+    <div>2.3 Input icon</div>
+
+    <MInput :hasIcon="true" placeholder="Đây là input có icon" />
+
+    <div>2.4 Input label icon</div>
+
     <MInput
       :hasLabel="true"
       :labelText="'Đây là Input có cả label icon'"
       :hasIcon="true"
-      placeHolder="Đây là input có cả label icon"
+      placeholder="Đây là input có cả label icon"
     />
-    <div>7. Input italic</div>
+    <div>2.5 Input italic</div>
+
     <MInput
       :hasItalic="true"
       :hasIcon="true"
-      placeHolder="Đây là input có cả label icon"
+      placeholder="Đây là input có cả label icon"
     />
-    <div>8. Input alert</div>
+    <div>2.6 Input alert</div>
+
     <MInput
       :hasAlert="true"
       :hasLabel="true"
       :labelText="'Đây là Input alert'"
       :hasIcon="true"
-      placeHolder="Đây là input alert"
+      placeholder="Đây là input alert"
     />
-    <div>9. Context menu open</div>
+    <div>3.1 Context menu open</div>
+
     <MConntextMenu :hasOpen="true" />
 
     <br /><br /><br />
 
-    <div>10. Context menu open-up</div>
+    <div>3.2 Context menu open-up</div>
 
     <br /><br /><br />
 
     <MConntextMenu :hasOpen="true" :hasUp="true" />
-    <div>10. Context menu close</div>
+
+    <div>3.3 Context menu close</div>
+
     <MConntextMenu />
+
+    <div>4 Date picker</div>
+
+    <MDatePicker labelText="Label của Date picker" />
+
+    <div>5. Checkbox</div>
+
+    <MCheckbox checkboxId="testCheckbox_1" labelText="Tiêu đề checkbox" />
+
+    <div>6. Radio button</div>
+
+    <MRadioButton
+      titleText="Radio Title"
+      :content="[
+        {
+          name: 'Nam',
+          value: 0,
+        },
+        {
+          name: 'Nữ',
+          value: 1,
+        },
+        {
+          name: 'Khác',
+          value: 2,
+        },
+      ]"
+    />
+
+    <div>7. Toast message</div>
   </div>
 </template>
 <script>
-// import js files
-import MISAEnum from "../js/enum.js";
-
 // import component file
 import MButton from "../components/base/MButton.vue";
 import MInput from "../components/base/MInput.vue";
 import MConntextMenu from "../components/base/MContextMenu.vue";
+import MDatePicker from "../components/base/MDatePicker.vue";
+import MCheckbox from "../components/base/MCheckbox.vue";
+import MRadioButton from "../components/base/MRadioButton.vue";
+
 export default {
   components: {
     MButton,
     MInput,
     MConntextMenu,
+    MDatePicker,
+    MCheckbox,
+    MRadioButton,
   },
   data() {
-    return {
-      MISAEnum,
-    };
+    return {};
   },
 };
 </script>

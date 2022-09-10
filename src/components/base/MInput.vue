@@ -16,7 +16,7 @@
           hasItalic === true ? MISAEnum.input.Italic : '',
           hasAlert === true ? MISAEnum.input.InputAlert : '',
         ]"
-        :placeholder="placeHolder"
+        :placeholder="placeholder"
       />
       <span v-if="hasIcon" class="icon input__icon"></span>
     </div>
@@ -37,7 +37,7 @@ export default {
     "inputAlert",
     "labelText",
     "hasIcon",
-    "placeHolder",
+    "placeholder",
     "hasLabel",
     "hasAlert",
     "hasItalic",
