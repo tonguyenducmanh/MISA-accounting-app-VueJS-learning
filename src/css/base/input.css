@@ -1,0 +1,104 @@
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.input__label {
+  font-weight: 600;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.input__label--alert {
+  color: var(--ColorAlert);
+}
+
+.input__field {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--BorderRadius);
+  border: 1px solid var(--ColorBorder);
+  font-size: 14px;
+  outline: none;
+  height: 36px;
+}
+
+.input__field::placeholder {
+  font-size: 14px;
+}
+
+.input__field:focus {
+  border: 1px solid var(--LightGreen500);
+}
+
+.input__field:hover {
+  border: 2px solid var(--ColorBorder);
+}
+
+.input__field:hover:focus {
+  border: 1px solid var(--LightGreen500);
+}
+
+.input__field--alert {
+  border: 1px solid var(--ColorAlert);
+}
+
+.input__field--alert:focus {
+  border: 1px solid var(--ColorAlert);
+}
+
+.input__field--alert:hover {
+  border: 1px solid var(--ColorAlert);
+}
+
+.input__field--alert:hover:focus {
+  border: 1px solid var(--ColorAlert);
+}
+
+/* 
+    tùy chỉnh position thông báo lỗi
+*/
+
+.form__body .form__ele:hover::after {
+  display: none;
+}
+
+.form__body .form__ele:has(.input__field--alert):hover::after {
+  display: block;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+}
+
+#cbxDepartment:hover::after {
+  display: none;
+}
+
+#cbxDepartment:has(.input__field--alert):hover::after {
+  display: block;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+}
+
+.input__warp {
+  position: relative;
+}
+
+.input__warp .input__icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateY(25%);
+  margin-right: 8px;
+}
+
+.input__warp .input__field {
+  padding-right: 28px;
+}
+
+.input__warp .input__field--italic {
+  font-family: notosan-italic;
+}
