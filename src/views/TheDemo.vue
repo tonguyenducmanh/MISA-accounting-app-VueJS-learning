@@ -2,11 +2,11 @@
   <div class="demo">
     <div>1.1 Button primary</div>
 
-    <MButton buttonName="Bấm em đi anh ơi" />
+    <MButton buttonName="Cất và thêm" />
 
     <div>1.2 Button secondary</div>
 
-    <MButton :buttonTwo="true" buttonName="Bấm em đi anh ơi" />
+    <MButton :buttonTwo="true" buttonName="Hủy" />
 
     <div>2.1 Input</div>
 
@@ -158,6 +158,7 @@ export default {
       language: "VI",
     };
   },
+  methods: {},
 };
 </script>
 <style scoped>
