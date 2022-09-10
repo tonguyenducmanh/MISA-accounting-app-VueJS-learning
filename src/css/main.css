@@ -46,6 +46,12 @@ body {
   width: 100%;
   height: 100vh;
 }
+/* Trong viewJS phải css cho cả thằng app nựa, nó như là body zạy */
+#app {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
 
 a {
   text-decoration: none;

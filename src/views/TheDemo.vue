@@ -120,10 +120,10 @@ export default {
 </script>
 <style scoped>
 .demo {
-  padding: 20px;
-  margin: 0 10%;
+  padding: 20px 10%;
   display: flex;
   flex-direction: column;
   row-gap: 40px;
+  background-color: white;
 }
 </style>
