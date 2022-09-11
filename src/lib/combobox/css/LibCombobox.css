@@ -51,7 +51,6 @@
 .combobox .combobox__drop::before{
   position: absolute;
   content: "";
-  background-image: url(../img/chevron-down-solid.svg);
   background-position: center;
   background-repeat: no-repeat;
   width: 14px;

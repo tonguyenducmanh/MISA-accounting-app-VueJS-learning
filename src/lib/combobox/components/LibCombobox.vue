@@ -1,12 +1,30 @@
 <template lang="">
-  <div class="combobox" value="">
-    <input class="combobox__input" type="text" />
+  <div class="combobox" :propName="propName" :value="unique">
+    <input
+      class="combobox__input"
+      :class="classInput"
+      type="text"
+      :value="defaultValue"
+      :placeholder="placeHolder"
+      :validate="validate"
+      :data-title="dataTitle"
+      @focus="inputComboboxOnClick"
+    />
     <button class="combobox__button">
       <div class="combobox__drop"></div>
     </button>
-    <div class="combobox__data combobox__data--open">
+    <div class="combobox__data" ref="hihi">
       <template v-for="(comboboxItem, index) in comboboxList" :key="index">
-        <div tabindex="0" class="combobox__item" :value="comboboxItem.value">
+        <div
+          tabindex="0"
+          class="combobox__item"
+          :value="comboboxItem.value"
+          :class="
+            defaultValue === comboboxItem.name
+              ? ComboboxEnum.comboboxItem.selected
+              : false
+          "
+        >
           {{ comboboxItem.name }}
         </div>
       </template>
@@ -14,25 +32,80 @@
   </div>
 </template>
 <script>
-import "../js/LibCombobox.js";
+import ComboboxEnum from "../js/LibEnum.js";
 export default {
   name: "LibCombobox",
   props: {
-    api: String,
-    data: Object,
+    classInput: String,
     dataTitle: String,
+    validate: String,
     placeHolder: String,
+    propName: String,
+    defaultValue: String,
+    unique: String,
+    // giá trị chèn vào khi không có api
+    data: String,
+    // api để fetch data
+    api: String,
+    // trường thứ nhất muốn lấy trong json respone
     text: String,
+    // trường thứ hai muốn lấy trong json respone
     value: String,
   },
   data() {
     return {
-      comboboxList: [
-        { value: 0, name: "Test 1" },
-        { value: 1, name: "Test 2" },
-        { value: 2, name: "Test 3" },
-      ],
+      comboboxList: [],
+      ComboboxEnum,
     };
+  },
+  beforeMount() {
+    /**
+     * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
+     * phân tách data truyền vào component để tạo ra các comboboxitem
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    try {
+      let combobox = this;
+      // trường hợp có api
+      if (this.api !== undefined) {
+        fetch(this.api, { method: "GET" })
+          .then((res) => res.json())
+          .then((res) => {
+            // gán giá trị mong muốn vào trong comboboxList
+            for (let item of res) {
+              combobox.comboboxList.push({
+                value: item[combobox.value],
+                name: item[combobox.text],
+              });
+            }
+          })
+          .catch((res) => console.log(res));
+      }
+      // trường hợp không có api
+      else {
+        // phân chia các item bằng dấu ;
+        let items = this.data.split(";");
+        for (let item of items) {
+          let arrItem = item.split(":");
+          combobox.comboboxList.push({
+            value: arrItem[1].trim(),
+            name: arrItem[0].trim(),
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {
+    /**
+     * lắng nghe nhập liệu vào ô input của combobox
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+
+    inputComboboxOnClick() {
+      console.log("input");
+    },
   },
 };
 </script>
