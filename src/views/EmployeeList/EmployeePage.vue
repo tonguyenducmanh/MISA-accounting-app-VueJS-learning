@@ -1,0 +1,9 @@
+<template lang="">
+  <div>phân trang</div>
+</template>
+<script>
+export default {
+  name: "EmployeePage",
+};
+</script>
+<style lang=""></style>
