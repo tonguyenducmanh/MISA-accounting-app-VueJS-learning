@@ -141,6 +141,14 @@
       defaultValue="10 bản ghi trên trang"
       unique="10"
     />
+
+    <div>9. Popup</div>
+
+    <MPopup />
+
+    <div>10. Loading</div>
+
+    <MLoading />
   </div>
 </template>
 <script>
@@ -152,6 +160,8 @@ import MDatePicker from "../components/base/MDatePicker.vue";
 import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
+import MPopup from "../components/base/MPopup.vue";
+import MLoading from "../components/base/MLoading.vue";
 
 // import library file
 import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
@@ -166,6 +176,8 @@ export default {
     MRadioButton,
     MToastMessage,
     MCombobox: LibCombobox,
+    MPopup,
+    MLoading,
   },
   data() {
     return {
