@@ -143,8 +143,20 @@
     />
 
     <div>9. Popup</div>
-
-    <MPopup />
+    <MButton @click="showAlert" buttonName="hiện Alert" />
+    <MPopup :isAlert="isAlertShow" AlertMess="Bạn có người yêu chưa" />
+    <br />
+    <MButton @click="showAskWarning" buttonName="hiện Ask Warning" />
+    <MPopup
+      :isAskWarning="isAskWarningShow"
+      AskWarningMess="Bạn có người yêu chưa"
+    />
+    <br />
+    <MButton @click="showAsk" buttonName="hiện Ask" />
+    <MPopup :isAsk="isAskShow" AskMess="Bạn có người yêu chưa" />
+    <br />
+    <MButton @click="showWarning" buttonName="hiện Warning" />
+    <MPopup :isWarning="isWarningShow" WarningMess="Bạn có người yêu chưa" />
 
     <div>10. Loading</div>
 
@@ -182,9 +194,30 @@ export default {
   data() {
     return {
       language: "VI",
+      isAlertShow: false,
+      isAskWarningShow: false,
+      isAskShow: false,
+      isWarningShow: false,
     };
   },
-  methods: {},
+  methods: {
+    /**
+     * Hiện các popup tương ứng với nút demo bên trên.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    showAlert() {
+      this.isAlertShow = !this.isAlertShow;
+    },
+    showAskWarning() {
+      this.isAskWarningShow = !this.isAskWarningShow;
+    },
+    showAsk() {
+      this.isAskShow = !this.isAskShow;
+    },
+    showWarning() {
+      this.isWarningShow = !this.isWarningShow;
+    },
+  },
 };
 </script>
 <style scoped>

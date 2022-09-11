@@ -1,10 +1,10 @@
 <template lang="">
   <!-- phần popup xóa -->
-  <div class="popup__wrap" id="popupAskWarning">
+  <div v-if="isAskWarning" class="popup__wrap" id="popupAskWarning">
     <div class="popup popup--askwarning">
       <div class="popup__content">
         <div class="icon popup__icon"></div>
-        <div class="popup__text"></div>
+        <div class="popup__text">{{ AskWarningMess }}</div>
       </div>
       <div class="popup__action">
         <MButton :buttonTwo="true" buttonName="Không" dataTitle="Đóng (ESC)" />
@@ -14,52 +14,55 @@
   </div>
   <!-- phần popup hỏi muốn lưu không -->
 
-  <div class="popup__wrap" id="popupAsk">
+  <div v-if="isAsk" class="popup__wrap" id="popupAsk">
     <div class="popup popup--ask">
       <div class="popup__content">
         <div class="icon popup__icon"></div>
         <div class="popup__text">
-          Dữ liệu đã được thay đổi, bạn có muốn cất không ?
+          {{ AskMess }}
         </div>
       </div>
       <div class="popup__action">
-        <button class="button-second button--cancel" data-title="Hủy (ESC)">
-          Hủy
-        </button>
+        <MButton
+          :buttonTwo="true"
+          class="button--cancel"
+          buttonName="Hủy"
+          dataTitle="Hủy (ESC)"
+        />
         <div class="">
-          <button
-            class="button-second button--no"
-            data-title="Không (ctrl + Q)"
-          >
-            Không
-          </button>
-          <button class="button-primary">Có</button>
+          <MButton
+            :buttonTwo="true"
+            buttonName="Không"
+            dataTitle="Không (ctrl + Q)"
+            class="button--no"
+          />
+          <MButton buttonName="Có" />
         </div>
       </div>
     </div>
   </div>
 
   <!-- phần popup nhập lỗi -->
-  <div class="popup__wrap" id="popupAlert">
+  <div v-if="isAlert" class="popup__wrap" id="popupAlert">
     <div class="popup popup--alert">
       <div class="popup__content">
         <div class="icon popup__icon"></div>
-        <div class="popup__text"></div>
+        <div class="popup__text">{{ AlertMess }}</div>
       </div>
       <div class="popup__action">
-        <button class="button-primary">Đóng</button>
+        <MButton buttonName="Đóng" />
       </div>
     </div>
   </div>
   <!-- phần popup trùng id -->
-  <div class="popup__wrap" id="popupWarning">
+  <div v-if="isWarning" class="popup__wrap" id="popupWarning">
     <div class="popup popup--warning">
       <div class="popup__content">
         <div class="icon popup__icon"></div>
-        <div class="popup__text"></div>
+        <div class="popup__text">{{ WarningMess }}</div>
       </div>
       <div class="popup__action">
-        <button class="button-primary">Đồng ý</button>
+        <MButton buttonName="Đồng ý" />
       </div>
     </div>
   </div>
@@ -71,9 +74,25 @@ export default {
   components: {
     MButton,
   },
+  props: [
+    "isAskWarning",
+    "AskWarningMess",
+    "isAsk",
+    "AskMess",
+    "isAlert",
+    "AlertMess",
+    "isWarning",
+    "WarningMess",
+  ],
+  data() {
+    return {};
+  },
 };
 </script>
 <style scoped>
 @import url("../../css/base/icon.css");
 @import url("../../css/base/popup.css");
+.button--no {
+  margin-right: 8px;
+}
 </style>

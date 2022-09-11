@@ -1,7 +1,7 @@
 <template lang="">
   <div class="notfound">
     <span class="notfound__404"> 404 not found </span>
-    <span>Thành phần này đang được phát triển, vui lòng quay lại sau!</span>
+    <span>Địa chỉ này không tồn tại, vui lòng trở về trang chủ!</span>
   </div>
 </template>
 <script>
