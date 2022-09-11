@@ -13,6 +13,8 @@
   padding-left: 12px;
   padding-right: 52px;
   box-sizing: border-box;
+  outline: none;
+  border: 1px solid #e0e0e0;
 }
 
 

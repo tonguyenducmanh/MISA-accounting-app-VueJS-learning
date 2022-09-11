@@ -1,4 +1,5 @@
 <template lang="">
+  <div>đây là trang demo sử dụng combobox</div>
   <div>trường hợp có api</div>
   <LibCombobox
     api="https://cukcuk.manhnv.net/api/v1/Departments"

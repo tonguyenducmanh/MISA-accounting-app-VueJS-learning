@@ -131,6 +131,16 @@
         toastText="Bạn nên đọc kỹ nội dung trước khi phê duyệt."
       />
     </div>
+
+    <div>8. Combobox</div>
+
+    <MCombobox
+      :classInput="'input__field'"
+      data="10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100"
+      placeHolder="Hãy chọn số trang"
+      defaultValue="10 bản ghi trên trang"
+      unique="10"
+    />
   </div>
 </template>
 <script>
@@ -143,6 +153,9 @@ import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
 
+// import library file
+import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
+
 export default {
   components: {
     MButton,
@@ -152,6 +165,7 @@ export default {
     MCheckbox,
     MRadioButton,
     MToastMessage,
+    MCombobox: LibCombobox,
   },
   data() {
     return {
