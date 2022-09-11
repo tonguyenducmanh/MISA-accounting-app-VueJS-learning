@@ -10,7 +10,7 @@
     <div class="navbar__list">
       <MRouterLink name="Tổng quan" link="/demo" className="navbar__tq" />
       <MRouterLink name="Tiền mặt" link="/" className="navbar__tm" />
-      <MRouterLink name="Tiền gửi" link="/tiengui" className="navbar__tg" />
+      <MRouterLink name="Tiền gửi" link="/combobox" className="navbar__tg" />
       <MRouterLink name="Mua hàng" link="/muahang" className="navbar__mh" />
       <MRouterLink name="Bán hàng" link="/banhang" className="navbar__bh" />
       <MRouterLink
