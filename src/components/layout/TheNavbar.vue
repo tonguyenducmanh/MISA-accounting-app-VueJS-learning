@@ -62,4 +62,26 @@ a {
   color: white;
   text-transform: uppercase;
 }
+
+.router-link-active {
+  background-color: var(--ColorSecondaryText);
+}
+
+.router-link-active .icon::before {
+  filter: brightness(0) invert(100%);
+}
+.router-link-active:hover {
+  background-color: var(--ColorSecondaryText) !important;
+}
+.router-link-active::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  background-color: var(--LightGreen500) !important;
+  content: "";
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
 </style>
