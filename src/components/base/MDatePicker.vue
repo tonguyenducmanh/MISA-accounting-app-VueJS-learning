@@ -1,7 +1,12 @@
 <template lang="">
   <div class="datepicker">
     <div class="datepicker__label">{{ labelText }}</div>
-    <input type="date" class="datepicker__input" placeholder="DD/MM/YYYY" />
+    <input
+      type="date"
+      :propName="propName"
+      class="datepicker__input"
+      placeholder="DD/MM/YYYY"
+    />
   </div>
 </template>
 <script>
@@ -10,7 +15,7 @@ export default {
   data() {
     return {};
   },
-  props: ["labelText"],
+  props: ["labelText", "propName"],
 };
 </script>
 <style scoped>

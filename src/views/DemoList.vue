@@ -131,6 +131,67 @@
         toastText="Bạn nên đọc kỹ nội dung trước khi phê duyệt."
       />
     </div>
+
+    <div>8. Combobox</div>
+
+    <LibCombobox
+      :classInput="'input__field'"
+      data="10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100"
+      placeHolder="Hãy chọn số trang"
+      defaultValue="10 bản ghi trên trang"
+      unique="10"
+    />
+
+    <div>9. Popup</div>
+    <MButton @click="showAlert" buttonName="hiện Alert" />
+
+    <MPopup
+      :isAlert="isAlertShow"
+      @hide-popup="showAlert"
+      AlertMess="Bạn có người yêu chưa"
+    />
+    <br />
+    <MButton @click="showAskWarning" buttonName="hiện Ask Warning" />
+
+    <MPopup
+      :isAskWarning="isAskWarningShow"
+      @hide-popup="showAskWarning"
+      AskWarningMess="Bạn có người yêu chưa"
+    />
+    <br />
+    <MButton @click="showAsk" buttonName="hiện Ask" />
+
+    <MPopup
+      :isAsk="isAskShow"
+      @hide-popup="showAsk"
+      AskMess="Bạn có người yêu chưa"
+    />
+    <br />
+    <MButton @click="showWarning" buttonName="hiện Warning" />
+
+    <MPopup
+      :isWarning="isWarningShow"
+      @hide-popup="showWarning"
+      WarningMess="Bạn có người yêu chưa"
+    />
+
+    <div>10. Loading</div>
+
+    <MLoading />
+
+    <div>11. Form</div>
+
+    <MButton @click="showForm" buttonName="hiện Form" />
+
+    <EmployeeForm v-if="isFormShow" @hide-form="showForm" />
+
+    <div>12. Table</div>
+
+    <EmployeeTable />
+
+    <div>14. Page navigation</div>
+
+    <EmployeePage />
   </div>
 </template>
 <script>
@@ -142,6 +203,16 @@ import MDatePicker from "../components/base/MDatePicker.vue";
 import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
+import MPopup from "../components/base/MPopup.vue";
+import MLoading from "../components/base/MLoading.vue";
+
+// import library file
+import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
+
+// import employee components
+import EmployeeForm from "../views/EmployeeList/EmployeeForm.vue";
+import EmployeeTable from "../views/EmployeeList/EmployeeTable.vue";
+import EmployeePage from "../views/EmployeeList/EmployeePage.vue";
 
 export default {
   components: {
@@ -152,13 +223,44 @@ export default {
     MCheckbox,
     MRadioButton,
     MToastMessage,
+    LibCombobox,
+    MPopup,
+    MLoading,
+    EmployeeForm,
+    EmployeeTable,
+    EmployeePage,
   },
   data() {
     return {
       language: "VI",
+      isAlertShow: false,
+      isAskWarningShow: false,
+      isAskShow: false,
+      isWarningShow: false,
+      isFormShow: false,
     };
   },
-  methods: {},
+  methods: {
+    /**
+     * Hiện các popup, form tương ứng với nút demo bên trên.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    showAlert() {
+      this.isAlertShow = !this.isAlertShow;
+    },
+    showAskWarning() {
+      this.isAskWarningShow = !this.isAskWarningShow;
+    },
+    showAsk() {
+      this.isAskShow = !this.isAskShow;
+    },
+    showWarning() {
+      this.isWarningShow = !this.isWarningShow;
+    },
+    showForm() {
+      this.isFormShow = !this.isFormShow;
+    },
+  },
 };
 </script>
 <style scoped>

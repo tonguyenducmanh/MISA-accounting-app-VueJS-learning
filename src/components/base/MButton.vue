@@ -1,6 +1,8 @@
 <template lang="">
   <button
+    tabindex="0"
     :class="buttonTwo ? MISAEnum.button.Secondary : MISAEnum.button.Primary"
+    :data-title="dataTitle !== '' ? dataTitle : false"
   >
     {{ buttonName }}
   </button>
@@ -16,7 +18,7 @@ export default {
       MISAEnum,
     };
   },
-  props: ["buttonTwo", "buttonName"],
+  props: ["buttonTwo", "buttonName", "dataTitle"],
 };
 </script>
 <style scoped>
