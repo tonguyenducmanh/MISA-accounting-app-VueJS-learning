@@ -1,0 +1,12 @@
+.demo {
+  padding: 20px 10%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  background-color: white;
+}
+
+.demo .toastmessage__container{
+  position: relative;
+  height: 40px;
+}
