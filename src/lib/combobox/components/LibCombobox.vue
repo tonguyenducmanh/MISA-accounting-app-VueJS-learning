@@ -1,29 +1,53 @@
 <template lang="">
-  <div class="combobox" :propName="propName" :value="unique">
+  <div
+    class="combobox"
+    :propName="propName"
+    :value="uniqueSelected"
+    v-click-out.passive="onClickOutside"
+    @keydown.esc.passive="hideComboboxData"
+    @keydown.up.passive="prevEleMove"
+    @keydown.left.passive="prevEleMove"
+    @keydown.down.passive="nextEleMove"
+    @keydown.right.passive="nextEleMove"
+  >
     <input
+      tabindex="0"
       class="combobox__input"
       :class="classInput"
       type="text"
-      :value="defaultValue"
       :placeholder="placeHolder"
       :validate="validate"
       :data-title="dataTitle"
       @focus="inputComboboxOnClick"
+      @input="inputComboboxOnClick"
+      v-model="currentInput"
     />
-    <button class="combobox__button">
+    <button tabindex="0" class="combobox__button" @click="btnComboboxOnClick">
       <div class="combobox__drop"></div>
     </button>
-    <div class="combobox__data" ref="hihi">
+    <div
+      class="combobox__data"
+      ref="hihi"
+      :class="isShowData ? ComboboxEnum.comboboxData.SHOW : false"
+    >
       <template v-for="(comboboxItem, index) in comboboxList" :key="index">
         <div
           tabindex="0"
           class="combobox__item"
           :value="comboboxItem.value"
-          :class="
-            defaultValue === comboboxItem.name
-              ? ComboboxEnum.comboboxItem.selected
-              : false
-          "
+          @click="itemComboboxOnClick"
+          @keydown.enter="itemComboboxOnClick"
+          :class="[
+            seletedValue === comboboxItem.name
+              ? ComboboxEnum.comboboxItem.SELECTED
+              : false,
+            currentInput !== '' &&
+            !comboboxItem.name
+              .toLowerCase()
+              .includes(currentInput.toLowerCase())
+              ? ComboboxEnum.comboboxItem.HIDE
+              : false,
+          ]"
         >
           {{ comboboxItem.name }}
         </div>
@@ -56,6 +80,10 @@ export default {
     return {
       comboboxList: [],
       ComboboxEnum,
+      isShowData: false,
+      seletedValue: "",
+      currentInput: "",
+      uniqueSelected: "",
     };
   },
   beforeMount() {
@@ -93,6 +121,13 @@ export default {
           });
         }
       }
+      // khởi tạo giá trị selected mặc định dựa vào prop truyền vào
+      // gán nó vào data đang trống
+      if (this.defaultValue !== undefined) {
+        this.seletedValue = this.defaultValue;
+      }
+      // gán value id mặc định
+      this.uniqueSelected = this.unique;
     } catch (error) {
       console.log(error);
     }
@@ -102,9 +137,72 @@ export default {
      * lắng nghe nhập liệu vào ô input của combobox
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
      */
-
     inputComboboxOnClick() {
-      console.log("input");
+      try {
+        this.isShowData = true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
+     * click vào button thì hiện combobox item.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    btnComboboxOnClick() {
+      try {
+        this.isShowData = !this.isShowData;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * click vào item thì ẩn combobox data đi và truyền value vào trong input.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    itemComboboxOnClick(e) {
+      try {
+        // ẩn drop menu đi
+        this.isShowData = false;
+        // select cái đã chọn
+        this.seletedValue = e.target.textContent;
+        this.currentInput = e.target.textContent;
+        this.uniqueSelected = e.target.getAttribute("value");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * click ra ngoài thì ẩn combobox data.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    onClickOutside() {
+      this.isShowData = false;
+    },
+    /**
+     * ấn phím ESC thì ẩn combobox data.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    hideComboboxData() {
+      this.isShowData = false;
+    },
+    /**
+     * Khi ấn lên và sang trái thì di chuyển sang tab index phía trước.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    prevEleMove(e) {
+      if (e.target.previousElementSibling) {
+        e.target.previousElementSibling.focus();
+      }
+    },
+    /**
+     * Khi ấn xuống và sang phải thì di chuyển sang tab index phía sau.
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    nextEleMove(e) {
+      if (e.target.nextElementSibling) {
+        e.target.nextElementSibling.focus();
+      }
     },
   },
 };
