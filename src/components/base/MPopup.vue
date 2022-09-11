@@ -7,7 +7,12 @@
         <div class="popup__text">{{ AskWarningMess }}</div>
       </div>
       <div class="popup__action">
-        <MButton :buttonTwo="true" buttonName="Không" dataTitle="Đóng (ESC)" />
+        <MButton
+          :buttonTwo="true"
+          @click="$emit('hide-popup')"
+          buttonName="Không"
+          dataTitle="Đóng (ESC)"
+        />
         <MButton buttonName="Có" />
       </div>
     </div>
@@ -27,6 +32,7 @@
           :buttonTwo="true"
           class="button--cancel"
           buttonName="Hủy"
+          @click="$emit('hide-popup')"
           dataTitle="Hủy (ESC)"
         />
         <div class="">
@@ -35,6 +41,7 @@
             buttonName="Không"
             dataTitle="Không (ctrl + Q)"
             class="button--no"
+            @click="$emit('hide-popup')"
           />
           <MButton buttonName="Có" />
         </div>
@@ -50,7 +57,7 @@
         <div class="popup__text">{{ AlertMess }}</div>
       </div>
       <div class="popup__action">
-        <MButton buttonName="Đóng" />
+        <MButton buttonName="Đóng" @click="$emit('hide-popup')" />
       </div>
     </div>
   </div>
@@ -62,7 +69,7 @@
         <div class="popup__text">{{ WarningMess }}</div>
       </div>
       <div class="popup__action">
-        <MButton buttonName="Đồng ý" />
+        <MButton buttonName="Đồng ý" @click="$emit('hide-popup')" />
       </div>
     </div>
   </div>
