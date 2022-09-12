@@ -48,23 +48,11 @@
       :hasIcon="true"
       placeholder="Đây là input alert"
     />
-    <div>3.1 Context menu open</div>
+    <div>3. Context menu open</div>
 
     <MConntextMenu :hasOpen="true" />
 
-    <br /><br /><br />
-
-    <div>3.2 Context menu open-up</div>
-
-    <br /><br /><br />
-
-    <MConntextMenu :hasOpen="true" :hasUp="true" />
-
-    <div>3.3 Context menu close</div>
-
-    <MConntextMenu />
-
-    <div>4 Date picker</div>
+    <div>4. Date picker</div>
 
     <MDatePicker labelText="Label của Date picker" />
 
@@ -187,11 +175,86 @@
 
     <div>12. Table</div>
 
-    <EmployeeTable />
+    <div>
+      <EmployeeTable
+        class="table__container"
+        :employeeList="employeeList"
+        :theadList="[
+          {
+            align: 'left',
+            propName: 'EmployeeCode',
+            width: '150',
+            name: 'Mã nhân viên',
+          },
+          {
+            align: 'left',
+            propName: 'FullName',
+            width: '200',
+            name: 'Tên nhân viên',
+          },
+          {
+            align: 'left',
+            propName: 'Gender',
+            width: '110',
+            name: 'Giới tính',
+            formatGender: true,
+          },
+          {
+            align: 'center',
+            propName: 'DateOfBirth',
+            width: '130',
+            name: 'Ngày sinh',
+            formatDate: true,
+          },
+          {
+            align: 'right',
+            propName: 'PersonalTaxCode',
+            width: '200',
+            name: 'Số CMND',
+            formatRight: true,
+          },
+          {
+            align: 'left',
+            propName: 'PositionName',
+            width: '200',
+            name: 'Chức danh',
+          },
+          {
+            align: 'left',
+            propName: 'DepartmentName',
+            width: '250',
+            name: 'Tên đơn vị',
+          },
+          {
+            align: 'right',
+            propName: '',
+            width: '200',
+            name: 'Số tài khoản',
+            formatRight: true,
+          },
+          {
+            align: 'left',
+            propName: '',
+            width: '250',
+            name: 'Tên ngân hàng',
+          },
+          {
+            align: 'left',
+            propName: '',
+            width: '250',
+            name: 'Chi nhánh TK ngân hàng',
+          },
+        ]"
+      />
+    </div>
 
     <div>14. Page navigation</div>
 
-    <EmployeePage />
+    <EmployeePage
+      :totalRecords="totalRecords"
+      :totalPage="totalPage"
+      :currentPage="currentPage"
+    />
   </div>
 </template>
 <script>
@@ -232,13 +295,58 @@ export default {
   },
   data() {
     return {
+      employeeList: [],
+      totalRecords: 0,
+      totalPage: 0,
+      currentPage: 0,
       language: "VI",
       isAlertShow: false,
       isAskWarningShow: false,
       isAskShow: false,
       isWarningShow: false,
       isFormShow: false,
+      pageSize: 10,
+      pageNumber: 1,
+      searchFilter: null,
+      apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
     };
+  },
+  /**
+   * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
+   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   */
+  beforeMount() {
+    let arrFilter = [];
+    if (this.searchFilter != null && this.searchFilter != "") {
+      arrFilter.push(`employeeFilter=${this.searchFilter}`);
+    }
+    if (this.pageSize != null && this.pageSize != "") {
+      arrFilter.push(`pageSize=${this.pageSize}`);
+    }
+    if (this.pageNumber != null && this.pageNumber != "") {
+      arrFilter.push(`pageNumber=${this.pageNumber}`);
+    }
+    // api mặc định
+    let apiFetch = this.apiTable;
+    // tạo ra api mới dựa trên các giá trị filter
+    if (arrFilter.length != 0) {
+      apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
+    }
+    fetch(apiFetch, { method: "GET" })
+      .then((res) => {
+        if (res.status == 200) {
+          return res.json();
+        }
+      })
+      .then((res) => {
+        this.employeeList = res["Data"];
+        this.totalRecords = res["TotalRecord"];
+        this.totalPage = res["TotalPage"];
+        this.currentPage = res["CurrentPage"];
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   },
   methods: {
     /**

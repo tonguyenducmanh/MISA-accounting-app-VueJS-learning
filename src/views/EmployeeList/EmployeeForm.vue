@@ -219,6 +219,7 @@ import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeeForm",
+  emits: ["hide-form"],
   components: {
     MButton,
     MCheckbox,

@@ -6,6 +6,7 @@
       class="employee__addbtn"
       id="employee__addbtn"
       dataTitle="Nhấn Ctrl + Shift + A để thêm nhanh"
+      @click="$emit('show-form')"
     />
   </div>
 </template>
@@ -16,6 +17,7 @@ export default {
   components: {
     MButton,
   },
+  emits: ["show-form"],
 };
 </script>
 <style scoped>

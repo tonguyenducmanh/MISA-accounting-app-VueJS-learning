@@ -1,7 +1,9 @@
 <template lang="">
   <div class="checkbox">
     <input type="checkbox" class="checkbox__button" :id="checkboxId" />
-    <label class="checkbox__label" :for="checkboxId">{{ labelText }}</label>
+    <label tabindex="0" class="checkbox__label" :for="checkboxId">{{
+      labelText
+    }}</label>
   </div>
 </template>
 <script>

@@ -51,7 +51,7 @@
 .contextmenu .contextmenu__menu{
     z-index: 100;
     background-color: var(--ColorBackgroundWhite);
-    display: none;
+    /* display: none; */
     min-width: 130px;
     position: absolute;
     right: -10px;

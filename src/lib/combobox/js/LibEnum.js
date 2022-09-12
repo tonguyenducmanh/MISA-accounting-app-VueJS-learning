@@ -1,6 +1,7 @@
 let ComboboxEnum = {
   comboboxData: {
     SHOW: "combobox__data--open",
+    UP: "combobox__data--up",
   },
   comboboxItem: {
     HIDE: "combobox__item--hide",
