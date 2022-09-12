@@ -24,6 +24,7 @@
       </div>
       <!-- employee table gồm bảng danh sách nhân viên -->
       <EmployeeTable
+        @delete-employee="toggleAskWarningPopUp"
         class="table__container"
         :employeeList="employeeList"
         :theadList="[
@@ -108,7 +109,15 @@
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
-      AskMess="Bạn có người yêu chưa"
+      AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
+    />
+    <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
+    <MPopup
+      :isAskWarning="isAskWarningShow"
+      @hide-popup="toggleAskWarningPopUp"
+      @re-load="loadData"
+      :AskWarningMess="`Bạn có thực sự muốn xóa nhân viên ${deleteName} không?`"
+      :deleteId="deleteId"
     />
   </div>
 </template>
@@ -145,6 +154,8 @@ export default {
       pageNumber: 1,
       searchFilter: null,
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
+      deleteId: "",
+      deleteName: "",
     };
   },
   beforeMount() {
@@ -168,72 +179,109 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     loadData() {
-      let arrFilter = [];
-      if (this.searchFilter != null && this.searchFilter != "") {
-        arrFilter.push(`employeeFilter=${this.searchFilter}`);
+      try {
+        let arrFilter = [];
+        if (this.searchFilter != null && this.searchFilter != "") {
+          arrFilter.push(`employeeFilter=${this.searchFilter}`);
+        }
+        if (this.pageSize != null && this.pageSize != "") {
+          arrFilter.push(`pageSize=${this.pageSize}`);
+        }
+        if (this.pageNumber != null && this.pageNumber != "") {
+          arrFilter.push(`pageNumber=${this.pageNumber}`);
+        }
+        // api mặc định
+        let apiFetch = this.apiTable;
+        // tạo ra api mới dựa trên các giá trị filter
+        if (arrFilter.length != 0) {
+          apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
+        }
+        fetch(apiFetch, { method: "GET" })
+          .then((res) => {
+            if (res.status == 200) {
+              return res.json();
+            }
+          })
+          .then((res) => {
+            this.employeeList = res["Data"];
+            this.totalRecords = res["TotalRecord"];
+            this.totalPage = res["TotalPage"];
+            this.currentPage = res["CurrentPage"];
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        console.log(error);
       }
-      if (this.pageSize != null && this.pageSize != "") {
-        arrFilter.push(`pageSize=${this.pageSize}`);
-      }
-      if (this.pageNumber != null && this.pageNumber != "") {
-        arrFilter.push(`pageNumber=${this.pageNumber}`);
-      }
-      // api mặc định
-      let apiFetch = this.apiTable;
-      // tạo ra api mới dựa trên các giá trị filter
-      if (arrFilter.length != 0) {
-        apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
-      }
-      fetch(apiFetch, { method: "GET" })
-        .then((res) => {
-          if (res.status == 200) {
-            return res.json();
-          }
-        })
-        .then((res) => {
-          this.employeeList = res["Data"];
-          this.totalRecords = res["TotalRecord"];
-          this.totalPage = res["TotalPage"];
-          this.currentPage = res["CurrentPage"];
-        })
-        .catch((res) => {
-          console.log(res);
-        });
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     changeSize(value) {
-      this.pageSize = value;
+      try {
+        this.pageSize = value;
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * chọn thay đổi giá trị tìm kiếm và load lại trang với số lượng đó
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     changeFilter(value) {
-      this.searchFilter = value;
+      try {
+        this.searchFilter = value;
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * Hiện form thêm mới nhân viên
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     showForm() {
-      this.isFormShow = true;
+      try {
+        this.isFormShow = true;
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * Hiện dialog khi ấn vào ẩn form đi
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     toggleAskPopUp() {
-      this.isAskShow = !this.isAskShow;
+      try {
+        this.isAskShow = !this.isAskShow;
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * Ẩn cả popup hỏi lưu không và form đi
      */
     hideFormAndAsk() {
-      this.isAskShow = false;
-      this.isFormShow = false;
+      try {
+        this.isAskShow = false;
+        this.isFormShow = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup hỏi có muốn xóa không
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    toggleAskWarningPopUp(deleteId, deleteName) {
+      try {
+        this.deleteId = deleteId;
+        this.deleteName = deleteName;
+        this.isAskWarningShow = !this.isAskWarningShow;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

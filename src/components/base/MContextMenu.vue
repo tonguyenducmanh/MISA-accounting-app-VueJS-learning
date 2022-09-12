@@ -14,7 +14,13 @@
           :class="hasUp === true ? MISAEnum.contextMenu.UP : ''"
         >
           <div class="contextmenu__item">Nhân bản</div>
-          <div class="contextmenu__item" :value="deleteValue">Xóa</div>
+          <div
+            class="contextmenu__item"
+            :value="deleteId"
+            @click="$emit('delete-id', deleteId, deleteName)"
+          >
+            Xóa
+          </div>
           <div class="contextmenu__item">Ngưng sử dụng</div>
         </div>
       </div>
@@ -33,21 +39,30 @@ export default {
       hasUp: false,
     };
   },
-  props: ["deleteValue"],
+  props: ["deleteId", "deleteName"],
+  emits: ["delete-id"],
   methods: {
     /**
      * thay đổi trạng thái của context
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     tableContext() {
-      this.hasOpen = !this.hasOpen;
+      try {
+        this.hasOpen = !this.hasOpen;
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * ẩn context khi click ra ngoài
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     hideContext() {
-      this.hasOpen = false;
+      try {
+        this.hasOpen = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
