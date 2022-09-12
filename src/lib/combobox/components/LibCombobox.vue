@@ -20,7 +20,7 @@
         class="combobox__input"
         :class="classInput"
         type="text"
-        :placeholder="placeHolder"
+        :placeholder="defaultValue !== '' ? defaultValue : placeHolder"
         :validate="validate"
         :data-title="dataTitle"
         @focus="inputComboboxOnClick"
@@ -33,7 +33,10 @@
       <div
         class="combobox__data"
         ref="hihi"
-        :class="isShowData ? ComboboxEnum.comboboxData.SHOW : false"
+        :class="[
+          isShowData ? ComboboxEnum.comboboxData.SHOW : false,
+          isUp ? ComboboxEnum.comboboxData.UP : false,
+        ]"
       >
         <template v-for="(comboboxItem, index) in comboboxList" :key="index">
           <div
@@ -66,6 +69,7 @@ import ComboboxEnum from "../js/LibEnum.js";
 export default {
   name: "LibCombobox",
   props: {
+    isUp: Boolean,
     hasLabel: Boolean,
     labelText: String,
     showAlertStar: Boolean,
