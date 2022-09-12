@@ -258,12 +258,6 @@
             width: '250',
             name: 'Chi nhánh TK ngân hàng',
           },
-          {
-            align: 'center',
-            propName: '',
-            width: '100',
-            name: 'Chức năng',
-          },
         ]"
       />
     </div>

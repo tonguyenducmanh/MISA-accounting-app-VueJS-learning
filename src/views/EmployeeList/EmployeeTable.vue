@@ -18,9 +18,11 @@
               {{ theaditem.name }}
             </th>
           </template>
+          <!-- render ra th chức năng, tách riêng với các cột propname -->
+          <th class="text__align--center" style="width: 100px">Chức năng</th>
         </tr>
       </thead>
-          <!-- render ra tr dựa vào data employeeList -->
+      <!-- render ra tr dựa vào data employeeList -->
       <tbody
         class="table__body--real"
         v-for="(employee, index) in employeeList"
@@ -36,16 +38,13 @@
               :checkboxId="`checkbox__${index}`"
             />
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
+          tương ứng từ prop name của thead từ kết quả api trả về -->
+          <template v-for="(theaditem, index) in theadList" :key="index">
+            <td :class="`text__align--${theaditem.align}`">
+              {{ employee[theaditem.propName] }}
+            </td>
+          </template>
           <!-- chèn component conext menu vào td -->
           <td class="text__align--center">
             <MConntextMenu />
@@ -56,6 +55,7 @@
   </div>
 </template>
 <script>
+import common from "../../js/common.js";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MConntextMenu from "../../components/base/MContextMenu.vue";
 export default {
@@ -105,12 +105,14 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res["Data"]);
         this.employeeList = res["Data"];
       })
       .catch((res) => {
         console.log(res);
       });
+  },
+  methods() {
+    common;
   },
 };
 </script>
