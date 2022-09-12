@@ -41,7 +41,19 @@
           <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
           tương ứng từ prop name của thead từ kết quả api trả về -->
           <template v-for="(theaditem, index) in theadList" :key="index">
-            <td :class="`text__align--${theaditem.align}`">
+            <td
+              v-if="theaditem.formatDate"
+              :class="`text__align--${theaditem.align}`"
+            >
+              {{ formatDate(employee[theaditem.propName]) }}
+            </td>
+            <td
+              v-else-if="theaditem.formatGender"
+              :class="`text__align--${theaditem.align}`"
+            >
+              {{ formatGender(employee[theaditem.propName]) }}
+            </td>
+            <td v-else :class="`text__align--${theaditem.align}`">
               {{ employee[theaditem.propName] }}
             </td>
           </template>
@@ -64,7 +76,6 @@ export default {
     MCheckbox,
     MConntextMenu,
   },
-  // props: ["api", "pageSize", "pageNumber", "searchFilter"],
   props: {
     api: String,
     pageSize: Number,
@@ -111,8 +122,21 @@ export default {
         console.log(res);
       });
   },
-  methods() {
-    common;
+  methods: {
+    /**
+     * Định dạng ngày trong table
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    formatDate(value) {
+      return common.formatDate(value);
+    },
+    /**
+     * Định dạng giới trong table
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    formatGender(value) {
+      return common.formatGender(value);
+    },
   },
 };
 </script>

@@ -211,21 +211,21 @@
             propName: 'Gender',
             width: '110',
             name: 'Giới tính',
-            'format-gender': true,
+            formatGender: true,
           },
           {
             align: 'center',
             propName: 'DateOfBirth',
             width: '130',
             name: 'Ngày sinh',
-            'format-date': true,
+            formatDate: true,
           },
           {
             align: 'right',
             propName: 'PersonalTaxCode',
             width: '200',
             name: 'Số CMND',
-            'format-right': true,
+            formatRight: true,
           },
           {
             align: 'left',
@@ -244,7 +244,7 @@
             propName: '',
             width: '200',
             name: 'Số tài khoản',
-            'format-right': true,
+            formatRight: true,
           },
           {
             align: 'left',
