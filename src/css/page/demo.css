@@ -10,3 +10,8 @@
   position: relative;
   height: 40px;
 }
+
+.demo .table__container{
+      /* remove mấy dòng dưới đi */
+      height: 500px;
+}

@@ -81,6 +81,7 @@ export default {
   components: {
     MButton,
   },
+  emits: ["hide-popup"],
   props: [
     "isAskWarning",
     "AskWarningMess",

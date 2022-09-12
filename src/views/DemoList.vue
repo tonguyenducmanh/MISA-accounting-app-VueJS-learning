@@ -187,7 +187,86 @@
 
     <div>12. Table</div>
 
-    <EmployeeTable />
+    <div>
+      <EmployeeTable
+        class="table__container"
+        :pageSize="10"
+        :pageNumber="1"
+        api="https://cukcuk.manhnv.net/api/v1/Employees/filter"
+        :theadList="[
+          {
+            align: 'left',
+            propName: 'EmployeeCode',
+            width: '150',
+            name: 'Mã nhân viên',
+          },
+          {
+            align: 'left',
+            propName: 'FullName',
+            width: '200',
+            name: 'Tên nhân viên',
+          },
+          {
+            align: 'left',
+            propName: 'Gender',
+            width: '110',
+            name: 'Giới tính',
+            'format-gender': true,
+          },
+          {
+            align: 'center',
+            propName: 'DateOfBirth',
+            width: '130',
+            name: 'Ngày sinh',
+            'format-date': true,
+          },
+          {
+            align: 'right',
+            propName: 'PersonalTaxCode',
+            width: '200',
+            name: 'Số CMND',
+            'format-right': true,
+          },
+          {
+            align: 'left',
+            propName: 'PositionName',
+            width: '200',
+            name: 'Chức danh',
+          },
+          {
+            align: 'left',
+            propName: 'DepartmentName',
+            width: '250',
+            name: 'Tên đơn vị',
+          },
+          {
+            align: 'right',
+            propName: '',
+            width: '200',
+            name: 'Số tài khoản',
+            'format-right': true,
+          },
+          {
+            align: 'left',
+            propName: '',
+            width: '250',
+            name: 'Tên ngân hàng',
+          },
+          {
+            align: 'left',
+            propName: '',
+            width: '250',
+            name: 'Chi nhánh TK ngân hàng',
+          },
+          {
+            align: 'center',
+            propName: '',
+            width: '100',
+            name: 'Chức năng',
+          },
+        ]"
+      />
+    </div>
 
     <div>14. Page navigation</div>
 

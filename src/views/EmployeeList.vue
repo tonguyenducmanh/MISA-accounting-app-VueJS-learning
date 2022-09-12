@@ -5,7 +5,7 @@
       <EmployeeTable />
       <EmployeePage />
     </div>
-    <EmployeeForm />
+    <EmployeeForm v-if="isFormShow" @hide-form="showForm" />
   </div>
 </template>
 <script>
