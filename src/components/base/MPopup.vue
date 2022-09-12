@@ -41,7 +41,7 @@
             buttonName="Không"
             dataTitle="Không (ctrl + Q)"
             class="button--no"
-            @click="$emit('hide-popup')"
+            @click="$emit('hide-all')"
           />
           <MButton buttonName="Có" />
         </div>
@@ -81,7 +81,7 @@ export default {
   components: {
     MButton,
   },
-  emits: ["hide-popup"],
+  emits: ["hide-popup","hide-all"],
   props: [
     "isAskWarning",
     "AskWarningMess",

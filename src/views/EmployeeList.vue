@@ -1,6 +1,7 @@
 <template lang="">
   <div class="employee">
-    <EmployeeHeader />
+    <!-- Employee header gồm ô nhập liệu, nút tìm kiếm và nút reload -->
+    <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
       <div class="employee__menu">
         <div class="employee__menuleft">Đã chọn x nhân viên</div>
@@ -21,6 +22,7 @@
           ></div>
         </div>
       </div>
+      <!-- employee table gồm bảng danh sách nhân viên -->
       <EmployeeTable
         class="table__container"
         :employeeList="employeeList"
@@ -91,6 +93,7 @@
           },
         ]"
       />
+      <!-- phần điều hướng sang trang khác -->
       <EmployeePage
         :totalRecords="totalRecords"
         :totalPage="totalPage"
@@ -98,7 +101,15 @@
         @change-size="changeSize"
       />
     </div>
-    <EmployeeForm v-if="isFormShow" @hide-form="showForm" />
+    <!-- phần form thêm và sửa người dùng -->
+    <EmployeeForm v-if="isFormShow" @hide-form="toggleAskPopUp" />
+    <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
+    <MPopup
+      :isAsk="isAskShow"
+      @hide-popup="toggleAskPopUp"
+      @hide-all="hideFormAndAsk"
+      AskMess="Bạn có người yêu chưa"
+    />
   </div>
 </template>
 <script>
@@ -107,10 +118,12 @@ import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
 import EmployeeTable from "./EmployeeList/EmployeeTable.vue";
 import EmployeePage from "./EmployeeList/EmployeePage.vue";
 import EmployeeForm from "./EmployeeList/EmployeeForm.vue";
+import MPopup from "../components/base/MPopup.vue";
 export default {
   name: "TheEmployee",
   components: {
     MInput,
+    MPopup,
     EmployeeHeader,
     EmployeeTable,
     EmployeePage,
@@ -200,6 +213,27 @@ export default {
      */
     changeFilter(value) {
       this.searchFilter = value;
+    },
+    /**
+     * Hiện form thêm mới nhân viên
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    showForm() {
+      this.isFormShow = true;
+    },
+    /**
+     * Hiện dialog khi ấn vào ẩn form đi
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    toggleAskPopUp() {
+      this.isAskShow = !this.isAskShow;
+    },
+    /**
+     * Ẩn cả popup hỏi lưu không và form đi
+     */
+    hideFormAndAsk() {
+      this.isAskShow = false;
+      this.isFormShow = false;
     },
   },
 };
