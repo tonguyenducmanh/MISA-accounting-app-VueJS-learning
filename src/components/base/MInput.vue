@@ -21,8 +21,15 @@
         ]"
         :placeholder="placeHolder"
         :data-title="dataTitle"
+        v-model="currentValue"
       />
-      <span v-if="hasIcon" class="icon input__icon"></span>
+      <span
+        tabindex="0"
+        v-if="hasIcon"
+        class="icon input__icon"
+        @click="$emit('change-filter', currentValue)"
+        @keydown.enter.passive="$emit('change-filter', currentValue)"
+      ></span>
     </div>
   </div>
 </template>
@@ -35,8 +42,10 @@ export default {
   data() {
     return {
       MISAEnum,
+      currentValue: "",
     };
   },
+  emits: ["change-filter"],
   props: [
     "showAlertStar",
     "inputAlert",
@@ -54,6 +63,17 @@ export default {
     "justNumber",
     "formatDate",
   ],
+  /**
+   * Theo dõi khi nào giá trị input rỗng thì load lại trang bằng cách giả lập click vào trong nút tìm kiếm.
+   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   */
+  watch: {
+    currentValue() {
+      if (this.currentValue === "") {
+        this.$emit("change-filter", this.currentValue);
+      }
+    },
+  },
 };
 </script>
 <style scoped>

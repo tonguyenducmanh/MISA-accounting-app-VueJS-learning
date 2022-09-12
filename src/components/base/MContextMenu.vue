@@ -14,7 +14,7 @@
           :class="hasUp === true ? MISAEnum.contextMenu.UP : ''"
         >
           <div class="contextmenu__item">Nhân bản</div>
-          <div class="contextmenu__item">Xóa</div>
+          <div class="contextmenu__item" :value="deleteValue">Xóa</div>
           <div class="contextmenu__item">Ngưng sử dụng</div>
         </div>
       </div>
@@ -33,7 +33,7 @@ export default {
       hasUp: false,
     };
   },
-  props: [],
+  props: ["deleteValue"],
   methods: {
     /**
      * thay đổi trạng thái của context

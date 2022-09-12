@@ -11,11 +11,13 @@
             idInput="input__search"
             dataTitle="Ấn ctrl + K để nhập"
             placeHolder="Tìm theo mã, tên nhân viên"
+            @change-filter="changeFilter"
           />
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
             data-title="Lấy lại dữ liệu"
+            @click="loadData"
           ></div>
         </div>
       </div>
@@ -136,10 +138,14 @@ export default {
     this.loadData();
   },
   /**
-   * Bất cứ khi nào pageSize thay đổi thì load lại trang
+   * Bất cứ khi nào pageSize, searchFilter thay đổi thì load lại trang
+   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
    */
   watch: {
     pageSize() {
+      this.loadData();
+    },
+    searchFilter() {
       this.loadData();
     },
   },
@@ -187,6 +193,13 @@ export default {
      */
     changeSize(value) {
       this.pageSize = value;
+    },
+    /**
+     * chọn thay đổi giá trị tìm kiếm và load lại trang với số lượng đó
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    changeFilter(value) {
+      this.searchFilter = value;
     },
   },
 };

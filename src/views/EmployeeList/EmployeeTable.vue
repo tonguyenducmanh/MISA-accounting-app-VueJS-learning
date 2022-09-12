@@ -56,7 +56,7 @@
             </template>
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
-              <MConntextMenu />
+              <MConntextMenu :deleteValue="employee['EmployeeId']" />
             </td>
           </tr>
         </template>
@@ -81,7 +81,6 @@ export default {
   data() {
     return {};
   },
-
   methods: {
     /**
      * Định dạng ngày trong table
