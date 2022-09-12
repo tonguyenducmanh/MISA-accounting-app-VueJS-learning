@@ -93,6 +93,7 @@
         :totalRecords="totalRecords"
         :totalPage="totalPage"
         :currentPage="currentPage"
+        @change-size="changeSize"
       />
     </div>
     <EmployeeForm v-if="isFormShow" @hide-form="showForm" />
@@ -131,42 +132,62 @@ export default {
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
     };
   },
-  /**
-   * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
-   */
   beforeMount() {
-    let arrFilter = [];
-    if (this.searchFilter != null && this.searchFilter != "") {
-      arrFilter.push(`employeeFilter=${this.searchFilter}`);
-    }
-    if (this.pageSize != null && this.pageSize != "") {
-      arrFilter.push(`pageSize=${this.pageSize}`);
-    }
-    if (this.pageNumber != null && this.pageNumber != "") {
-      arrFilter.push(`pageNumber=${this.pageNumber}`);
-    }
-    // api mặc định
-    let apiFetch = this.apiTable;
-    // tạo ra api mới dựa trên các giá trị filter
-    if (arrFilter.length != 0) {
-      apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
-    }
-    fetch(apiFetch, { method: "GET" })
-      .then((res) => {
-        if (res.status == 200) {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        this.employeeList = res["Data"];
-        this.totalRecords = res["TotalRecord"];
-        this.totalPage = res["TotalPage"];
-        this.currentPage = res["CurrentPage"];
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+    this.loadData();
+  },
+  /**
+   * Bất cứ khi nào pageSize thay đổi thì load lại trang
+   */
+  watch: {
+    pageSize() {
+      this.loadData();
+    },
+  },
+  methods: {
+    /**
+     * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    loadData() {
+      let arrFilter = [];
+      if (this.searchFilter != null && this.searchFilter != "") {
+        arrFilter.push(`employeeFilter=${this.searchFilter}`);
+      }
+      if (this.pageSize != null && this.pageSize != "") {
+        arrFilter.push(`pageSize=${this.pageSize}`);
+      }
+      if (this.pageNumber != null && this.pageNumber != "") {
+        arrFilter.push(`pageNumber=${this.pageNumber}`);
+      }
+      // api mặc định
+      let apiFetch = this.apiTable;
+      // tạo ra api mới dựa trên các giá trị filter
+      if (arrFilter.length != 0) {
+        apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
+      }
+      fetch(apiFetch, { method: "GET" })
+        .then((res) => {
+          if (res.status == 200) {
+            return res.json();
+          }
+        })
+        .then((res) => {
+          this.employeeList = res["Data"];
+          this.totalRecords = res["TotalRecord"];
+          this.totalPage = res["TotalPage"];
+          this.currentPage = res["CurrentPage"];
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    },
+    /**
+     * chọn số lượng trang và load lại trang với số lượng đó
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    changeSize(value) {
+      this.pageSize = value;
+    },
   },
 };
 </script>

@@ -38,12 +38,16 @@
           isUp ? ComboboxEnum.comboboxData.UP : false,
         ]"
       >
+        <!-- itemComboboxOnClick; -->
         <template v-for="(comboboxItem, index) in comboboxList" :key="index">
           <div
             tabindex="0"
             class="combobox__item"
             :value="comboboxItem.value"
-            @click="itemComboboxOnClick"
+            @click="
+              $emit('change-size', comboboxItem.value);
+              itemComboboxOnClick();
+            "
             @keydown.enter="itemComboboxOnClick"
             :class="[
               seletedValue === comboboxItem.name
@@ -99,6 +103,7 @@ export default {
       uniqueSelected: "",
     };
   },
+  emits: ["change-size"],
   beforeMount() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
@@ -173,14 +178,14 @@ export default {
      * click vào item thì ẩn combobox data đi và truyền value vào trong input.
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
      */
-    itemComboboxOnClick(e) {
+    itemComboboxOnClick() {
       try {
         // ẩn drop menu đi
         this.isShowData = false;
         // select cái đã chọn
-        this.seletedValue = e.target.textContent;
-        this.currentInput = e.target.textContent;
-        this.uniqueSelected = e.target.getAttribute("value");
+        this.seletedValue = event.target.textContent;
+        this.currentInput = event.target.textContent;
+        this.uniqueSelected = event.target.getAttribute("value");
       } catch (error) {
         console.log(error);
       }

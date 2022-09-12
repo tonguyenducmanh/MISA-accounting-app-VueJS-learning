@@ -15,6 +15,7 @@
         defaultValue="10 bản ghi trên trang"
         unique="10"
         :isUp="true"
+        @change-size="changeSize"
       />
       <div class="page__number">
         <div tabindex="0" class="page__prev page__number--disable">Trước</div>
@@ -36,6 +37,31 @@ export default {
     LibCombobox,
   },
   props: ["totalRecords", "totalPage", "currentPage"],
+  data() {
+    return {
+      pageSize: 10,
+    };
+  },
+  /**
+   * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
+   * hiểu rằng component này chỉ là hành động trung gian thôi
+   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   */
+  watch: {
+    pageSize() {
+      this.$emit("change-size", this.pageSize);
+    },
+  },
+  emits: ["change-size"],
+  methods: {
+    /**
+     * chọn số lượng trang và load lại trang với số lượng đó
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    changeSize(value) {
+      this.pageSize = value;
+    },
+  },
 };
 </script>
 <style scoped>
