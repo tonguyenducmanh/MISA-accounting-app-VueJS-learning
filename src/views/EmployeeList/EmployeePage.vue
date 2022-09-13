@@ -10,37 +10,57 @@
         id="page_ranges"
         classInput="input__field"
         propName="PageNavigation"
-        data="10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100"
+        :data="MISAEnum.combobox.data"
         placeHolder="Hãy chọn số trang"
-        defaultValue="10 bản ghi trên trang"
-        unique="10"
+        :defaultValue="MISAEnum.combobox.defautValue"
+        :unique="MISAEnum.combobox.unique"
         :isUp="true"
         @change-size="changeSize"
       />
       <div class="page__number">
         <div tabindex="0" class="page__prev" @click="movePrevPage">Trước</div>
-        <div tabindex="0" class="page__count page__count--selected">1</div>
+        <template v-for="index in totalPage" :key="index">
+          <div
+            tabindex="0"
+            class="page__count"
+            :class="index === pageNumber ? 'page__count--selected' : ''"
+            @click="selectThisPage(index)"
+          >
+            {{ index }}
+          </div>
+        </template>
+        <!-- <div tabindex="0" class="page__count page__count--selected">1</div>
         <div tabindex="0" class="page__count">2</div>
         <div tabindex="0" class="page__count">3</div>
         <div class="page__count">...</div>
-        <div tabindex="0" class="page__count">{{ totalPage }}</div>
+        <div tabindex="0" class="page__count">{{ totalPage }}</div> -->
         <div tabindex="0" class="page__next" @click="moveNextPage">Sau</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import MISAEnum from "../../js/enum.js";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeePage",
   components: {
     LibCombobox,
   },
-  props: ["totalRecords", "totalPage", "currentPage"],
+  props: ["totalRecords", "currentPage"],
   data() {
     return {
       pageSize: 10,
+      MISAEnum,
     };
+  },
+  computed: {
+    totalPage() {
+      return this.$store.state.totalPage;
+    },
+    pageNumber() {
+      return this.$store.state.pageNumber;
+    },
   },
   /**
    * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
@@ -82,6 +102,18 @@ export default {
      */
     moveNextPage() {
       this.$store.dispatch("moveNextPage");
+    },
+    /**
+     * chuyển qua page đã chọn
+     * @param {number} value - số trang muốn chuyển.
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    selectThisPage(value) {
+      try {
+        this.$store.dispatch("changeCurrentPage", value);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

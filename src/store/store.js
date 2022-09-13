@@ -24,6 +24,10 @@ const store = createStore({
     },
     changeSize(state, value) {
       state.pageSize = value;
+      // số trang mà nhân với số records > tổng record thì quay về trang 1
+      if (state.pageSize * state.pageNumber > state.totalRecords) {
+        state.pageNumber = 1;
+      }
     },
     changeFilter(state, value) {
       state.searchFilter = value;

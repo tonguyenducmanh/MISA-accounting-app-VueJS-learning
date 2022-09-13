@@ -1,4 +1,10 @@
 var MISAEnum = {
+  // các enum của combobox
+  combobox: {
+    data: "10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100",
+    defautValue: "10 bản ghi trên trang",
+    unique: "10",
+  },
   // các class được binding vào component button
   button: {
     Primary: "button-primary",
