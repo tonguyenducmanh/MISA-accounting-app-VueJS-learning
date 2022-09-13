@@ -18,13 +18,13 @@
         @change-size="changeSize"
       />
       <div class="page__number">
-        <div tabindex="0" class="page__prev page__number--disable">Trước</div>
+        <div tabindex="0" class="page__prev" @click="movePrevPage">Trước</div>
         <div tabindex="0" class="page__count page__count--selected">1</div>
         <div tabindex="0" class="page__count">2</div>
         <div tabindex="0" class="page__count">3</div>
         <div class="page__count">...</div>
         <div tabindex="0" class="page__count">{{ totalPage }}</div>
-        <div tabindex="0" class="page__next">Sau</div>
+        <div tabindex="0" class="page__next" @click="moveNextPage">Sau</div>
       </div>
     </div>
   </div>
@@ -68,6 +68,20 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Di chuyển về page trước bằng cách dispatch số trang mới lên store
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    movePrevPage() {
+      this.$store.dispatch("movePrevPage");
+    },
+    /**
+     * Di chuyển về page trước bằng cách dispatch số trang mới lên store
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    moveNextPage() {
+      this.$store.dispatch("moveNextPage");
     },
   },
 };

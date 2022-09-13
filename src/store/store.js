@@ -16,7 +16,6 @@ const store = createStore({
       searchFilter: "",
       totalRecords: 0,
       totalPage: 0,
-      currentPage: 0,
     };
   },
   mutations: {
@@ -42,7 +41,17 @@ const store = createStore({
       state.totalPage = value;
     },
     changeCurrentPage(state, value) {
-      state.currentPage = value;
+      state.pageNumber = value;
+    },
+    moveNextPage(state) {
+      if (state.pageNumber < state.totalPage) {
+        state.pageNumber++;
+      }
+    },
+    movePrevPage(state) {
+      if (state.pageNumber > 1) {
+        state.pageNumber--;
+      }
     },
     toggleToast(state, value) {
       state.toggleToast = value;
@@ -113,6 +122,20 @@ const store = createStore({
      */
     changeCurrentPage(context, value) {
       context.commit("changeCurrentPage", value);
+    },
+    /**
+     * chuyển sang page tiếp
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    moveNextPage(context) {
+      context.commit("moveNextPage");
+    },
+    /**
+     * chuyển về page trước
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    movePrevPage(context) {
+      context.commit("movePrevPage");
     },
     /**
      * Thay đổi trạng thái của toast
