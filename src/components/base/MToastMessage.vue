@@ -7,7 +7,7 @@
       </span>
       <span class="toastmessage__text">{{ toastText }}</span>
     </span>
-    <span class="icon toastmessage__close"></span>
+    <span class="icon toastmessage__close" @click="hideToast"></span>
   </div>
 </template>
 <script>
@@ -55,6 +55,26 @@ export default {
       default:
         break;
     }
+  },
+  /**
+   * Sau 3 giây hiện toast message thì ẩn nó đi
+   * Author: Tô GNuyeenx Đức Mạnh (13/09/2022)
+   */
+  created() {
+    setTimeout(() => {
+      this.hideToast();
+    }, 3000);
+  },
+  methods: {
+    /**
+     * Ẩn toast message đi nha, bên cạnh đó xóa luôn các thông tin trong toast.
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    hideToast() {
+      this.$store.dispatch("toggleToast");
+      this.$store.dispatch("changeToastType", "");
+      this.$store.dispatch("changeToastText", "");
+    },
   },
 };
 </script>

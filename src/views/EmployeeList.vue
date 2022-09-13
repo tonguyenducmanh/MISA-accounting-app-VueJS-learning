@@ -123,8 +123,8 @@
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
     <!-- toast message thông báo thành công -->
     <MToastMessage
-      v-if="false"
-      :language="toastLanguage"
+      v-if="toggleToast"
+      :language="language"
       :toastType="toastType"
       :toastText="toastText"
     />
@@ -199,6 +199,22 @@ export default {
     },
     getCurrentpage() {
       return this.$store.state.currentPage;
+    },
+    /**
+     * Lấy state ẩn hiện thông báo
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    toggleToast() {
+      return this.$store.state.toggleToast;
+    },
+    toastType() {
+      return this.$store.state.toastType;
+    },
+    toastText() {
+      return this.$store.state.toastText;
+    },
+    language() {
+      return this.$store.state.language;
     },
   },
   /**

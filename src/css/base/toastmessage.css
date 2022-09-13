@@ -13,6 +13,27 @@
   justify-content: space-between;
   align-items: center;
   z-index: 10;
+  animation: opacity 3s linear infinite;
+}
+
+/* tạo hiệu ứng hiện lên và mất đi */
+
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .toastmessage .toastmessage__content {

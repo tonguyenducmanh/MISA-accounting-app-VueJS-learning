@@ -8,6 +8,7 @@ const store = createStore({
       deleteId: "",
       deleteName: "",
       language: "VI",
+      toggleToast: false,
       toastType: "",
       toastText: "",
       pageSize: 10,
@@ -42,6 +43,15 @@ const store = createStore({
     },
     changeCurrentPage(state, value) {
       state.currentPage = value;
+    },
+    toggleToast(state) {
+      state.toggleToast = !state.toggleToast;
+    },
+    changeToastType(state, value) {
+      state.toastType = value;
+    },
+    changeToastText(state, value) {
+      state.toastText = value;
     },
   },
   actions: {
@@ -80,14 +90,50 @@ const store = createStore({
     changeDeleteName(context, value) {
       context.commit("changeDeleteName", value);
     },
+    /**
+     * Thay đổi tổng page định xóa
+     * @param {*} value -giá trị của tổng page
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
     changeTotalPage(context, value) {
       context.commit("changeTotalPage", value);
     },
+    /**
+     * Thay đổi tổng record định xóa
+     * @param {*} value -giá trị của tổng record
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
     changeTotalRecords(context, value) {
       context.commit("changeTotalRecords", value);
     },
+    /**
+     * Thay đổi tên của page hiện tại định xóa
+     * @param {*} value -giá trị của page hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
     changeCurrentPage(context, value) {
       context.commit("changeCurrentPage", value);
+    },
+    /**
+     * Thay đổi trạng thái của toast
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    toggleToast(context) {
+      context.commit("toggleToast");
+    },
+    /**
+     * Thay đổi loại toast
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    changeToastType(context, value) {
+      context.commit("changeToastType", value);
+    },
+    /**
+     * Thay đổi văn bản toast
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    changeToastText(context, value) {
+      context.commit("changeToastText", value);
     },
   },
 });
