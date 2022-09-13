@@ -116,8 +116,7 @@ export default {
         let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
         fetch(apiDelete, { method: "DELETE" })
           .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
+          .then(() => {
             // ẩn popup xóa đi
             this.$emit("hide-popup");
             this.$emit("re-load");

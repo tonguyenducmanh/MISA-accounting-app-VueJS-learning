@@ -10,6 +10,8 @@
         <!-- phần nhập form thứ nhất -->
         <div class="form__part form__one">
           <MInput
+            ref="input"
+            :inputValue="newEmpCode"
             :hasLabel="true"
             labelText="Mã"
             propName="EmployeeCode"
@@ -234,6 +236,7 @@ export default {
   data() {
     return {
       MISAEnum,
+      newEmpCode: "",
     };
   },
   mounted() {
@@ -241,9 +244,20 @@ export default {
      * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
      */
     try {
-      console.log(this.$refs.input__checkId);
+      // focus vào ô nhập đầu tiên
+      this.$refs.input.$el.children[1].children[0].focus();
+      // lấy ra api
       let api = this.MISAEnum.API.NEWEMPLOYEECODE;
-      console.log(api);
+      fetch(MISAEnum.API.NEWEMPLOYEECODE, { method: "GET" })
+        .then((res) => res.text())
+        .then((res) => {
+          // gán giá trị cần truyền vào trong input
+          this.newEmpCode = res;
+          console.log(api);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
     } catch (error) {
       console.log(error);
     }
