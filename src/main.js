@@ -2,7 +2,13 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 import "./css/main.css";
-import router from "./router/index.js";
+
+// router dùng để điều hướng trang trong ứng dụng vueJS
+import router from "./router/router.js";
+
+// store dùng để quản lý state trong ứng dụng vueJS
+import store from "./store/store.js";
+
 const app = createApp(App);
 
 /**
@@ -23,7 +29,9 @@ const clickOutside = {
 };
 // đặt tên cho v-click-out
 app.directive("clickOut", clickOutside);
-// dùng view router
+// dùng vue router
 app.use(router);
+// dùng vuex state management
+app.use(store);
 // mount vào body
 app.mount("#app");

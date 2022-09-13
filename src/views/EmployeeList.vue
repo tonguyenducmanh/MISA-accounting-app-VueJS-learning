@@ -308,7 +308,6 @@ export default {
 };
 </script>
 <style scoped>
-@import url("../css/page/employee.css");
 .employee {
   width: 100%;
   display: flex;
