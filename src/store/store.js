@@ -44,8 +44,8 @@ const store = createStore({
     changeCurrentPage(state, value) {
       state.currentPage = value;
     },
-    toggleToast(state) {
-      state.toggleToast = !state.toggleToast;
+    toggleToast(state, value) {
+      state.toggleToast = value;
     },
     changeToastType(state, value) {
       state.toastType = value;
@@ -116,10 +116,11 @@ const store = createStore({
     },
     /**
      * Thay đổi trạng thái của toast
+     * @param {*} value -giá trị true hoặc false
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
-    toggleToast(context) {
-      context.commit("toggleToast");
+    toggleToast(context, value) {
+      context.commit("toggleToast", value);
     },
     /**
      * Thay đổi loại toast

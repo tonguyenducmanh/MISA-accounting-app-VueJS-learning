@@ -282,7 +282,7 @@ export default {
         let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
         this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
         this.$store.dispatch("changeToastText", message);
-        this.$store.dispatch("toggleToast");
+        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
