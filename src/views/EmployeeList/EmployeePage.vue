@@ -19,21 +19,61 @@
       />
       <div class="page__number">
         <div tabindex="0" class="page__prev" @click="movePrevPage">Trước</div>
-        <template v-for="index in totalPage" :key="index">
+        <!-- render ra danh sách trang nhưng giới hạn số trang có thể click -->
+        <!-- trang đầu tiên -->
+        <div
+          tabindex="0"
+          class="page__count"
+          :class="1 === pageNumber ? 'page__count--selected' : ''"
+          @click="selectThisPage(1)"
+        >
+          1
+        </div>
+        <template v-if="totalPage > 2">
+          <!-- dấu ... ngăn cách nếu không phải dãy số hơn kém nhau 1 đơn vị -->
+          <div v-if="pageNumber - 2 > 1">...</div>
+          <!-- trang trước trang đang chọn nếu có -->
           <div
+            v-if="pageNumber - 1 > 1"
             tabindex="0"
             class="page__count"
-            :class="index === pageNumber ? 'page__count--selected' : ''"
-            @click="selectThisPage(index)"
+            @click="selectThisPage(pageNumber - 1)"
           >
-            {{ index }}
+            {{ pageNumber - 1 }}
           </div>
+          <!-- trang đang chọn nếu có -->
+          <div
+            v-if="
+              pageNumber !== 1 && pageNumber !== totalPage && pageNumber !== 0
+            "
+            tabindex="0"
+            class="page__count"
+            :class="'page__count--selected'"
+            @click="selectThisPage(pageNumber)"
+          >
+            {{ pageNumber }}
+          </div>
+          <!-- trang sau trang đang chọn nếu có -->
+          <div
+            v-if="pageNumber + 1 < totalPage"
+            tabindex="0"
+            class="page__count"
+            @click="selectThisPage(pageNumber + 1)"
+          >
+            {{ pageNumber + 1 }}
+          </div>
+          <!-- dấu ... ngăn cách nếu không phải dãy số hơn kém nhau 1 đơn vị -->
+          <div v-if="pageNumber + 2 < totalPage">...</div>
         </template>
-        <!-- <div tabindex="0" class="page__count page__count--selected">1</div>
-        <div tabindex="0" class="page__count">2</div>
-        <div tabindex="0" class="page__count">3</div>
-        <div class="page__count">...</div>
-        <div tabindex="0" class="page__count">{{ totalPage }}</div> -->
+        <!-- trang cuối -->
+        <div
+          tabindex="0"
+          class="page__count"
+          :class="totalPage === pageNumber ? 'page__count--selected' : ''"
+          @click="selectThisPage(totalPage)"
+        >
+          {{ totalPage }}
+        </div>
         <div tabindex="0" class="page__next" @click="moveNextPage">Sau</div>
       </div>
     </div>
