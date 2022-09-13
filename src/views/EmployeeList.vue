@@ -18,7 +18,7 @@
             tabindex="0"
             class="icon employee__reloadbtn"
             data-title="Lấy lại dữ liệu"
-            @click="loadData"
+            @click="reloadData"
           ></div>
         </div>
       </div>
@@ -96,9 +96,9 @@
       />
       <!-- phần điều hướng sang trang khác -->
       <EmployeePage
-        :totalRecords="totalRecords"
-        :totalPage="totalPage"
-        :currentPage="currentPage"
+        :totalRecords="getTotalRecords"
+        :totalPage="getTotalPage"
+        :currentPage="getCurrentpage"
         @change-size="changeSize"
       />
     </div>
@@ -123,7 +123,8 @@
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
     <!-- toast message thông báo thành công -->
     <MToastMessage
-      :language="toastLanguage"
+      v-if="toggleToast"
+      :language="language"
       :toastType="toastType"
       :toastText="toastText"
     />
@@ -159,38 +160,69 @@ export default {
       MISAEnum,
       MISAResource,
       employeeList: [],
-      totalRecords: 0,
-      totalPage: 0,
-      currentPage: 0,
-      language: "VI",
       isAlertShow: false,
       isAskWarningShow: false,
       isAskShow: false,
       isWarningShow: false,
       isFormShow: false,
-      pageSize: 10,
-      pageNumber: 1,
-      searchFilter: null,
-      apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
-      deleteId: "",
-      deleteName: "",
-      toastLanguage: "",
-      toastType: "",
-      toastText: "",
+      apiTable: "",
     };
   },
   beforeMount() {
+    // chèn api từ enum vào
+    this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
     this.loadData();
   },
   /**
+   *  lấy các state từ trong store, để watch theo dõi và rerender
+   * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+   */
+  computed: {
+    tableInfo() {
+      return [
+        this.$store.state.pageSize,
+        this.$store.state.pageNumber,
+        this.$store.state.searchFilter,
+      ];
+    },
+    deleteName() {
+      return this.$store.state.deleteName;
+    },
+    deleteId() {
+      return this.$store.state.deleteId;
+    },
+    getTotalRecords() {
+      return this.$store.state.totalRecords;
+    },
+    getTotalPage() {
+      return this.$store.state.totalPage;
+    },
+    getCurrentpage() {
+      return this.$store.state.currentPage;
+    },
+    /**
+     * Lấy state ẩn hiện thông báo
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    toggleToast() {
+      return this.$store.state.toggleToast;
+    },
+    toastType() {
+      return this.$store.state.toastType;
+    },
+    toastText() {
+      return this.$store.state.toastText;
+    },
+    language() {
+      return this.$store.state.language;
+    },
+  },
+  /**
    * Bất cứ khi nào pageSize, searchFilter thay đổi thì load lại trang
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
    */
   watch: {
-    pageSize() {
-      this.loadData();
-    },
-    searchFilter() {
+    tableInfo() {
       this.loadData();
     },
   },
@@ -201,15 +233,18 @@ export default {
      */
     loadData() {
       try {
+        let searchFilter = this.$store.state.searchFilter;
+        let pageSize = this.$store.state.pageSize;
+        let pageNumber = this.$store.state.pageNumber;
         let arrFilter = [];
-        if (this.searchFilter != null && this.searchFilter != "") {
-          arrFilter.push(`employeeFilter=${this.searchFilter}`);
+        if (searchFilter != null && searchFilter != "") {
+          arrFilter.push(`employeeFilter=${searchFilter}`);
         }
-        if (this.pageSize != null && this.pageSize != "") {
-          arrFilter.push(`pageSize=${this.pageSize}`);
+        if (pageSize != null && pageSize != "") {
+          arrFilter.push(`pageSize=${pageSize}`);
         }
-        if (this.pageNumber != null && this.pageNumber != "") {
-          arrFilter.push(`pageNumber=${this.pageNumber}`);
+        if (pageNumber != null && pageNumber != "") {
+          arrFilter.push(`pageNumber=${pageNumber}`);
         }
         // api mặc định
         let apiFetch = this.apiTable;
@@ -225,13 +260,29 @@ export default {
           })
           .then((res) => {
             this.employeeList = res["Data"];
-            this.totalRecords = res["TotalRecord"];
-            this.totalPage = res["TotalPage"];
-            this.currentPage = res["CurrentPage"];
+            this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
+            this.$store.dispatch("changeTotalPage", res["TotalPage"]);
+            this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
           })
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tải lại trang và hiện thông báo tải lại thành công
+     */
+    reloadData() {
+      try {
+        this.loadData();
+        // hiện toast mesage lên
+        let language = this.$store.state.language;
+        let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
+        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
+        this.$store.dispatch("changeToastText", message);
+        this.$store.dispatch("toggleToast");
       } catch (error) {
         console.log(error);
       }
@@ -242,7 +293,7 @@ export default {
      */
     changeSize(value) {
       try {
-        this.pageSize = value;
+        this.$store.dispatch("changeSize", value);
       } catch (error) {
         console.log(error);
       }
@@ -253,7 +304,7 @@ export default {
      */
     changeFilter(value) {
       try {
-        this.searchFilter = value;
+        this.$store.dispatch("changeFilter", value);
       } catch (error) {
         console.log(error);
       }
@@ -297,8 +348,8 @@ export default {
      */
     toggleAskWarningPopUp(deleteId, deleteName) {
       try {
-        this.deleteId = deleteId;
-        this.deleteName = deleteName;
+        this.$store.dispatch("changeDeleteId", deleteId);
+        this.$store.dispatch("changeDeleteName", deleteName);
         this.isAskWarningShow = !this.isAskWarningShow;
       } catch (error) {
         console.log(error);
@@ -308,7 +359,6 @@ export default {
 };
 </script>
 <style scoped>
-@import url("../css/page/employee.css");
 .employee {
   width: 100%;
   display: flex;

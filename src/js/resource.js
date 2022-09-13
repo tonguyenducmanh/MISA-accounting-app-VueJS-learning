@@ -50,6 +50,10 @@ var MISAResource = {
       VI: "Đã nhân bản nhân viên hiện tại.",
       EN: "THe employee is duplicated to table.",
     },
+    ReloadedNoti: {
+      VI: "Đã tải lại danh sách.",
+      EN: "The table is refreshed.",
+    },
   },
 };
 

@@ -2,6 +2,11 @@
   <div class="employee__top">
     <div class="employee__label">Nhân viên</div>
     <MButton
+      v-if="showTest"
+      buttonName="Test state management"
+      @click="testStore"
+    />
+    <MButton
       buttonName="Thêm mới nhân viên"
       class="employee__addbtn"
       id="employee__addbtn"
@@ -18,6 +23,21 @@ export default {
     MButton,
   },
   emits: ["show-form"],
+  data() {
+    return {
+      showTest: false,
+    };
+  },
+  methods: {
+    /**
+     * Phương thức được dùng để test State Management
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    testStore() {
+      console.log(this.$store.state.count);
+      this.$store.dispatch("increment");
+    },
+  },
 };
 </script>
 <style scoped>

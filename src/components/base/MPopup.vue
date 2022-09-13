@@ -78,6 +78,7 @@
 </template>
 <script>
 import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 import MButton from "./MButton.vue";
 export default {
   name: "MPopup",
@@ -99,11 +100,18 @@ export default {
   data() {
     return {
       MISAEnum,
+      MISAResource,
     };
   },
   methods: {
+    /**
+     * Xóa người dùng đi
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
     deleteEmployee() {
       try {
+        let language = this.$store.state.language;
+        let message = this.MISAResource.ToastMessage.DeleteNoti[language];
         // gọi api xóa đi
         let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
         fetch(apiDelete, { method: "DELETE" })
@@ -113,6 +121,14 @@ export default {
             // ẩn popup xóa đi
             this.$emit("hide-popup");
             this.$emit("re-load");
+            // hiện toast mesage lên
+            this.$store.dispatch(
+              "changeToastType",
+              this.MISAEnum.toasttype.SUCCESS
+            );
+            this.$store.dispatch("changeToastText", message);
+            this.$store.dispatch("toggleToast");
+            // ẩn đi sau 3 giây
           })
           .catch((res) => {
             console.log(res);
