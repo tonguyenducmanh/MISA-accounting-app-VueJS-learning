@@ -1,7 +1,7 @@
 <template lang="">
   <div class="radio">
     <div class="radio__title">{{ titleText }}</div>
-    <div class="radio__select" :propName="propNameBox">
+    <div class="radio__select" :propName="propNameBox" :value="selectedValue">
       <template v-for="(contentitem, index) in content" :key="index">
         <input
           type="radio"
@@ -10,6 +10,7 @@
           :id="`radio__${index}`"
           :value="contentitem.value"
           :propName="propName"
+          @click="setValue(contentitem.value)"
         />
         <label class="radio__label" :for="`radio__${index}`">{{
           contentitem.name
@@ -21,6 +22,11 @@
 <script>
 export default {
   name: "MRadioButton",
+  data() {
+    return {
+      selectedValue: "",
+    };
+  },
   props: {
     titleText: {
       type: String,
@@ -30,6 +36,11 @@ export default {
     },
     propName: String,
     propNameBox: String,
+  },
+  methods: {
+    setValue(value) {
+      this.selectedValue = value;
+    },
   },
 };
 </script>
