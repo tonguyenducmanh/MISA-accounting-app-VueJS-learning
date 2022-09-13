@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="table__wrap">
+  <div class="table__wrap" ref="table">
     <div class="table__wrap--loading table__wrap--hide"></div>
     <table class="table" id="table__employee">
       <thead>
@@ -37,7 +37,10 @@
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
           tương ứng từ prop name của thead từ kết quả api trả về -->
-            <template v-for="(theaditem, index) in theadList" :key="index">
+            <template
+              v-for="(theaditem, indexItem) in theadList"
+              :key="indexItem"
+            >
               <td
                 v-if="theaditem.formatDate"
                 :class="`text__align--${theaditem.align}`"
@@ -59,6 +62,11 @@
               <MConntextMenu
                 :deleteId="employee['EmployeeId']"
                 :deleteName="employee['FullName']"
+                :hasUp="
+                  hasUp &&
+                  (index === employeeList.length - 1 ||
+                    index === employeeList.length - 2)
+                "
                 @delete-id="deleteEmployee"
               />
             </td>
@@ -83,9 +91,24 @@ export default {
     theadList: Array,
   },
   data() {
-    return {};
+    return {
+      hasUp: false,
+    };
   },
   emits: ["delete-employee"],
+  /**
+   * Kiểm tra giá trị của table xem có overflow không, nếu có thì mấy cái context menu dưới cùng sẽ có menu nằm bên trên
+   * Author: Tô nguyễn Đức Mạnh (13/-9/2022)
+   */
+  updated() {
+    try {
+      if (this.$refs.table.scrollHeight > this.$refs.table.clientHeight) {
+        this.hasUp = true;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
     /**
      * Định dạng ngày trong table

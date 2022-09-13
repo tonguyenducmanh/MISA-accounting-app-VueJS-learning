@@ -36,10 +36,9 @@ export default {
     return {
       MISAEnum,
       hasOpen: false,
-      hasUp: false,
     };
   },
-  props: ["deleteId", "deleteName"],
+  props: ["deleteId", "deleteName", "hasUp"],
   emits: ["delete-id"],
   methods: {
     /**

@@ -211,11 +211,14 @@
   </div>
 </template>
 <script>
+import MISAEnum from "../../js/enum.js";
+
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MDatePicker from "../../components/base/MDatePicker.vue";
 import MInput from "../../components/base/MInput.vue";
 import MRadioButton from "../../components/base/MRadioButton.vue";
+
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeeForm",
@@ -228,6 +231,24 @@ export default {
     MRadioButton,
     LibCombobox,
   },
+  data() {
+    return {
+      MISAEnum,
+    };
+  },
+  mounted() {
+    /**
+     * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
+     */
+    try {
+      console.log(this.$refs.input__checkId);
+      let api = this.MISAEnum.API.NEWEMPLOYEECODE;
+      console.log(api);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {},
 };
 </script>
 <style scoped>
