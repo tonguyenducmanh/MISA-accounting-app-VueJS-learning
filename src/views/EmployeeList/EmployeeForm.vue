@@ -226,7 +226,7 @@ import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeeForm",
-  emits: ["hide-form", "hide-all", "refresh-list"],
+  emits: ["hide-form", "hide-all", "refresh-list", "warning-duplicate"],
   components: {
     MButton,
     MCheckbox,
@@ -361,12 +361,41 @@ export default {
      */
     saveNew() {
       try {
-        // thực hiện lưu vào database
-        this.confirmSave();
-        // ẩn form
-        this.$emit("hide-all");
-        // hiện thông báo lưu
-        this.showAddedNoti();
+        // kiểm tra xem id đã trùng chưa ?
+        let currentId =
+          this.$refs.EmployeeCode.$el.children[1].children[0].value;
+        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+
+        fetch(apiTest, { method: "GET" })
+          .then((res) => {
+            if (res.status == 200) {
+              // trả về false
+              return false;
+            } else {
+              return true;
+            }
+          })
+          .then((res) => {
+            if (res === false) {
+              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+              this.$emit(
+                "warning-duplicate",
+                this.$refs.EmployeeCode.$el.children[1].children[0].value
+              );
+            } else {
+              {
+                // thực hiện lưu vào database
+                this.confirmSave();
+                // ẩn form
+                this.$emit("hide-all");
+                // hiện thông báo lưu
+                this.showAddedNoti();
+              }
+            }
+          })
+          .catch((res) => {
+            console.log(res);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -377,17 +406,43 @@ export default {
      */
     saveNewAndAdd() {
       try {
-        // thực hiện lưu vào database
-        this.confirmSave();
-        // hiện thông báo lưu
-        this.showAddedNoti();
-        // clear form đi
-        this.clearForm();
-        // lấy lại dữ liệu mới
-        this.getNewEmpCode();
-        // gán dữ liệu mới vào trong ô đó đi
-        this.$refs.EmployeeCode.$el.children[1].children[0].value =
-          this.newEmpCode;
+        // kiểm tra xem id đã trùng chưa ?
+        let currentId =
+          this.$refs.EmployeeCode.$el.children[1].children[0].value;
+        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+
+        fetch(apiTest, { method: "GET" })
+          .then((res) => {
+            if (res.status == 200) {
+              // trả về false
+              return false;
+            } else {
+              return true;
+            }
+          })
+          .then((res) => {
+            if (res === false) {
+              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+              this.$emit(
+                "warning-duplicate",
+                this.$refs.EmployeeCode.$el.children[1].children[0].value
+              );
+            } else {
+              {
+                // thực hiện lưu vào database
+                this.confirmSave();
+                // hiện thông báo lưu
+                this.showAddedNoti();
+                // clear form đi
+                this.clearForm();
+                // lấy lại dữ liệu mới
+                this.getNewEmpCode();
+                // gán dữ liệu mới vào trong ô đó đi
+                this.$refs.EmployeeCode.$el.children[1].children[0].value =
+                  this.newEmpCode;
+              }
+            }
+          });
       } catch (error) {
         console.log(error);
       }
