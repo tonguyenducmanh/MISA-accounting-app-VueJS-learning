@@ -192,11 +192,13 @@
             class="form__save--close"
             buttonName="Cất"
             :buttonTwo="true"
+            @click="saveNew"
           />
           <MButton
             dataTitle="cất và thêm (ctrl + shift + S)"
             class="form__save--readd"
             buttonName="Cất và thêm"
+            @click="saveNewAndAdd"
           />
         </div>
       </div>
@@ -214,6 +216,7 @@
 </template>
 <script>
 import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
@@ -224,7 +227,7 @@ import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeeForm",
-  emits: ["hide-form"],
+  emits: ["hide-form", "hide-all"],
   components: {
     MButton,
     MCheckbox,
@@ -236,33 +239,90 @@ export default {
   data() {
     return {
       MISAEnum,
+      MISAResource,
       newEmpCode: "",
+      formType: "POST",
     };
   },
   mounted() {
     /**
      * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
      */
-    try {
-      // focus vào ô nhập đầu tiên
-      this.$refs.input.$el.children[1].children[0].focus();
-      // lấy ra api
-      let api = this.MISAEnum.API.NEWEMPLOYEECODE;
-      fetch(MISAEnum.API.NEWEMPLOYEECODE, { method: "GET" })
-        .then((res) => res.text())
-        .then((res) => {
-          // gán giá trị cần truyền vào trong input
-          this.newEmpCode = res;
-          console.log(api);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    this.getNewEmpCode();
   },
-  methods: {},
+  methods: {
+    /**
+     * Lấy ra mã người dùng mới rồi focus vào ô đầu tiên
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    getNewEmpCode() {
+      try {
+        // focus vào ô nhập đầu tiên
+        this.$refs.input.$el.children[1].children[0].focus();
+        // lấy ra api
+        let api = this.MISAEnum.API.NEWEMPLOYEECODE;
+        fetch(api, { method: "GET" })
+          .then((res) => res.text())
+          .then((res) => {
+            // gán giá trị cần truyền vào trong input
+            this.newEmpCode = res;
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Lưu người dùng vào database
+     * Author: Tô Nguyễn ĐỨc Mạnh (13/09/2022)
+     */
+    saveNew() {
+      try {
+        // ẩn form
+        this.$emit("hide-all");
+        // hiện thông báo lưu
+        this.showAddedNoti();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Lưu người dùng vào database và giữ form luôn
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    saveNewAndAdd() {
+      try {
+        // hiện thông báo lưu
+        this.showAddedNoti();
+        this.$refs.input.$el.children[1].children[0].value = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Ẩn toàn bộ form và hiện thông báo thêm mới thành công
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    showAddedNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch(
+          "changeToastType",
+          this.MISAEnum.toasttype.SUCCESS
+        );
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.AddedNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 };
 </script>
 <style scoped>

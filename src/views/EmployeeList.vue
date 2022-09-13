@@ -103,7 +103,11 @@
       />
     </div>
     <!-- phần form thêm và sửa người dùng -->
-    <EmployeeForm v-if="isFormShow" @hide-form="toggleAskPopUp" />
+    <EmployeeForm
+      v-if="isFormShow"
+      @hide-form="toggleAskPopUp"
+      @hide-all="hideFormAndAsk"
+    />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
     <MPopup
       :isAsk="isAskShow"
