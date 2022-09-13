@@ -226,6 +226,19 @@ export default {
       this.loadData();
     },
   },
+  /**
+   * khi mà component bị unmount thì phải trả về giá trị gốc của data
+   * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+   */
+  unmounted() {
+    try {
+      this.$store.dispatch("changeCurrentPage", 1);
+      this.$store.dispatch("changeFilter", "");
+      this.$store.dispatch("changeSize", 10);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
     /**
      * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
@@ -282,7 +295,7 @@ export default {
         let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
         this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
         this.$store.dispatch("changeToastText", message);
-        this.$store.dispatch("toggleToast");
+        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }

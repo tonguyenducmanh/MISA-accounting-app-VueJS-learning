@@ -80,43 +80,13 @@
       ]"
     />
 
-    <div>7.1 Toast message thành công</div>
-
+    <div>7. Toast message</div>
+    <span>Xuất hiện ở góc dưới bên phải</span>
     <div class="toastmessage__container">
       <MToastMessage
         language="VI"
         toastType="SUCCESS"
-        toastText="Công việc đã bị xóa."
-      />
-    </div>
-
-    <div>7.2 Toast message lỗi</div>
-
-    <div class="toastmessage__container">
-      <MToastMessage
-        language="VI"
-        toastType="ERROR"
-        toastText="Có lỗi xảy ra, vui lòng thử lại sau."
-      />
-    </div>
-
-    <div>7.3 Toast message cảnh báo</div>
-
-    <div class="toastmessage__container">
-      <MToastMessage
-        language="VI"
-        toastType="WARNING"
-        toastText="Dữ liệu của bạn đã bị thay đổi bởi người dùng khác."
-      />
-    </div>
-
-    <div>7.4 Toast message thông báo</div>
-
-    <div class="toastmessage__container">
-      <MToastMessage
-        language="VI"
-        toastType="NOTI"
-        toastText="Bạn nên đọc kỹ nội dung trước khi phê duyệt."
+        toastText="Đây là toast message."
       />
     </div>
 
@@ -136,7 +106,7 @@
     <MPopup
       :isAlert="isAlertShow"
       @hide-popup="showAlert"
-      AlertMess="Bạn có người yêu chưa"
+      AlertMess="Demo poup message"
     />
     <br />
     <MButton @click="showAskWarning" buttonName="hiện Ask Warning" />
@@ -144,7 +114,7 @@
     <MPopup
       :isAskWarning="isAskWarningShow"
       @hide-popup="showAskWarning"
-      AskWarningMess="Bạn có người yêu chưa"
+      AskWarningMess="Demo poup message"
     />
     <br />
     <MButton @click="showAsk" buttonName="hiện Ask" />
@@ -152,7 +122,7 @@
     <MPopup
       :isAsk="isAskShow"
       @hide-popup="showAsk"
-      AskMess="Bạn có người yêu chưa"
+      AskMess="Demo poup message"
     />
     <br />
     <MButton @click="showWarning" buttonName="hiện Warning" />
@@ -160,7 +130,7 @@
     <MPopup
       :isWarning="isWarningShow"
       @hide-popup="showWarning"
-      WarningMess="Bạn có người yêu chưa"
+      WarningMess="Demo poup message"
     />
 
     <div>10. Loading</div>

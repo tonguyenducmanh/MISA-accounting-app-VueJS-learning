@@ -16,7 +16,6 @@ const store = createStore({
       searchFilter: "",
       totalRecords: 0,
       totalPage: 0,
-      currentPage: 0,
     };
   },
   mutations: {
@@ -25,6 +24,10 @@ const store = createStore({
     },
     changeSize(state, value) {
       state.pageSize = value;
+      // số trang mà nhân với số records > tổng record thì quay về trang 1
+      if (state.pageSize * state.pageNumber > state.totalRecords) {
+        state.pageNumber = 1;
+      }
     },
     changeFilter(state, value) {
       state.searchFilter = value;
@@ -42,10 +45,20 @@ const store = createStore({
       state.totalPage = value;
     },
     changeCurrentPage(state, value) {
-      state.currentPage = value;
+      state.pageNumber = value;
     },
-    toggleToast(state) {
-      state.toggleToast = !state.toggleToast;
+    moveNextPage(state) {
+      if (state.pageNumber < state.totalPage) {
+        state.pageNumber++;
+      }
+    },
+    movePrevPage(state) {
+      if (state.pageNumber > 1) {
+        state.pageNumber--;
+      }
+    },
+    toggleToast(state, value) {
+      state.toggleToast = value;
     },
     changeToastType(state, value) {
       state.toastType = value;
@@ -115,11 +128,26 @@ const store = createStore({
       context.commit("changeCurrentPage", value);
     },
     /**
-     * Thay đổi trạng thái của toast
+     * chuyển sang page tiếp
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
-    toggleToast(context) {
-      context.commit("toggleToast");
+    moveNextPage(context) {
+      context.commit("moveNextPage");
+    },
+    /**
+     * chuyển về page trước
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    movePrevPage(context) {
+      context.commit("movePrevPage");
+    },
+    /**
+     * Thay đổi trạng thái của toast
+     * @param {*} value -giá trị true hoặc false
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    toggleToast(context, value) {
+      context.commit("toggleToast", value);
     },
     /**
      * Thay đổi loại toast

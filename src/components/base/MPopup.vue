@@ -127,7 +127,7 @@ export default {
               this.MISAEnum.toasttype.SUCCESS
             );
             this.$store.dispatch("changeToastText", message);
-            this.$store.dispatch("toggleToast");
+            this.$store.dispatch("toggleToast", true);
             // ẩn đi sau 3 giây
           })
           .catch((res) => {

@@ -71,7 +71,7 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     hideToast() {
-      this.$store.dispatch("toggleToast");
+      this.$store.dispatch("toggleToast", false);
       this.$store.dispatch("changeToastType", "");
       this.$store.dispatch("changeToastText", "");
     },
