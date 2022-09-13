@@ -49,7 +49,11 @@ export default {
    */
   watch: {
     pageSize() {
-      this.$emit("change-size", this.pageSize);
+      try {
+        this.$emit("change-size", this.pageSize);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   emits: ["change-size"],
@@ -59,7 +63,11 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     changeSize(value) {
-      this.pageSize = value;
+      try {
+        this.pageSize = value;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

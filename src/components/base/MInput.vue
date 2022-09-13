@@ -69,8 +69,12 @@ export default {
    */
   watch: {
     currentValue() {
-      if (this.currentValue === "") {
-        this.$emit("change-filter", this.currentValue);
+      try {
+        if (this.currentValue === "") {
+          this.$emit("change-filter", this.currentValue);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

@@ -56,7 +56,11 @@
             </template>
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
-              <MConntextMenu :deleteValue="employee['EmployeeId']" />
+              <MConntextMenu
+                :deleteId="employee['EmployeeId']"
+                :deleteName="employee['FullName']"
+                @delete-id="deleteEmployee"
+              />
             </td>
           </tr>
         </template>
@@ -81,20 +85,40 @@ export default {
   data() {
     return {};
   },
+  emits: ["delete-employee"],
   methods: {
     /**
      * Định dạng ngày trong table
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     formatDate(value) {
-      return common.formatDate(value);
+      try {
+        return common.formatDate(value);
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * Định dạng giới trong table
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     formatGender(value) {
-      return common.formatGender(value);
+      try {
+        return common.formatGender(value);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * deleteCurrentId
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
+    deleteEmployee(deleteId, deleteName) {
+      try {
+        this.$emit("delete-employee", deleteId, deleteName);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
