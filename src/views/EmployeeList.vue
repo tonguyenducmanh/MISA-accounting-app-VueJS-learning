@@ -123,6 +123,7 @@
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
     <!-- toast message thông báo thành công -->
     <MToastMessage
+      v-if="false"
       :language="toastLanguage"
       :toastType="toastType"
       :toastText="toastText"
@@ -162,35 +163,44 @@ export default {
       totalRecords: 0,
       totalPage: 0,
       currentPage: 0,
-      language: "VI",
       isAlertShow: false,
       isAskWarningShow: false,
       isAskShow: false,
       isWarningShow: false,
       isFormShow: false,
-      pageSize: 10,
-      pageNumber: 1,
-      searchFilter: null,
-      apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
-      deleteId: "",
-      deleteName: "",
-      toastLanguage: "",
-      toastType: "",
-      toastText: "",
+      apiTable: "",
     };
   },
   beforeMount() {
+    // chèn api từ enum vào
+    this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
     this.loadData();
   },
   /**
+   *  lấy các state từ trong store, để watch theo dõi và rerender
+   * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+   */
+  computed: {
+    tableInfo() {
+      return [
+        this.$store.state.pageSize,
+        this.$store.state.pageNumber,
+        this.$store.state.searchFilter,
+      ];
+    },
+    deleteName() {
+      return this.$store.state.deleteName;
+    },
+    deleteId() {
+      return this.$store.state.deleteId;
+    },
+  },
+  /**
    * Bất cứ khi nào pageSize, searchFilter thay đổi thì load lại trang
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
    */
   watch: {
-    pageSize() {
-      this.loadData();
-    },
-    searchFilter() {
+    tableInfo() {
       this.loadData();
     },
   },
@@ -201,15 +211,18 @@ export default {
      */
     loadData() {
       try {
+        let searchFilter = this.$store.state.searchFilter;
+        let pageSize = this.$store.state.pageSize;
+        let pageNumber = this.$store.state.pageNumber;
         let arrFilter = [];
-        if (this.searchFilter != null && this.searchFilter != "") {
-          arrFilter.push(`employeeFilter=${this.searchFilter}`);
+        if (searchFilter != null && searchFilter != "") {
+          arrFilter.push(`employeeFilter=${searchFilter}`);
         }
-        if (this.pageSize != null && this.pageSize != "") {
-          arrFilter.push(`pageSize=${this.pageSize}`);
+        if (pageSize != null && pageSize != "") {
+          arrFilter.push(`pageSize=${pageSize}`);
         }
-        if (this.pageNumber != null && this.pageNumber != "") {
-          arrFilter.push(`pageNumber=${this.pageNumber}`);
+        if (pageNumber != null && pageNumber != "") {
+          arrFilter.push(`pageNumber=${pageNumber}`);
         }
         // api mặc định
         let apiFetch = this.apiTable;
@@ -242,7 +255,7 @@ export default {
      */
     changeSize(value) {
       try {
-        this.pageSize = value;
+        this.$store.dispatch("changeSize", value);
       } catch (error) {
         console.log(error);
       }
@@ -253,7 +266,7 @@ export default {
      */
     changeFilter(value) {
       try {
-        this.searchFilter = value;
+        this.$store.dispatch("changeFilter", value);
       } catch (error) {
         console.log(error);
       }
@@ -297,8 +310,8 @@ export default {
      */
     toggleAskWarningPopUp(deleteId, deleteName) {
       try {
-        this.deleteId = deleteId;
-        this.deleteName = deleteName;
+        this.$store.dispatch("changeDeleteId", deleteId);
+        this.$store.dispatch("changeDeleteName", deleteName);
         this.isAskWarningShow = !this.isAskWarningShow;
       } catch (error) {
         console.log(error);

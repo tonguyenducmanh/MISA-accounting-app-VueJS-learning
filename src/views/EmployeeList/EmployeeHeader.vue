@@ -25,7 +25,7 @@ export default {
   emits: ["show-form"],
   data() {
     return {
-      showTest: true,
+      showTest: false,
     };
   },
   methods: {
@@ -35,7 +35,7 @@ export default {
      */
     testStore() {
       console.log(this.$store.state.count);
-      this.$store.commit("increment");
+      this.$store.dispatch("increment");
     },
   },
 };
