@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="table__wrap">
+  <div class="table__wrap" ref="table">
     <div class="table__wrap--loading table__wrap--hide"></div>
     <table class="table" id="table__employee">
       <thead>
@@ -37,28 +37,55 @@
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
           tương ứng từ prop name của thead từ kết quả api trả về -->
-            <template v-for="(theaditem, index) in theadList" :key="index">
+            <template
+              v-for="(theaditem, indexItem) in theadList"
+              :key="indexItem"
+            >
               <td
                 v-if="theaditem.formatDate"
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :class="`text__align--${theaditem.align}`"
               >
                 {{ formatDate(employee[theaditem.propName]) }}
               </td>
               <td
                 v-else-if="theaditem.formatGender"
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :class="`text__align--${theaditem.align}`"
               >
                 {{ formatGender(employee[theaditem.propName]) }}
               </td>
-              <td v-else :class="`text__align--${theaditem.align}`">
+              <td
+                v-else
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
+                :class="`text__align--${theaditem.align}`"
+              >
                 {{ employee[theaditem.propName] }}
               </td>
             </template>
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
               <MConntextMenu
+                @edit-click="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :deleteId="employee['EmployeeId']"
                 :deleteName="employee['FullName']"
+                :hasUp="
+                  hasUp &&
+                  (index === employeeList.length - 1 ||
+                    index === employeeList.length - 2)
+                "
                 @delete-id="deleteEmployee"
               />
             </td>
@@ -83,9 +110,24 @@ export default {
     theadList: Array,
   },
   data() {
-    return {};
+    return {
+      hasUp: false,
+    };
   },
-  emits: ["delete-employee"],
+  emits: ["delete-employee", "show-form"],
+  /**
+   * Kiểm tra giá trị của table xem có overflow không, nếu có thì mấy cái context menu dưới cùng sẽ có menu nằm bên trên
+   * Author: Tô nguyễn Đức Mạnh (13/-9/2022)
+   */
+  updated() {
+    try {
+      if (this.$refs.table.scrollHeight > this.$refs.table.clientHeight) {
+        this.hasUp = true;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
     /**
      * Định dạng ngày trong table
@@ -119,6 +161,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Thay đổi method sang PUT
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    putMethod() {
+      this.$store.dispatch("changeMethod", "PUT");
     },
   },
 };

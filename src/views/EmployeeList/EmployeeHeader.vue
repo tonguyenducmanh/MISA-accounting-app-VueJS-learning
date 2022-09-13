@@ -11,7 +11,10 @@
       class="employee__addbtn"
       id="employee__addbtn"
       dataTitle="Nhấn Ctrl + Shift + A để thêm nhanh"
-      @click="$emit('show-form')"
+      @click="
+        postMethod();
+        $emit('show-form');
+      "
     />
   </div>
 </template>
@@ -36,6 +39,13 @@ export default {
     testStore() {
       console.log(this.$store.state.count);
       this.$store.dispatch("increment");
+    },
+    /**
+     * Thay đổi method sang POST
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    postMethod() {
+      this.$store.dispatch("changeMethod", "POST");
     },
   },
 };

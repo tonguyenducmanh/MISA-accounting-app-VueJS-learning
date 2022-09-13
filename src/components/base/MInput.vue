@@ -62,12 +62,22 @@ export default {
     "dataTitle",
     "justNumber",
     "formatDate",
+    "inputValue",
   ],
+  beforeMount() {
+    this.currentValue = this.inputValue;
+  },
   /**
    * Theo dõi khi nào giá trị input rỗng thì load lại trang bằng cách giả lập click vào trong nút tìm kiếm.
    * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
    */
   watch: {
+    // xem lúc khởi tạo nó có giá trị gì truyền vào không ?
+    inputValue() {
+      if (this.currentValue != this.inputValue) {
+        this.currentValue = this.inputValue;
+      }
+    },
     currentValue() {
       try {
         if (this.currentValue === "") {

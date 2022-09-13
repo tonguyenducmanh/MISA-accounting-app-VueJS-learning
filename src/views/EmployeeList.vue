@@ -25,6 +25,7 @@
       <!-- employee table gồm bảng danh sách nhân viên -->
       <EmployeeTable
         @delete-employee="toggleAskWarningPopUp"
+        @show-form="showForm"
         class="table__container"
         :employeeList="employeeList"
         :theadList="[
@@ -103,12 +104,18 @@
       />
     </div>
     <!-- phần form thêm và sửa người dùng -->
-    <EmployeeForm v-if="isFormShow" @hide-form="toggleAskPopUp" />
+    <EmployeeForm
+      v-if="isFormShow"
+      @hide-form="toggleAskPopUp"
+      @hide-all="hideFormAndAsk"
+      @warning-duplicate="toggleWarningPopup"
+    />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
     <MPopup
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
+      @save-now="saveNow"
       AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
@@ -120,6 +127,11 @@
       :deleteId="deleteId"
     />
     <!-- popup hiện lên khi trùng Id nhân viên -->
+    <MPopup
+      :isWarning="isWarningShow"
+      @hide-popup="toggleWarningPopup"
+      :WarningMess="WarningMess"
+    />
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
     <!-- toast message thông báo thành công -->
     <MToastMessage
@@ -166,6 +178,7 @@ export default {
       isWarningShow: false,
       isFormShow: false,
       apiTable: "",
+      WarningMess: "",
     };
   },
   beforeMount() {
@@ -286,6 +299,7 @@ export default {
     },
     /**
      * Tải lại trang và hiện thông báo tải lại thành công
+     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     reloadData() {
       try {
@@ -299,6 +313,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     *Lưu trang ngay khi ấn vào nút lưu trong popup hỏi có muốn lưu không.
+     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    saveNow() {
+      console.log("hihi");
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
@@ -364,6 +385,22 @@ export default {
         this.$store.dispatch("changeDeleteId", deleteId);
         this.$store.dispatch("changeDeleteName", deleteName);
         this.isAskWarningShow = !this.isAskWarningShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup warning trùng ID
+     * Author: Tô Nguyễn Đức Mạnh (1309/2022)
+     */
+    toggleWarningPopup(value) {
+      try {
+        let language = this.MISAEnum.language;
+        // gọi ra văn bản validate
+        let textAlert = this.MISAResource.ErrorValidate.EmployeeCode[language];
+        let textAlertTwo = this.MISAResource.ErrorValidate.IsExisted[language];
+        this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
+        this.isWarningShow = !this.isWarningShow;
       } catch (error) {
         console.log(error);
       }

@@ -16,6 +16,7 @@ const store = createStore({
       searchFilter: "",
       totalRecords: 0,
       totalPage: 0,
+      method: "",
     };
   },
   mutations: {
@@ -65,6 +66,9 @@ const store = createStore({
     },
     changeToastText(state, value) {
       state.toastText = value;
+    },
+    changeMethod(state, value) {
+      state.method = value;
     },
   },
   actions: {
@@ -162,6 +166,13 @@ const store = createStore({
      */
     changeToastText(context, value) {
       context.commit("changeToastText", value);
+    },
+    /**
+     * Thay đổi method của api
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    changeMethod(context, value) {
+      context.commit("changeMethod", value);
     },
   },
 });

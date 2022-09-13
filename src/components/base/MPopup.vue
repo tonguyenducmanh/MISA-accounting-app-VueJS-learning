@@ -44,7 +44,7 @@
               class="button--no"
               @click="$emit('hide-all')"
             />
-            <MButton buttonName="Có" />
+            <MButton buttonName="Có" @click="$emit('save-now')" />
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default {
   components: {
     MButton,
   },
-  emits: ["hide-popup", "hide-all", "re-load"],
+  emits: ["hide-popup", "hide-all", "re-load", "save-now"],
   props: [
     "isAskWarning",
     "AskWarningMess",
@@ -116,8 +116,7 @@ export default {
         let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
         fetch(apiDelete, { method: "DELETE" })
           .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
+          .then(() => {
             // ẩn popup xóa đi
             this.$emit("hide-popup");
             this.$emit("re-load");
