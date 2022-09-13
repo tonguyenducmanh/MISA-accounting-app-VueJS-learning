@@ -1,7 +1,7 @@
 <template lang="">
   <div class="contextmenu">
     <div class="contextmenu__main">
-      <div class="contextmenu__button">Sửa</div>
+      <div class="contextmenu__button" @click="$emit('edit-click')">Sửa</div>
       <div
         class="contextmenu__dropicon"
         v-click-out.self="hideContext"
@@ -39,7 +39,7 @@ export default {
     };
   },
   props: ["deleteId", "deleteName", "hasUp"],
-  emits: ["delete-id"],
+  emits: ["delete-id", "edit-click"],
   methods: {
     /**
      * thay đổi trạng thái của context

@@ -44,7 +44,7 @@
               class="button--no"
               @click="$emit('hide-all')"
             />
-            <MButton buttonName="Có" />
+            <MButton buttonName="Có" @click="$emit('save-now')" />
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default {
   components: {
     MButton,
   },
-  emits: ["hide-popup", "hide-all", "re-load"],
+  emits: ["hide-popup", "hide-all", "re-load", "save-now"],
   props: [
     "isAskWarning",
     "AskWarningMess",

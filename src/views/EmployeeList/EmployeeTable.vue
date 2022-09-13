@@ -43,23 +43,42 @@
             >
               <td
                 v-if="theaditem.formatDate"
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :class="`text__align--${theaditem.align}`"
               >
                 {{ formatDate(employee[theaditem.propName]) }}
               </td>
               <td
                 v-else-if="theaditem.formatGender"
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :class="`text__align--${theaditem.align}`"
               >
                 {{ formatGender(employee[theaditem.propName]) }}
               </td>
-              <td v-else :class="`text__align--${theaditem.align}`">
+              <td
+                v-else
+                @dblclick="
+                  $emit('show-form');
+                  putMethod();
+                "
+                :class="`text__align--${theaditem.align}`"
+              >
                 {{ employee[theaditem.propName] }}
               </td>
             </template>
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
               <MConntextMenu
+                @edit-click="
+                  $emit('show-form');
+                  putMethod();
+                "
                 :deleteId="employee['EmployeeId']"
                 :deleteName="employee['FullName']"
                 :hasUp="
@@ -95,7 +114,7 @@ export default {
       hasUp: false,
     };
   },
-  emits: ["delete-employee"],
+  emits: ["delete-employee", "show-form"],
   /**
    * Kiểm tra giá trị của table xem có overflow không, nếu có thì mấy cái context menu dưới cùng sẽ có menu nằm bên trên
    * Author: Tô nguyễn Đức Mạnh (13/-9/2022)
@@ -142,6 +161,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Thay đổi method sang PUT
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    putMethod() {
+      this.$store.dispatch("changeMethod", "PUT");
     },
   },
 };

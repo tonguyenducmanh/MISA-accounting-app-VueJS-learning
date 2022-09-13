@@ -25,6 +25,7 @@
       <!-- employee table gồm bảng danh sách nhân viên -->
       <EmployeeTable
         @delete-employee="toggleAskWarningPopUp"
+        @show-form="showForm"
         class="table__container"
         :employeeList="employeeList"
         :theadList="[
@@ -114,6 +115,7 @@
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
+      @save-now="saveNow"
       AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
@@ -297,6 +299,7 @@ export default {
     },
     /**
      * Tải lại trang và hiện thông báo tải lại thành công
+     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     reloadData() {
       try {
@@ -310,6 +313,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     *Lưu trang ngay khi ấn vào nút lưu trong popup hỏi có muốn lưu không.
+     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
+    saveNow() {
+      console.log("hihi");
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
