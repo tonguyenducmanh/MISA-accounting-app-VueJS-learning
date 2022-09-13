@@ -18,7 +18,7 @@
             tabindex="0"
             class="icon employee__reloadbtn"
             data-title="Lấy lại dữ liệu"
-            @click="loadData"
+            @click="reloadData"
           ></div>
         </div>
       </div>
@@ -267,6 +267,22 @@ export default {
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tải lại trang và hiện thông báo tải lại thành công
+     */
+    reloadData() {
+      try {
+        this.loadData();
+        // hiện toast mesage lên
+        let language = this.$store.state.language;
+        let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
+        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
+        this.$store.dispatch("changeToastText", message);
+        this.$store.dispatch("toggleToast");
       } catch (error) {
         console.log(error);
       }
