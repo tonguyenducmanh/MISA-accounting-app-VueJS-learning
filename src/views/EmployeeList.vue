@@ -96,9 +96,9 @@
       />
       <!-- phần điều hướng sang trang khác -->
       <EmployeePage
-        :totalRecords="totalRecords"
-        :totalPage="totalPage"
-        :currentPage="currentPage"
+        :totalRecords="getTotalRecords"
+        :totalPage="getTotalPage"
+        :currentPage="getCurrentpage"
         @change-size="changeSize"
       />
     </div>
@@ -160,9 +160,6 @@ export default {
       MISAEnum,
       MISAResource,
       employeeList: [],
-      totalRecords: 0,
-      totalPage: 0,
-      currentPage: 0,
       isAlertShow: false,
       isAskWarningShow: false,
       isAskShow: false,
@@ -193,6 +190,15 @@ export default {
     },
     deleteId() {
       return this.$store.state.deleteId;
+    },
+    getTotalRecords() {
+      return this.$store.state.totalRecords;
+    },
+    getTotalPage() {
+      return this.$store.state.totalPage;
+    },
+    getCurrentpage() {
+      return this.$store.state.currentPage;
     },
   },
   /**
@@ -238,9 +244,9 @@ export default {
           })
           .then((res) => {
             this.employeeList = res["Data"];
-            this.totalRecords = res["TotalRecord"];
-            this.totalPage = res["TotalPage"];
-            this.currentPage = res["CurrentPage"];
+            this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
+            this.$store.dispatch("changeTotalPage", res["TotalPage"]);
+            this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
           })
           .catch((res) => {
             console.log(res);

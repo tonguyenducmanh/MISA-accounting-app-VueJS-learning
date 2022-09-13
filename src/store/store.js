@@ -13,6 +13,9 @@ const store = createStore({
       pageSize: 10,
       pageNumber: 1,
       searchFilter: "",
+      totalRecords: 0,
+      totalPage: 0,
+      currentPage: 0,
     };
   },
   mutations: {
@@ -30,6 +33,15 @@ const store = createStore({
     },
     changeDeleteName(state, value) {
       state.deleteName = value;
+    },
+    changeTotalRecords(state, value) {
+      state.totalRecords = value;
+    },
+    changeTotalPage(state, value) {
+      state.totalPage = value;
+    },
+    changeCurrentPage(state, value) {
+      state.currentPage = value;
     },
   },
   actions: {
@@ -67,6 +79,15 @@ const store = createStore({
      */
     changeDeleteName(context, value) {
       context.commit("changeDeleteName", value);
+    },
+    changeTotalPage(context, value) {
+      context.commit("changeTotalPage", value);
+    },
+    changeTotalRecords(context, value) {
+      context.commit("changeTotalRecords", value);
+    },
+    changeCurrentPage(context, value) {
+      context.commit("changeCurrentPage", value);
     },
   },
 });
