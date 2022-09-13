@@ -38,6 +38,18 @@ var MISAResource = {
       VI: "Thông tin!",
       EN: "Information!",
     },
+    DeleteNoti: {
+      VI: "Đã xóa nhân viên khỏi bảng.",
+      EN: "The employee is deleted from table.",
+    },
+    AddedNoti: {
+      VI: "Đã thêm nhân viên mới vào bảng.",
+      EN: "The employee is added to table.",
+    },
+    DuplicatedNoti: {
+      VI: "Đã nhân bản nhân viên hiện tại.",
+      EN: "THe employee is duplicated to table.",
+    },
   },
 };
 

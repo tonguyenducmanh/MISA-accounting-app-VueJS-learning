@@ -1,7 +1,8 @@
 .toastmessage {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  background-color: var(--ColorBackgroundWhite);
+  bottom: 10px;
+  right: 10px;
   padding: 16px;
   box-sizing: border-box;
   box-shadow: 2px 2px 12px 7px rgba(212, 212, 212, 0.34);
@@ -11,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 10;
 }
 
 .toastmessage .toastmessage__content {

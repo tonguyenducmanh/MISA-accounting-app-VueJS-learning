@@ -119,20 +119,36 @@
       :AskWarningMess="`Bạn có thực sự muốn xóa nhân viên ${deleteName} không?`"
       :deleteId="deleteId"
     />
+    <!-- popup hiện lên khi trùng Id nhân viên -->
+    <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
+    <!-- toast message thông báo thành công -->
+    <MToastMessage
+      :language="toastLanguage"
+      :toastType="toastType"
+      :toastText="toastText"
+    />
+    <!-- toast message thông báo thất bại -->
   </div>
 </template>
 <script>
+import MISAEnum from "../js/enum.js";
+import MISAResource from "../js/resource.js";
+// import componnent base
 import MInput from "../components/base/MInput.vue";
+import MPopup from "../components/base/MPopup.vue";
+import MToastMessage from "../components/base/MToastMessage.vue";
+
+// import component fragment
 import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
 import EmployeeTable from "./EmployeeList/EmployeeTable.vue";
 import EmployeePage from "./EmployeeList/EmployeePage.vue";
 import EmployeeForm from "./EmployeeList/EmployeeForm.vue";
-import MPopup from "../components/base/MPopup.vue";
 export default {
   name: "TheEmployee",
   components: {
     MInput,
     MPopup,
+    MToastMessage,
     EmployeeHeader,
     EmployeeTable,
     EmployeePage,
@@ -140,6 +156,8 @@ export default {
   },
   data() {
     return {
+      MISAEnum,
+      MISAResource,
       employeeList: [],
       totalRecords: 0,
       totalPage: 0,
@@ -156,6 +174,9 @@ export default {
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
       deleteId: "",
       deleteName: "",
+      toastLanguage: "",
+      toastType: "",
+      toastText: "",
     };
   },
   beforeMount() {
