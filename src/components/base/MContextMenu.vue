@@ -13,7 +13,13 @@
           class="contextmenu__menu"
           :class="hasUp === true ? MISAEnum.contextMenu.UP : ''"
         >
-          <div class="contextmenu__item">Nhân bản</div>
+          <div
+            class="contextmenu__item"
+            :value="deleteId"
+            @click="$emit('duplicate-click', deleteId)"
+          >
+            Nhân bản
+          </div>
           <div
             class="contextmenu__item"
             :value="deleteId"
@@ -39,7 +45,7 @@ export default {
     };
   },
   props: ["deleteId", "deleteName", "hasUp"],
-  emits: ["delete-id", "edit-click"],
+  emits: ["delete-id", "edit-click", "duplicate-click"],
   methods: {
     /**
      * thay đổi trạng thái của context

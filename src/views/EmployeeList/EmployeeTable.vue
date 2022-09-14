@@ -79,6 +79,10 @@
                   $emit('show-form');
                   putMethod(employee['EmployeeId']);
                 "
+                @duplicate-click="
+                  $emit('show-form');
+                  postMethod(employee['EmployeeId']);
+                "
                 :deleteId="employee['EmployeeId']"
                 :deleteName="employee['FullName']"
                 :hasUp="
@@ -169,6 +173,21 @@ export default {
     putMethod(currentId) {
       this.$store.dispatch("changeMethod", "PUT");
       this.$store.dispatch("changeEditID", currentId);
+    },
+    /**
+     * Thay đổi method sang POST và chèn ID hiện tại vào store global để fetch data về.
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    postMethod(currentId) {
+      // chuyển method về put để thực hiện binding dữ liệu giống như là đang edit
+      // để ăn gian đoạn logic này
+      this.$store.dispatch("changeEditID", currentId);
+      this.$store.dispatch("changeMethod", "PUT");
+      // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
+      setTimeout(() => {
+        this.$store.dispatch("changeMethod", "POST");
+      }, 1000);
+      // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },
   },
 };

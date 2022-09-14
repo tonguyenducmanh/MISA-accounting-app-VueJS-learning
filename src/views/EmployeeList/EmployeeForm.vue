@@ -403,14 +403,12 @@ export default {
         employee["Gender"] =
           this.$refs.Gender.$el.children[1].getAttribute("value");
 
-        console.log(employee);
         // tiến hành POST dữ liệu lên api
         let currentMethod = this.$store.state.method;
         let api = this.MISAEnum.API.GETEMPLOYEELIST;
         // check xem là method put hay post, nếu là put thì thêm id vào sau api
         if (currentMethod === this.MISAEnum.method.PUT) {
           api += `/${this.$store.state.currentEditID}`;
-          console.log(api);
         }
         fetch(api, {
           method: currentMethod,
