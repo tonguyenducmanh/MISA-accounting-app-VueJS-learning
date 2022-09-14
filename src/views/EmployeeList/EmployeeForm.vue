@@ -253,13 +253,13 @@ export default {
       genderType: 0,
     };
   },
+  /**
+   * Kiểm tra xem method là post hay put, nếu là post thì :
+   * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
+   * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
+   * Author: Tô Nguyễn Đức Manh (14/09/2022)
+   */
   mounted() {
-    /**
-     * Kiểm tra xem method là post hay put, nếu là post thì :
-     * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
-     * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
-     * Author: Tô Nguyễn Đức Manh (14/09/2022)
-     */
     // lấy mã id mới nếu là thêm mới
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
@@ -277,7 +277,6 @@ export default {
           }
         })
         .then((res) => {
-          console.log(res);
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
           this.$refs.EmployeeCode.$el.children[1].children[0].value = res[
@@ -410,7 +409,8 @@ export default {
         let api = this.MISAEnum.API.GETEMPLOYEELIST;
         // check xem là method put hay post, nếu là put thì thêm id vào sau api
         if (currentMethod === this.MISAEnum.method.PUT) {
-          api += "";
+          api += `/${this.$store.state.currentEditID}`;
+          console.log(api);
         }
         fetch(api, {
           method: currentMethod,
@@ -462,41 +462,54 @@ export default {
      */
     saveNew() {
       try {
-        // kiểm tra xem id đã trùng chưa ?
-        let currentId =
-          this.$refs.EmployeeCode.$el.children[1].children[0].value;
-        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+        let methodNow = this.$store.state.method;
+        // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
+        if (methodNow === this.MISAEnum.method.POST) {
+          // nếu là thêm mới thì
+          // kiểm tra xem id đã trùng chưa ?
+          let currentId =
+            this.$refs.EmployeeCode.$el.children[1].children[0].value;
+          let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
 
-        fetch(apiTest, { method: "GET" })
-          .then((res) => {
-            if (res.status == 200) {
-              // trả về false
-              return false;
-            } else {
-              return true;
-            }
-          })
-          .then((res) => {
-            if (res === false) {
-              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-              this.$emit(
-                "warning-duplicate",
-                this.$refs.EmployeeCode.$el.children[1].children[0].value
-              );
-            } else {
-              {
-                // thực hiện lưu vào database
-                this.confirmSave();
-                // ẩn form
-                this.$emit("hide-all");
-                // hiện thông báo lưu
-                this.showAddedNoti();
+          fetch(apiTest, { method: methodNow })
+            .then((res) => {
+              if (res.status == 200) {
+                // trả về false
+                return false;
+              } else {
+                return true;
               }
-            }
-          })
-          .catch((res) => {
-            console.log(res);
-          });
+            })
+            .then((res) => {
+              if (res === false) {
+                // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+                this.$emit(
+                  "warning-duplicate",
+                  this.$refs.EmployeeCode.$el.children[1].children[0].value
+                );
+              } else {
+                {
+                  // thực hiện lưu vào database
+                  this.confirmSave();
+                  // ẩn form
+                  this.$emit("hide-all");
+                  // hiện thông báo lưu
+                  this.showAddedNoti();
+                }
+              }
+            })
+            .catch((res) => {
+              console.log(res);
+            });
+        } else {
+          // nếu là sửa thì tiến hành update dữ liệu
+          // thực hiện lưu vào database
+          this.confirmSave();
+          // ẩn form
+          this.$emit("hide-all");
+          // hiện thông báo lưu
+          this.showAddedNoti();
+        }
       } catch (error) {
         console.log(error);
       }
@@ -507,43 +520,59 @@ export default {
      */
     saveNewAndAdd() {
       try {
-        // kiểm tra xem id đã trùng chưa ?
-        let currentId =
-          this.$refs.EmployeeCode.$el.children[1].children[0].value;
-        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+        let methodNow = this.$store.state.method;
+        // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
+        if (methodNow === this.MISAEnum.method.POST) {
+          // kiểm tra xem id đã trùng chưa ?
+          let currentId =
+            this.$refs.EmployeeCode.$el.children[1].children[0].value;
+          let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
 
-        fetch(apiTest, { method: "GET" })
-          .then((res) => {
-            if (res.status == 200) {
-              // trả về false
-              return false;
-            } else {
-              return true;
-            }
-          })
-          .then((res) => {
-            if (res === false) {
-              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-              this.$emit(
-                "warning-duplicate",
-                this.$refs.EmployeeCode.$el.children[1].children[0].value
-              );
-            } else {
-              {
-                // thực hiện lưu vào database
-                this.confirmSave();
-                // hiện thông báo lưu
-                this.showAddedNoti();
-                // clear form đi
-                this.clearForm();
-                // lấy lại dữ liệu mới
-                this.getNewEmpCode();
-                // gán dữ liệu mới vào trong ô đó đi
-                this.$refs.EmployeeCode.$el.children[1].children[0].value =
-                  this.newEmpCode;
+          fetch(apiTest, { method: "GET" })
+            .then((res) => {
+              if (res.status == 200) {
+                // trả về false
+                return false;
+              } else {
+                return true;
               }
-            }
-          });
+            })
+            .then((res) => {
+              if (res === false) {
+                // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+                this.$emit(
+                  "warning-duplicate",
+                  this.$refs.EmployeeCode.$el.children[1].children[0].value
+                );
+              } else {
+                {
+                  // thực hiện lưu vào database
+                  this.confirmSave();
+                  // hiện thông báo lưu
+                  this.showAddedNoti();
+                  // clear form đi
+                  this.clearForm();
+                  // lấy lại dữ liệu mới
+                  this.getNewEmpCode();
+                  // gán dữ liệu mới vào trong ô đó đi
+                  this.$refs.EmployeeCode.$el.children[1].children[0].value =
+                    this.newEmpCode;
+                }
+              }
+            });
+        } else {
+          // thực hiện lưu vào database
+          this.confirmSave();
+          // hiện thông báo lưu
+          this.showAddedNoti();
+          // clear form đi
+          this.clearForm();
+          // lấy lại dữ liệu mới
+          this.getNewEmpCode();
+          // gán dữ liệu mới vào trong ô đó đi
+          this.$refs.EmployeeCode.$el.children[1].children[0].value =
+            this.newEmpCode;
+        }
       } catch (error) {
         console.log(error);
       }
