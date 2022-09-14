@@ -164,12 +164,6 @@ export default {
       console.log(error);
     }
   },
-  /**
-   * khi đã mounted rồi thì bắt đầu tiến hành kiểm tra xem có default value ở trường hợp có api không?
-   * Nếu có thì giả lập click vào trong element tương ứng của nó để hiện selected lên
-   * Author : Tô Nguyễn Đức Mạnh (14/09/2022)
-   */
-  updated() {},
   methods: {
     /**
      * lắng nghe nhập liệu vào ô input của combobox
@@ -206,6 +200,22 @@ export default {
         this.seletedValue = event.target.textContent;
         this.currentInput = event.target.textContent;
         this.uniqueSelected = event.target.getAttribute("value");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * clear toàn bộ value của combobox đi nha
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    clearComboboxSelected() {
+      try {
+        // ẩn drop menu đi
+        this.isShowData = false;
+        // select cái đã chọn
+        this.seletedValue = "";
+        this.currentInput = "";
+        this.uniqueSelected = "";
       } catch (error) {
         console.log(error);
       }

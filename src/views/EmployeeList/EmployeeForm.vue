@@ -448,13 +448,12 @@ export default {
       this.$refs.BankBrach.$el.children[1].children[0].value = "";
 
       // set value LibCombobox component structure
-      this.$refs.DepartmentId.$el.children[1].setAttribute("value", "");
-      this.$refs.PositionId.$el.children[1].setAttribute("value", "");
-
+      this.$refs.PositionId.clearComboboxSelected();
+      this.$refs.DepartmentId.clearComboboxSelected();
       // set value MDatepicker component structure
-
+      this.$refs.DateOfBirth.$el.children[1].value = "";
       // set value MDGender component structure
-      this.$refs.Gender.$el.children[1].setAttribute("value", 0);
+      this.genderType = 0;
     },
     /**
      * Lưu người dùng vào database
