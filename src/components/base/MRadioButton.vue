@@ -1,7 +1,7 @@
 <template lang="">
   <div class="radio">
     <div class="radio__title">{{ titleText }}</div>
-    <div class="radio__select" :propName="propNameBox" :value="defaultValue">
+    <div class="radio__select" :propName="propNameBox" :value="selectedValue">
       <template v-for="(contentitem, index) in content" :key="index">
         <input
           type="radio"

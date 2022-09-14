@@ -259,7 +259,7 @@ export default {
    * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
    * Author: Tô Nguyễn Đức Manh (14/09/2022)
    */
-  mounted() {
+  beforeMount() {
     // lấy mã id mới nếu là thêm mới
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
