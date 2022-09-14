@@ -508,7 +508,11 @@ export default {
           // ẩn form
           this.$emit("hide-all");
           // hiện thông báo lưu
-          this.showAddedNoti();
+          this.showEditedNoti();
+          // sửa lại method về post
+          this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
+          // xóa edit id đi
+          this.$store.dispatch("changeEditID", "");
         }
       } catch (error) {
         console.log(error);
@@ -528,7 +532,7 @@ export default {
             this.$refs.EmployeeCode.$el.children[1].children[0].value;
           let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
 
-          fetch(apiTest, { method: "GET" })
+          fetch(apiTest, { method: methodNow })
             .then((res) => {
               if (res.status == 200) {
                 // trả về false
@@ -564,11 +568,15 @@ export default {
           // thực hiện lưu vào database
           this.confirmSave();
           // hiện thông báo lưu
-          this.showAddedNoti();
+          this.showEditedNoti();
           // clear form đi
           this.clearForm();
           // lấy lại dữ liệu mới
           this.getNewEmpCode();
+          // sửa lại method về post
+          this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
+          // xóa edit id đi
+          this.$store.dispatch("changeEditID", "");
           // gán dữ liệu mới vào trong ô đó đi
           this.$refs.EmployeeCode.$el.children[1].children[0].value =
             this.newEmpCode;
@@ -592,6 +600,27 @@ export default {
         this.$store.dispatch(
           "changeToastText",
           this.MISAResource.ToastMessage.AddedNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiển thị thông báo là đã sửa thành công
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    showEditedNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch(
+          "changeToastType",
+          this.MISAEnum.toasttype.SUCCESS
+        );
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.EditedNoti[lang]
         );
         this.$store.dispatch("toggleToast", true);
       } catch (error) {

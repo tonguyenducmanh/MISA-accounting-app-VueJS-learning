@@ -46,6 +46,10 @@ var MISAResource = {
       VI: "Đã thêm nhân viên mới vào bảng.",
       EN: "The employee is added to table.",
     },
+    EditedNoti: {
+      VI: "Đã sửa nhân viên thành công.",
+      EN: "The employee in this table is edited.",
+    },
     DuplicatedNoti: {
       VI: "Đã nhân bản nhân viên hiện tại.",
       EN: "THe employee is duplicated to table.",
