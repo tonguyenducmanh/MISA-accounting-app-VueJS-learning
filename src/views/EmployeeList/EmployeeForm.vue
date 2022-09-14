@@ -50,7 +50,7 @@
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
-            defaultValue=""
+            :fetchedValue="DepartmentId"
             unique=""
           />
           <LibCombobox
@@ -63,7 +63,7 @@
             ref="PositionId"
             class="form__ele"
             placeHolder="Nhập chức danh"
-            defaultValue=""
+            :fetchedValue="PositionId"
             unique=""
           />
         </div>
@@ -247,6 +247,8 @@ export default {
       common,
       newEmpCode: "",
       formType: "POST",
+      PositionId: "",
+      DepartmentId: "",
     };
   },
   mounted() {
@@ -325,14 +327,8 @@ export default {
             : "";
 
           // set value LibCombobox component structure
-          this.$refs.DepartmentId.$el.children[1].setAttribute(
-            "value",
-            res["DepartmentId"]
-          );
-          this.$refs.PositionId.$el.children[1].setAttribute(
-            "value",
-            res["PositionId"]
-          );
+          this.DepartmentId = res["DepartmentId"];
+          this.PositionId = res["PositionId"];
 
           // set value MDatepicker component structure
           this.$refs.DateOfBirth.$el.children[1].value = this.common.formatDate(
