@@ -26,7 +26,7 @@
       <tbody class="table__body--real">
         <template v-for="(employee, index) in employeeList" :key="index">
           <!-- bảng trả về từ api hiển thị ở đây -->
-          <tr>
+          <tr ref="EmployeeId" :value="employee['EmployeeID']">
             <!-- chèn td checkbox -->
             <td>
               <MCheckbox
@@ -45,7 +45,7 @@
                 v-if="theaditem.formatDate"
                 @dblclick="
                   $emit('show-form');
-                  putMethod();
+                  putMethod(employee['EmployeeId']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -55,7 +55,7 @@
                 v-else-if="theaditem.formatGender"
                 @dblclick="
                   $emit('show-form');
-                  putMethod();
+                  putMethod(employee['EmployeeId']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -65,7 +65,7 @@
                 v-else
                 @dblclick="
                   $emit('show-form');
-                  putMethod();
+                  putMethod(employee['EmployeeId']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -77,7 +77,7 @@
               <MConntextMenu
                 @edit-click="
                   $emit('show-form');
-                  putMethod();
+                  putMethod(employee['EmployeeId']);
                 "
                 :deleteId="employee['EmployeeId']"
                 :deleteName="employee['FullName']"
@@ -163,11 +163,12 @@ export default {
       }
     },
     /**
-     * Thay đổi method sang PUT
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     * Thay đổi method sang PUT và chèn ID hiện tại vào store global để fetch data về.
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
-    putMethod() {
+    putMethod(currentId) {
       this.$store.dispatch("changeMethod", "PUT");
+      this.$store.dispatch("changeEditID", currentId);
     },
   },
 };

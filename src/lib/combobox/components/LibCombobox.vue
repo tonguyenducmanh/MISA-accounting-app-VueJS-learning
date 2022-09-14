@@ -6,6 +6,7 @@
     </div>
     <div
       class="combobox"
+      ref="Combobox"
       :propName="propName"
       :value="uniqueSelected"
       v-click-out.passive="onClickOutside"
@@ -52,6 +53,7 @@
               $emit('change-size', comboboxItem.value);
               itemComboboxOnClick();
             "
+            :ref="comboboxItem.value"
             @keydown.enter="itemComboboxOnClick"
             :class="[
               seletedValue === comboboxItem.name
@@ -129,6 +131,12 @@ export default {
               });
             }
           })
+          .then(() => {
+            if (this.api !== undefined) {
+              let hihi = this.$refs.Combobox.getAttribute("currentid");
+              console.log(hihi);
+            }
+          })
           .catch((res) => console.log(res));
       }
       // trường hợp không có api
@@ -154,6 +162,12 @@ export default {
       console.log(error);
     }
   },
+  /**
+   * khi đã mounted rồi thì bắt đầu tiến hành kiểm tra xem có default value ở trường hợp có api không?
+   * Nếu có thì giả lập click vào trong element tương ứng của nó để hiện selected lên
+   * Author : Tô Nguyễn Đức Mạnh (14/09/2022)
+   */
+  updated() {},
   methods: {
     /**
      * lắng nghe nhập liệu vào ô input của combobox

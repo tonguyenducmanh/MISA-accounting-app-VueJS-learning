@@ -17,6 +17,7 @@ const store = createStore({
       totalRecords: 0,
       totalPage: 0,
       method: "",
+      currentEditID: "",
     };
   },
   mutations: {
@@ -69,6 +70,9 @@ const store = createStore({
     },
     changeMethod(state, value) {
       state.method = value;
+    },
+    changeEditID(state, value) {
+      state.currentEditID = value;
     },
   },
   actions: {
@@ -173,6 +177,13 @@ const store = createStore({
      */
     changeMethod(context, value) {
       context.commit("changeMethod", value);
+    },
+    /**
+     * Thay đổi ID của nhân viên đang edit hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    changeEditID(context, value) {
+      context.commit("changeEditID", value);
     },
   },
 });

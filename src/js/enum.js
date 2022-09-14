@@ -85,9 +85,9 @@ var MISAEnum = {
   // ngôn ngữ hiện tại đang dùng là tiếng Việt
   language: "VI",
   // kiểu lưu là cất hay cất và thêm
-  saveType: {
-    save: "Lưu",
-    saveAndAdd: "Lưu và thêm",
+  method: {
+    PUT: "PUT",
+    POST: "POST",
   },
 };
 

@@ -4,7 +4,7 @@ var common = {
    * @param {any} date Ngày tháng
    * Author: Tô Nguyễn Đức Mạnh (03/09/2022)
    */
-  formatDate(date) {
+  formatDate(date, characterConnect = "/") {
     try {
       if (date) {
         date = new Date(date);
@@ -14,7 +14,11 @@ var common = {
         let month = date.getMonth() + 1;
         month = month < 10 ? `0${month}` : month;
         let year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        if (characterConnect === "/") {
+          return `${day}/${month}/${year}`;
+        } else {
+          return `${year}-${month}-${day}`;
+        }
       } else {
         return "";
       }
