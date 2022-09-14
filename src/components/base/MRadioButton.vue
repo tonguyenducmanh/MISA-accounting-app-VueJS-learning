@@ -1,7 +1,7 @@
 <template lang="">
   <div class="radio">
     <div class="radio__title">{{ titleText }}</div>
-    <div class="radio__select" :propName="propNameBox" :value="selectedValue">
+    <div class="radio__select" :propName="propNameBox" :value="defaultValue">
       <template v-for="(contentitem, index) in content" :key="index">
         <input
           type="radio"
@@ -11,6 +11,7 @@
           :value="contentitem.value"
           :propName="propName"
           @click="setValue(contentitem.value)"
+          :checked="contentitem.value === defaultValue"
         />
         <label class="radio__label" :for="`radio__${index}`">{{
           contentitem.name
@@ -36,6 +37,10 @@ export default {
     },
     propName: String,
     propNameBox: String,
+    defaultValue: Number,
+  },
+  beforeCreate() {
+    this.selectedValue = this.defaultValue;
   },
   methods: {
     setValue(value) {

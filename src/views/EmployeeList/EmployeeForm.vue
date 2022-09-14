@@ -78,6 +78,7 @@
             titleText="Giới tính"
             ref="Gender"
             propNameBox="GenderBox"
+            :defaultValue="genderType"
             :content="[
               {
                 name: 'Nam',
@@ -249,6 +250,7 @@ export default {
       formType: "POST",
       PositionId: "",
       DepartmentId: "",
+      genderType: 0,
     };
   },
   mounted() {
@@ -275,6 +277,7 @@ export default {
           }
         })
         .then((res) => {
+          console.log(res);
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
           this.$refs.EmployeeCode.$el.children[1].children[0].value = res[
@@ -336,10 +339,7 @@ export default {
             "-"
           );
           // set value MDGender component structure
-          this.$refs.Gender.$el.children[1].setAttribute(
-            "value",
-            res["Gender"]
-          );
+          this.genderType = res["Gender"];
         })
         .catch((res) => {
           console.log(res);
