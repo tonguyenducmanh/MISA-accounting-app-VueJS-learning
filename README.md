@@ -1,15 +1,10 @@
-# vue-project
+# MISA GBPL VUEJS pratice
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
+Bài tập MISA GPBL vẽ lại trang quản lý nhân viên của phần mềm kế toán AMIS, sử dụng vuejs, vueX
+## 1 vài component dùng để dựng lên trang web
+![img](./img/1.png)
+## giao diện chính của trang web
+![img](./img/2.png)
 ## Project Setup
 
 ```sh

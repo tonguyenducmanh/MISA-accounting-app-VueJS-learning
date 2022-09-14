@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="form__wrap" id="form" form-type="POST" employee-id="">
+  <div class="form__wrap" form-type="POST" employee-id="">
     <div class="form">
       <div class="form__heading">
         <div class="form__title">Thông tin nhân viên</div>
@@ -50,6 +50,8 @@
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
+            :fetchedValue="DepartmentId"
+            unique=""
           />
           <LibCombobox
             id="cbxPosition"
@@ -61,6 +63,8 @@
             ref="PositionId"
             class="form__ele"
             placeHolder="Nhập chức danh"
+            :fetchedValue="PositionId"
+            unique=""
           />
         </div>
         <!-- phần nhập form thứ 2 -->
@@ -216,6 +220,7 @@
 <script>
 import MISAEnum from "../../js/enum.js";
 import MISAResource from "../../js/resource.js";
+import common from "../../js/common.js";
 
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
@@ -239,15 +244,107 @@ export default {
     return {
       MISAEnum,
       MISAResource,
+      common,
       newEmpCode: "",
       formType: "POST",
+      PositionId: "",
+      DepartmentId: "",
     };
   },
   mounted() {
     /**
+     * Kiểm tra xem method là post hay put, nếu là post thì :
      * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
+     * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
+     * Author: Tô Nguyễn Đức Manh (14/09/2022)
      */
-    this.getNewEmpCode();
+    // lấy mã id mới nếu là thêm mới
+    let currentMethod = this.$store.state.method;
+    if (currentMethod === this.MISAEnum.method.POST) {
+      this.getNewEmpCode();
+    }
+    // fetch data nếu là form edit
+    if (currentMethod === this.MISAEnum.method.PUT) {
+      let currentId = this.$store.state.currentEditID;
+      let apiTest = `${this.MISAEnum.API.GETEMPLOYEELIST}/${currentId}`;
+      // lấy dữ liệu người dùng hiện tại
+      fetch(apiTest, { method: "GET" })
+        .then((res) => {
+          if (res.status == 200) {
+            return res.json();
+          }
+        })
+        .then((res) => {
+          // map dữ liệu vào trong form nhập
+          // set value Minput component structure
+          this.$refs.EmployeeCode.$el.children[1].children[0].value = res[
+            "EmployeeCode"
+          ]
+            ? res["EmployeeCode"]
+            : "";
+          this.$refs.FullName.$el.children[1].children[0].value = res[
+            "FullName"
+          ]
+            ? res["FullName"]
+            : "";
+          this.$refs.PersonalTaxCode.$el.children[1].children[0].value = res[
+            "PersonalTaxCode"
+          ]
+            ? res["PersonalTaxCode"]
+            : "";
+          this.$refs.CreatedPlace.$el.children[1].children[0].value = res[
+            "CreatedPlace"
+          ]
+            ? res["CreatedPlace"]
+            : "";
+          this.$refs.Address.$el.children[1].children[0].value = res["Address"]
+            ? res["Address"]
+            : "";
+          this.$refs.PhoneNumber.$el.children[1].children[0].value = res[
+            "PhoneNumber"
+          ]
+            ? res["PhoneNumber"]
+            : "";
+          this.$refs.PhoneFix.$el.children[1].children[0].value = res[
+            "PhoneFix"
+          ]
+            ? res["PhoneFix"]
+            : "";
+          this.$refs.BackAccount.$el.children[1].children[0].value = res[
+            "BackAccount"
+          ]
+            ? res["BackAccount"]
+            : "";
+          this.$refs.BankName.$el.children[1].children[0].value = res[
+            "BankName"
+          ]
+            ? res["BankName"]
+            : "";
+          this.$refs.BankBrach.$el.children[1].children[0].value = res[
+            "BankBrach"
+          ]
+            ? res["BankBrach"]
+            : "";
+
+          // set value LibCombobox component structure
+          this.DepartmentId = res["DepartmentId"];
+          this.PositionId = res["PositionId"];
+
+          // set value MDatepicker component structure
+          this.$refs.DateOfBirth.$el.children[1].value = this.common.formatDate(
+            res["DateOfBirth"],
+            "-"
+          );
+          // set value MDGender component structure
+          this.$refs.Gender.$el.children[1].setAttribute(
+            "value",
+            res["Gender"]
+          );
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
   },
   methods: {
     /**
@@ -311,6 +408,10 @@ export default {
         // tiến hành POST dữ liệu lên api
         let currentMethod = this.$store.state.method;
         let api = this.MISAEnum.API.GETEMPLOYEELIST;
+        // check xem là method put hay post, nếu là put thì thêm id vào sau api
+        if (currentMethod === this.MISAEnum.method.PUT) {
+          api += "";
+        }
         fetch(api, {
           method: currentMethod,
           headers: {

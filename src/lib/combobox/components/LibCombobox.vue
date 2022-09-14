@@ -19,6 +19,7 @@
         tabindex="0"
         class="combobox__input"
         :class="classInput"
+        ref="ComboboxInput"
         type="text"
         :placeholder="
           defaultValue !== '' && defaultValue !== undefined
@@ -87,6 +88,7 @@ export default {
     placeHolder: String,
     propName: String,
     defaultValue: String,
+    fetchedValue: String,
     unique: String,
     // giá trị chèn vào khi không có api
     data: String,
@@ -108,7 +110,7 @@ export default {
     };
   },
   emits: ["change-size"],
-  beforeMount() {
+  mounted() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
      * phân tách data truyền vào component để tạo ra các comboboxitem
@@ -123,6 +125,14 @@ export default {
           .then((res) => {
             // gán giá trị mong muốn vào trong comboboxList
             for (let item of res) {
+              // kiểm tra xem nếu có giá trị mặc định thì chèn cho nó vào input và gán value vào combobox
+              if (item[combobox.value] === combobox.fetchedValue) {
+                combobox.currentInput = item[combobox.text];
+                combobox.isShowData = false;
+                // select cái đã chọn
+                combobox.seletedValue = item[combobox.text];
+                combobox.uniqueSelected = item[combobox.value];
+              }
               combobox.comboboxList.push({
                 value: item[combobox.value],
                 name: item[combobox.text],
@@ -154,6 +164,12 @@ export default {
       console.log(error);
     }
   },
+  /**
+   * khi đã mounted rồi thì bắt đầu tiến hành kiểm tra xem có default value ở trường hợp có api không?
+   * Nếu có thì giả lập click vào trong element tương ứng của nó để hiện selected lên
+   * Author : Tô Nguyễn Đức Mạnh (14/09/2022)
+   */
+  updated() {},
   methods: {
     /**
      * lắng nghe nhập liệu vào ô input của combobox
