@@ -497,7 +497,14 @@ export default {
                   // ẩn form
                   this.$emit("hide-all");
                   // hiện thông báo lưu
-                  this.showAddedNoti();
+                  if (this.$store.state.currentEditID === "") {
+                    // nếu là thêm mới thì hiện là thêm mới
+                    this.showAddedNoti();
+                  } else {
+                    // nếu là nhân bản thì hiện là nhân bản
+                    this.showDupplicatedNoti();
+                    this.$store.state.currentEditID = "";
+                  }
                 }
               }
             })
@@ -556,7 +563,14 @@ export default {
                   // thực hiện lưu vào database
                   this.confirmSave();
                   // hiện thông báo lưu
-                  this.showAddedNoti();
+                  if (this.$store.state.currentEditID === "") {
+                    // nếu là thêm mới thì hiện là thêm mới
+                    this.showAddedNoti();
+                  } else {
+                    // nếu là nhân bản thì hiện là nhân bản
+                    this.showDupplicatedNoti();
+                    this.$store.state.currentEditID = "";
+                  }
                   // clear form đi
                   this.clearForm();
                   // lấy lại dữ liệu mới
@@ -624,6 +638,27 @@ export default {
         this.$store.dispatch(
           "changeToastText",
           this.MISAResource.ToastMessage.EditedNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiển thị thông báo là đã nhân bản thành công
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    showDupplicatedNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch(
+          "changeToastType",
+          this.MISAEnum.toasttype.SUCCESS
+        );
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.DuplicatedNoti[lang]
         );
         this.$store.dispatch("toggleToast", true);
       } catch (error) {
