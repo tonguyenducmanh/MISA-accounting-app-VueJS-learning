@@ -61,11 +61,15 @@
     tùy chỉnh position thông báo lỗi
 */
 
-.form__body .form__ele:hover::after {
+.form__ele{
+  position: relative;
+}
+
+.form__ele:hover::after {
   display: none;
 }
 
-.form__body .form__ele:has(.input__field--alert):hover::after {
+.form__ele:has(.input__field--alert):hover::after {
   display: block;
   top: 100%;
   left: 50%;

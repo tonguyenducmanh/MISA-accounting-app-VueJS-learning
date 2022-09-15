@@ -103,7 +103,6 @@
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
-            dataTitle="Tên không được để trống."
           />
           <MDatePicker
             labelText="Ngày cấp"
@@ -154,6 +153,8 @@
             placeHolder="Nhập Email"
             :classInput="'form__email'"
             class="form__ele"
+            :isEmail="true"
+            data-title="Email chưa đúng định dạng."
           />
           <MInput
             :hasLabel="true"
