@@ -109,6 +109,7 @@
       @hide-form="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
+      @alert-popup="toggleAlertPopUp"
       ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
@@ -134,6 +135,11 @@
       :WarningMess="WarningMess"
     />
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
+    <MPopup
+      :isAlert="isAlertShow"
+      @hide-popup="toggleAlertPopUp"
+      :AlertMess="AlertMess"
+    />
     <!-- toast message thông báo thành công -->
     <MToastMessage
       v-if="toggleToast"
@@ -180,6 +186,7 @@ export default {
       isFormShow: false,
       apiTable: "",
       WarningMess: "",
+      AlertMess: "",
     };
   },
   beforeMount() {
@@ -386,6 +393,19 @@ export default {
         this.$store.dispatch("changeDeleteId", deleteId);
         this.$store.dispatch("changeDeleteName", deleteName);
         this.isAskWarningShow = !this.isAskWarningShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup cảnh báo nhập thiếu
+     * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    toggleAlertPopUp(value) {
+      try {
+        this.isAlertShow = !this.isAlertShow;
+
+        this.AlertMess = value;
       } catch (error) {
         console.log(error);
       }
