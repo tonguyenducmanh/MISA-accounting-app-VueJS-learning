@@ -345,6 +345,13 @@ export default {
         });
     }
   },
+  /**
+   * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
+   * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+   */
+  mounted() {
+    this.$refs.EmployeeCode.$el.children[1].children[0].focus();
+  },
   methods: {
     /**
      * Lấy ra mã người dùng mới rồi focus vào ô đầu tiên
@@ -360,7 +367,6 @@ export default {
           .then((res) => {
             // gán giá trị cần truyền vào trong input
             this.newEmpCode = res;
-            this.$refs.EmployeeCode.$el.children[1].children[0].focus();
           })
           .catch((res) => {
             console.log(res);

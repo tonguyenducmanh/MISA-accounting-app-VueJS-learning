@@ -109,6 +109,7 @@
       @hide-form="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
+      ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
     <MPopup
