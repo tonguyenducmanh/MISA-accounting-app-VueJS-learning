@@ -61,7 +61,11 @@
       <div class="popup popup--alert">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
-          <div class="popup__text">{{ AlertMess }}</div>
+          <div class="popup__text">
+            <span v-for="(alertItem, index) in AlertMessFormatted" :key="index">
+              <div>{{ alertItem }}</div>
+            </span>
+          </div>
         </div>
         <div class="popup__action">
           <MButton buttonName="Đóng" @click="$emit('hide-popup')" />
@@ -107,7 +111,14 @@ export default {
     return {
       MISAEnum,
       MISAResource,
+      AlertMessFormatted: "",
     };
+  },
+  //phân ra alert string thành array
+  beforeUpdate() {
+    if (this.AlertMess !== "" && this.AlertMess !== undefined) {
+      this.AlertMessFormatted = this.AlertMess.split("#");
+    }
   },
   methods: {
     /**

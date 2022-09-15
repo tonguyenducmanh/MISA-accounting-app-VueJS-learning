@@ -192,7 +192,6 @@ export default {
           this.isNotNull === true &&
           (this.currentInput === "" || this.currentInput === undefined)
         ) {
-          console.log(this.currentInput);
           this.isErrorTying = true;
         } else {
           this.isErrorTying = false;

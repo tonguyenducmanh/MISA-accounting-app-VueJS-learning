@@ -431,7 +431,7 @@ export default {
             this.$refs.DepartmentId.notNullValidate();
             temp.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
           }
-          this.$emit("alert-popup", temp.join(" "));
+          this.$emit("alert-popup", temp.join("#"));
           return false;
         }
       } catch (error) {

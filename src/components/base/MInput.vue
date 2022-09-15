@@ -139,7 +139,6 @@ export default {
           this.isNotNull === true &&
           (this.currentValue === "" || this.currentValue === undefined)
         ) {
-          console.log(this.currentValue);
           this.isErrorTying = true;
         } else {
           this.isErrorTying = false;
