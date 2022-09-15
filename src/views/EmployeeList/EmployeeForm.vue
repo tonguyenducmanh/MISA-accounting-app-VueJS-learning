@@ -410,20 +410,28 @@ export default {
         if (employeeCode !== "" && fullName !== "" && departmentID !== "") {
           return true;
         } else {
-          let temp = "";
+          let temp = [];
           let language = this.$store.state.language;
           if (employeeCode === "") {
-            temp +=
-              this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language];
+            // gọi hàm của component con thông qua refs
+            this.$refs.EmployeeCode.notNullValidate();
+            temp.push(
+              this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
+            );
           }
           if (fullName === "") {
-            temp +=
-              this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language];
+            // gọi hàm của component con thông qua refs
+            this.$refs.FullName.notNullValidate();
+            temp.push(
+              this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
+            );
           }
           if (departmentID === "") {
-            temp += this.MISAResource.ErrorValidate.DepartmentName[language];
+            // gọi hàm của component con thông qua refs
+            this.$refs.DepartmentId.notNullValidate();
+            temp.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
           }
-          this.$emit("alert-popup", temp);
+          this.$emit("alert-popup", temp.join(" "));
           return false;
         }
       } catch (error) {
