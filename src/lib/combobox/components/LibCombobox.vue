@@ -109,6 +109,7 @@ export default {
     // trường thứ hai muốn lấy trong json respone
     value: String,
     isNotNull: Boolean,
+    isDefaultError: Boolean,
   },
   data() {
     return {
@@ -129,6 +130,9 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
      */
     try {
+      if (this.isDefaultError === true) {
+        this.isErrorTying = true;
+      }
       let combobox = this;
       // trường hợp có api
       if (this.api !== undefined) {

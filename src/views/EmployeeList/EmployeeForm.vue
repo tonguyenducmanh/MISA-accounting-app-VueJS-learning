@@ -55,6 +55,7 @@
             :fetchedValue="DepartmentId"
             unique=""
             :isNotNull="true"
+            :isDefaultError="true"
           />
           <LibCombobox
             id="cbxPosition"
