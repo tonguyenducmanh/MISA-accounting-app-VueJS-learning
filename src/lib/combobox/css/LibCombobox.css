@@ -70,11 +70,22 @@
 .combobox .combobox__drop::before {
   position: absolute;
   content: "";
-  background-position: center;
+  background-image: url(../../../assets/img/Sprites.64af8f61.svg);
+  background-position: -368px -360px;
   background-repeat: no-repeat;
   width: 14px;
   height: 14px;
 }
+
+.combobox:has(.combobox__data--open) .combobox__drop::before{
+  animation: spin 0.1s linear forwards;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
 
 .combobox .combobox__data {
   display: none;
@@ -99,6 +110,7 @@
 .combobox .combobox__data--open {
   display: block;
 }
+
 
 .combobox .combobox__item {
   display: block;
