@@ -353,7 +353,6 @@ export default {
     getNewEmpCode() {
       try {
         // focus vào ô nhập đầu tiên
-        this.$refs.EmployeeCode.$el.children[1].children[0].focus();
         // lấy ra api
         let api = this.MISAEnum.API.NEWEMPLOYEECODE;
         fetch(api, { method: "GET" })
@@ -361,6 +360,7 @@ export default {
           .then((res) => {
             // gán giá trị cần truyền vào trong input
             this.newEmpCode = res;
+            this.$refs.EmployeeCode.$el.children[1].children[0].focus();
           })
           .catch((res) => {
             console.log(res);
