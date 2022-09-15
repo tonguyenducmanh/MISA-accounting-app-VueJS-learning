@@ -14,6 +14,7 @@
       @keydown.left.passive="prevEleMove"
       @keydown.down.passive="nextEleMove"
       @keydown.right.passive="nextEleMove"
+      :data-title="dataTitle"
     >
       <input
         tabindex="0"
@@ -30,7 +31,6 @@
             : placeHolder
         "
         :validate="validate"
-        :data-title="dataTitle"
         @focus="inputComboboxOnClick"
         @input="
           inputComboboxOnClick();
@@ -61,7 +61,9 @@
               itemComboboxOnClick();
               notNullValidate();
             "
-            @keydown.enter="itemComboboxOnClick"
+            @keydown.tab="
+              itemComboboxOnClick(index === comboboxList.length - 1)
+            "
             :class="[
               seletedValue === comboboxItem.name
                 ? ComboboxEnum.comboboxItem.SELECTED
@@ -222,14 +224,16 @@ export default {
      * click vào item thì ẩn combobox data đi và truyền value vào trong input.
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
      */
-    itemComboboxOnClick() {
+    itemComboboxOnClick(value) {
       try {
-        // ẩn drop menu đi
-        this.isShowData = false;
-        // select cái đã chọn
-        this.seletedValue = event.target.textContent;
-        this.currentInput = event.target.textContent;
-        this.uniqueSelected = event.target.getAttribute("value");
+        if (value === true || value === undefined || value === "") {
+          // ẩn drop menu đi
+          this.isShowData = false;
+          // select cái đã chọn
+          this.seletedValue = event.target.textContent;
+          this.currentInput = event.target.textContent;
+          this.uniqueSelected = event.target.getAttribute("value");
+        }
       } catch (error) {
         console.log(error);
       }

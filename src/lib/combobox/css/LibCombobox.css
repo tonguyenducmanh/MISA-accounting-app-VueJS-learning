@@ -24,6 +24,10 @@
   color: #EB3333;
 }
 
+.combobox:hover::after {
+  display: none;
+}
+
 .combobox .combobox__input {
   width: 100%;
   border-radius: 4px;
@@ -32,6 +36,7 @@
   box-sizing: border-box;
   outline: none;
   border: 1px solid #e0e0e0;
+  position: relative;
 }
 
 
@@ -41,10 +46,18 @@
 
 .combobox .combobox__input--alert {
   border: 1px solid #EB3333;
+  position: relative;
 }
 
 .combobox .combobox__input--alert:focus {
   border: 1px solid #EB3333;
+}
+
+.combobox:has(.combobox__input--alert):hover::after {
+  display: block;
+  top:0;
+  left: 0;
+  transform: translate(50%,90%);
 }
 
 .combobox .combobox__button {
