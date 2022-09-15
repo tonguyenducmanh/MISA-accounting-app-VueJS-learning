@@ -473,8 +473,8 @@ export default {
           let currentId =
             this.$refs.EmployeeCode.$el.children[1].children[0].value;
           let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
-
-          fetch(apiTest, { method: methodNow })
+          // method ở dưới để kiểm thử trùng id, khác với method ở trên
+          fetch(apiTest, { method: "GET" })
             .then((res) => {
               if (res.status == 200) {
                 // trả về false
