@@ -186,6 +186,8 @@ export default {
       // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
       setTimeout(() => {
         this.$store.dispatch("changeMethod", "POST");
+        // xóa cả currentID đi
+        this.$store.dispatch("changeEditID", "");
       }, 1000);
       // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },
