@@ -18,7 +18,10 @@
       <input
         tabindex="0"
         class="combobox__input"
-        :class="classInput"
+        :class="
+          ([classInput],
+          isErrorTying === true ? ComboboxEnum.input.InputAlert : '')
+        "
         ref="ComboboxInput"
         type="text"
         :placeholder="
@@ -29,7 +32,11 @@
         :validate="validate"
         :data-title="dataTitle"
         @focus="inputComboboxOnClick"
-        @input="inputComboboxOnClick"
+        @input="
+          inputComboboxOnClick();
+          notNullValidate();
+        "
+        @focusout="notNullValidate"
         v-model="currentInput"
       />
       <button tabindex="0" class="combobox__button" @click="btnComboboxOnClick">
@@ -52,6 +59,7 @@
             @click="
               $emit('change-size', comboboxItem.value);
               itemComboboxOnClick();
+              notNullValidate();
             "
             @keydown.enter="itemComboboxOnClick"
             :class="[
@@ -98,6 +106,7 @@ export default {
     text: String,
     // trường thứ hai muốn lấy trong json respone
     value: String,
+    isNotNull: Boolean,
   },
   data() {
     return {
@@ -107,6 +116,7 @@ export default {
       seletedValue: "",
       currentInput: "",
       uniqueSelected: "",
+      isErrorTying: false,
     };
   },
   emits: ["change-size"],
@@ -165,6 +175,26 @@ export default {
     }
   },
   methods: {
+    /**
+     * Validate trường bắt buộc phải nhập (không được để trống)
+     * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    notNullValidate() {
+      try {
+        // kiểm tra xem có phải trường not null không
+        if (
+          this.isNotNull === true &&
+          (this.currentInput === "" || this.currentInput === undefined)
+        ) {
+          console.log(this.currentInput);
+          this.isErrorTying = true;
+        } else {
+          this.isErrorTying = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     /**
      * lắng nghe nhập liệu vào ô input của combobox
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)

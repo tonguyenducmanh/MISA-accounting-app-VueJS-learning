@@ -21,7 +21,16 @@
         ]"
         :placeholder="placeHolder"
         v-model="currentValue"
-        @input="emailValidate"
+        @input="
+          emailValidate();
+          notNullValidate();
+          justNumberValidate();
+        "
+        @focusout="
+          emailValidate();
+          notNullValidate();
+          justNumberValidate();
+        "
       />
       <span
         tabindex="0"
@@ -64,9 +73,13 @@ export default {
     "formatDate",
     "inputValue",
     "isEmail",
+    "isNumber",
+    "isNotNull",
+    "setError",
   ],
   beforeMount() {
     this.currentValue = this.inputValue;
+    this.isErrorTying = this.setError;
   },
   /**
    * Theo dõi khi nào giá trị input rỗng thì load lại trang bằng cách giả lập click vào trong nút tìm kiếm.
@@ -97,11 +110,61 @@ export default {
     emailValidate() {
       try {
         // kiểm tra xem nó có phải ô nhập email không đã
-        if (this.isEmail === true) {
+        if (
+          this.isEmail === true &&
+          this.currentValue !== "" &&
+          this.currentValue !== undefined
+        ) {
+          console.log(this.currentValue);
           const emailRegex = /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).com/gm;
           let result = emailRegex.test(this.currentValue);
           if (result === false) {
             this.isErrorTying = true;
+          } else {
+            this.isErrorTying = false;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Validate trường bắt buộc phải nhập (không được để trống)
+     * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    notNullValidate() {
+      try {
+        // kiểm tra xem có phải trường not null không
+        if (
+          this.isNotNull === true &&
+          (this.currentValue === "" || this.currentValue === undefined)
+        ) {
+          console.log(this.currentValue);
+          this.isErrorTying = true;
+        } else {
+          this.isErrorTying = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Validate trường chỉ được phép điền số từ 1-9
+     * Author : Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    justNumberValidate() {
+      try {
+        // kiểm tra xem nó có phải trường chỉ điền số không
+        if (this.isNumber === true) {
+          if (this.currentValue !== "" && this.currentValue !== undefined) {
+            console.log(this.currentValue);
+            const numberRegex = /^\d+$/;
+            let result = numberRegex.test(this.currentValue);
+            if (result === false) {
+              this.isErrorTying = true;
+            } else {
+              this.isErrorTying = false;
+            }
           } else {
             this.isErrorTying = false;
           }

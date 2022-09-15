@@ -21,7 +21,7 @@
 }
 
 .input__label--alert {
-  color: var(--ColorAlert);
+  color: #EB3333;
 }
 
 .combobox .combobox__input {
@@ -77,13 +77,18 @@
   height: 14px;
 }
 
-.combobox:has(.combobox__data--open) .combobox__drop::before{
+.combobox:has(.combobox__data--open) .combobox__drop::before {
   animation: spin 0.1s linear forwards;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(180deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
 }
 
 

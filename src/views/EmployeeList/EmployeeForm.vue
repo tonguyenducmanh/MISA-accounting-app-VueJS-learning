@@ -22,6 +22,7 @@
             :showAlertStar="true"
             class="form__ele"
             dataTitle="Mã không được để trống."
+            :isNotNull="true"
           />
           <MInput
             :hasLabel="true"
@@ -35,6 +36,7 @@
             :showAlertStar="true"
             class="form__ele"
             dataTitle="Tên không được để trống."
+            :isNotNull="true"
           />
           <LibCombobox
             id="cbxDepartment"
@@ -52,6 +54,7 @@
             classInput="input__musthave"
             :fetchedValue="DepartmentId"
             unique=""
+            :isNotNull="true"
           />
           <LibCombobox
             id="cbxPosition"
@@ -103,6 +106,8 @@
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
           />
           <MDatePicker
             labelText="Ngày cấp"
@@ -137,6 +142,8 @@
             placeHolder="Nhập số điện thoại di động"
             :classInput="'form__phonenum'"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
           />
           <MInput
             :hasLabel="true"
@@ -145,6 +152,8 @@
             ref="PhoneFix"
             placeHolder="Nhập số điện thoại cố định"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
           />
           <MInput
             :hasLabel="true"
@@ -164,6 +173,8 @@
             placeHolder="Nhập tài khoản ngân hàng"
             :classInput="'form__banknum'"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
           />
           <MInput
             :hasLabel="true"
