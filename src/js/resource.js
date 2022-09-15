@@ -58,6 +58,10 @@ var MISAResource = {
       VI: "Đã tải lại danh sách.",
       EN: "The table is refreshed.",
     },
+    CanceledNoti: {
+      VI: "Thao tác đã bị hủy.",
+      EN: "This action is canceled.",
+    },
   },
 };
 
