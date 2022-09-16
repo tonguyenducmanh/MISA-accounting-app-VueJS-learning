@@ -115,7 +115,6 @@ export default {
           this.currentValue !== "" &&
           this.currentValue !== undefined
         ) {
-          console.log(this.currentValue);
           const emailRegex = /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).com/gm;
           let result = emailRegex.test(this.currentValue);
           if (result === false) {
