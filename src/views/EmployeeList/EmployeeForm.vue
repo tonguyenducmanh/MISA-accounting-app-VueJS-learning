@@ -12,7 +12,7 @@
           <MInput
             ref="EmployeeCode"
             :inputValue="
-              formObject['EmployeeCode'] !== ''
+              $store.state.method === 'PUT'
                 ? formObject['EmployeeCode']
                 : newEmpCode
             "
