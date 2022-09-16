@@ -61,6 +61,11 @@
               itemComboboxOnClick();
               notNullValidate();
             "
+            @keydown.enter="
+              $emit('change-size', comboboxItem.value);
+              itemComboboxOnClick();
+              notNullValidate();
+            "
             @keydown.tab="
               itemComboboxOnClick(index === comboboxList.length - 1)
             "
