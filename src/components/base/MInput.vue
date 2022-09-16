@@ -156,7 +156,6 @@ export default {
         // kiểm tra xem nó có phải trường chỉ điền số không
         if (this.isNumber === true) {
           if (this.currentValue !== "" && this.currentValue !== undefined) {
-            console.log(this.currentValue);
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.currentValue);
             if (result === false) {

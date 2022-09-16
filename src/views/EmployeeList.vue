@@ -117,7 +117,10 @@
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
-      @save-now="saveNow"
+      @save-now="
+        toggleAskPopUp();
+        saveNow();
+      "
       AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
@@ -324,10 +327,11 @@ export default {
     },
     /**
      *Lưu trang ngay khi ấn vào nút lưu trong popup hỏi có muốn lưu không.
-     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     *Author: Tô Nguyễn Đức Mạnh (16/09/2022)
      */
     saveNow() {
-      console.log("hihi");
+      // trigger tới method saveNew nằm trong component EmployeeForm thông qua refs
+      this.$refs.employeeForm.saveNew();
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
