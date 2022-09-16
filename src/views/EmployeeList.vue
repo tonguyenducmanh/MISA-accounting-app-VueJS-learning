@@ -296,10 +296,17 @@ export default {
             }
           })
           .then((res) => {
-            this.employeeList = res["Data"];
-            this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
-            this.$store.dispatch("changeTotalPage", res["TotalPage"]);
-            this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
+            if (res !== undefined && res !== "") {
+              this.employeeList = res["Data"];
+              this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
+              this.$store.dispatch("changeTotalPage", res["TotalPage"]);
+              this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
+            } else {
+              this.employeeList = [];
+              this.$store.dispatch("changeTotalRecords", 0);
+              this.$store.dispatch("changeTotalPage", 1);
+              this.$store.dispatch("changeCurrentPage", 1);
+            }
           })
           .catch((res) => {
             console.log(res);
