@@ -22,14 +22,14 @@
         :placeholder="placeHolder"
         v-model="currentValue"
         @input="
-          emailValidate();
           notNullValidate();
           justNumberValidate();
+          emailValidate();
         "
         @focusout="
-          emailValidate();
           notNullValidate();
           justNumberValidate();
+          emailValidate();
         "
       />
       <span
