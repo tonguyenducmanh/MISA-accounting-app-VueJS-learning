@@ -11,7 +11,11 @@
         <div class="form__part form__one">
           <MInput
             ref="EmployeeCode"
-            :inputValue="newEmpCode"
+            :inputValue="
+              formObject['EmployeeCode'] !== ''
+                ? formObject['EmployeeCode']
+                : newEmpCode
+            "
             :hasLabel="true"
             labelText="Mã"
             placeHolder="Nhập mã nhân viên"
@@ -37,6 +41,9 @@
             class="form__ele"
             dataTitle="Tên không được để trống."
             :isNotNull="true"
+            :inputValue="
+              formObject['FullName'] !== '' ? formObject['FullName'] : ''
+            "
           />
           <LibCombobox
             id="cbxDepartment"
@@ -108,6 +115,11 @@
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
             :isNumber="true"
+            :inputValue="
+              formObject['PersonalTaxCode'] !== ''
+                ? formObject['PersonalTaxCode']
+                : ''
+            "
           />
           <MDatePicker
             labelText="Ngày cấp"
@@ -122,6 +134,11 @@
             placeHolder="Nhập nơi cấp"
             :classInput="'form__createdwhere'"
             class="form__ele"
+            :inputValue="
+              formObject['CreatedPlace'] !== ''
+                ? formObject['CreatedPlace']
+                : ''
+            "
           />
         </div>
         <!-- phần nhập form thứ 3 -->
@@ -133,6 +150,9 @@
             placeHolder="Nhập địa chỉ"
             :classInput="'form__address'"
             class="form__ele"
+            :inputValue="
+              formObject['Address'] !== '' ? formObject['Address'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
@@ -144,6 +164,9 @@
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
             :isNumber="true"
+            :inputValue="
+              formObject['PhoneNumber'] !== '' ? formObject['PhoneNumber'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
@@ -154,6 +177,9 @@
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
             :isNumber="true"
+            :inputValue="
+              formObject['PhoneFix'] !== '' ? formObject['PhoneFix'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
@@ -164,6 +190,7 @@
             class="form__ele"
             :isEmail="true"
             data-title="Email chưa đúng định dạng."
+            :inputValue="formObject['Email'] !== '' ? formObject['Email'] : ''"
           />
           <MInput
             :hasLabel="true"
@@ -175,6 +202,9 @@
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
             :isNumber="true"
+            :inputValue="
+              formObject['BackAccount'] !== '' ? formObject['BackAccount'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
@@ -183,6 +213,9 @@
             placeHolder="Nhập tên ngân hàng"
             :classInput="'form__bankname'"
             class="form__ele"
+            :inputValue="
+              formObject['BankName'] !== '' ? formObject['BankName'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
@@ -191,6 +224,9 @@
             placeHolder="Nhập chi nhánh"
             :classInput="'form__bankaddr'"
             class="form__ele"
+            :inputValue="
+              formObject['BankBrach'] !== '' ? formObject['BankBrach'] : ''
+            "
           />
         </div>
       </div>
@@ -269,6 +305,7 @@ export default {
       PositionId: "",
       DepartmentId: "",
       genderType: 0,
+      formObject: {},
     };
   },
   /**
@@ -297,52 +334,27 @@ export default {
         .then((res) => {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
-          this.$refs.EmployeeCode.$el.children[1].children[0].value = res[
-            "EmployeeCode"
-          ]
+          this.formObject["EmployeeCode"] = res["EmployeeCode"]
             ? res["EmployeeCode"]
             : "";
-          this.$refs.FullName.$el.children[1].children[0].value = res[
-            "FullName"
-          ]
-            ? res["FullName"]
-            : "";
-          this.$refs.PersonalTaxCode.$el.children[1].children[0].value = res[
-            "PersonalTaxCode"
-          ]
+          this.formObject["FullName"] = res["FullName"] ? res["FullName"] : "";
+          this.formObject["PersonalTaxCode"] = res["PersonalTaxCode"]
             ? res["PersonalTaxCode"]
             : "";
-          this.$refs.CreatedPlace.$el.children[1].children[0].value = res[
-            "CreatedPlace"
-          ]
+          this.formObject["CreatedPlace"] = res["CreatedPlace"]
             ? res["CreatedPlace"]
             : "";
-          this.$refs.Address.$el.children[1].children[0].value = res["Address"]
-            ? res["Address"]
-            : "";
-          this.$refs.PhoneNumber.$el.children[1].children[0].value = res[
-            "PhoneNumber"
-          ]
+          this.formObject["Address"] = res["Address"] ? res["Address"] : "";
+          this.formObject["PhoneNumber"] = res["PhoneNumber"]
             ? res["PhoneNumber"]
             : "";
-          this.$refs.PhoneFix.$el.children[1].children[0].value = res[
-            "PhoneFix"
-          ]
-            ? res["PhoneFix"]
-            : "";
-          this.$refs.BackAccount.$el.children[1].children[0].value = res[
-            "BackAccount"
-          ]
+          this.formObject["PhoneFix"] = res["PhoneFix"] ? res["PhoneFix"] : "";
+          this.formObject["Email"] = res["Email"] ? res["Email"] : "";
+          this.formObject["BackAccount"] = res["BackAccount"]
             ? res["BackAccount"]
             : "";
-          this.$refs.BankName.$el.children[1].children[0].value = res[
-            "BankName"
-          ]
-            ? res["BankName"]
-            : "";
-          this.$refs.BankBrach.$el.children[1].children[0].value = res[
-            "BankBrach"
-          ]
+          this.formObject["BankName"] = res["BankName"] ? res["BankName"] : "";
+          this.formObject["BankBrach"] = res["BankBrach"]
             ? res["BankBrach"]
             : "";
 
