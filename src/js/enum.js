@@ -88,6 +88,7 @@ var MISAEnum = {
   method: {
     PUT: "PUT",
     POST: "POST",
+    GET: "GET",
   },
 };
 
