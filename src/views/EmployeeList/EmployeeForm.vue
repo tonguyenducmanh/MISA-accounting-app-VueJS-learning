@@ -283,9 +283,9 @@ export default {
   emits: [
     "hide-form",
     "hide-all",
-    "refresh-list",
     "warning-duplicate",
     "alert-popup",
+    "update-table",
   ],
   components: {
     MButton,
@@ -498,9 +498,12 @@ export default {
           },
           body: JSON.stringify(employee),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
+          .then(() => {
+            this.$emit("update-table");
+          })
+          .then(() => {
+            // ẩn form
+            this.$emit("hide-all");
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -572,8 +575,6 @@ export default {
                   {
                     // thực hiện lưu vào database
                     this.confirmSave();
-                    // ẩn form
-                    this.$emit("hide-all");
                     // hiện thông báo lưu
                     if (this.$store.state.currentEditID === "") {
                       // nếu là thêm mới thì hiện là thêm mới
@@ -593,8 +594,6 @@ export default {
             // nếu là sửa thì tiến hành update dữ liệu
             // thực hiện lưu vào database
             this.confirmSave();
-            // ẩn form
-            this.$emit("hide-all");
             // hiện thông báo lưu
             this.showEditedNoti();
             // sửa lại method về post
@@ -663,6 +662,9 @@ export default {
                       this.newEmpCode;
                   }
                 }
+              })
+              .catch((error) => {
+                console.log(error);
               });
           } else {
             // thực hiện lưu vào database

@@ -110,6 +110,10 @@
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
       @alert-popup="toggleAlertPopUp"
+      @update-table="
+        testMethod();
+        loadData();
+      "
       ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
@@ -264,6 +268,17 @@ export default {
     }
   },
   methods: {
+    /**
+     * Test method
+     * Author : Tô Nguyễn Đức Manh (17/09/2022)
+     */
+    testMethod() {
+      try {
+        console.log("đã thực thi test method");
+      } catch (error) {
+        console.log(error);
+      }
+    },
     /**
      * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
