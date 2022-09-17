@@ -289,7 +289,7 @@ export default {
         if (arrFilter.length != 0) {
           apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
         }
-        fetch(apiFetch, { method: "GET" })
+        fetch(apiFetch, { method: this.MISAEnum.method.GET })
           .then((res) => {
             if (res.status == 200) {
               return res.json();
