@@ -439,7 +439,7 @@ export default {
             // gọi hàm của component con thông qua refs
             this.$refs.employeeCode.notNullValidate();
             temp.push(
-              this.MISAResource.ErrorValidate.employeeCodeNotEmpty[language]
+              this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
             );
           }
           if (fullName === "") {
@@ -452,7 +452,7 @@ export default {
           if (departmentID === "") {
             // gọi hàm của component con thông qua refs
             this.$refs.departmentID.notNullValidate();
-            temp.push(this.MISAResource.ErrorValidate.departmentName[language]);
+            temp.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
           }
           this.$emit("alert-popup", temp.join("#"));
           return false;
