@@ -31,65 +31,65 @@
         :theadList="[
           {
             align: 'left',
-            propName: 'EmployeeCode',
+            propName: 'employeeCode',
             width: '150',
             name: 'Mã nhân viên',
           },
           {
             align: 'left',
-            propName: 'FullName',
+            propName: 'fullName',
             width: '200',
             name: 'Tên nhân viên',
           },
           {
             align: 'left',
-            propName: 'Gender',
+            propName: 'gender',
             width: '110',
             name: 'Giới tính',
             formatGender: true,
           },
           {
             align: 'center',
-            propName: 'DateOfBirth',
+            propName: 'dateOfBirth',
             width: '130',
             name: 'Ngày sinh',
             formatDate: true,
           },
           {
             align: 'right',
-            propName: 'PersonalTaxCode',
+            propName: 'identityCard',
             width: '200',
             name: 'Số CMND',
             formatRight: true,
           },
           {
             align: 'left',
-            propName: 'PositionName',
+            propName: 'positionName',
             width: '200',
             name: 'Chức danh',
           },
           {
             align: 'left',
-            propName: 'DepartmentName',
+            propName: 'departmentName',
             width: '250',
             name: 'Tên đơn vị',
           },
           {
             align: 'right',
-            propName: '',
+            propName: 'bankAccount',
             width: '200',
             name: 'Số tài khoản',
             formatRight: true,
           },
           {
             align: 'left',
-            propName: '',
+            propName: 'bankName',
             width: '250',
             name: 'Tên ngân hàng',
           },
           {
             align: 'left',
-            propName: '',
+            propName: 'bankBranch',
             width: '250',
             name: 'Chi nhánh TK ngân hàng',
           },
@@ -312,10 +312,10 @@ export default {
           })
           .then((res) => {
             if (res !== undefined && res !== "") {
-              this.employeeList = res["Data"];
-              this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
-              this.$store.dispatch("changeTotalPage", res["TotalPage"]);
-              this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
+              this.employeeList = res["data"];
+              this.$store.dispatch("changeTotalRecords", res["totalRecord"]);
+              this.$store.dispatch("changeTotalPage", res["totalPage"]);
+              this.$store.dispatch("changeCurrentPage", res["currentPage"]);
             } else {
               this.employeeList = [];
               this.$store.dispatch("changeTotalRecords", 0);

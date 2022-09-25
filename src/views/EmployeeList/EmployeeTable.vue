@@ -26,12 +26,12 @@
       <tbody class="table__body--real">
         <template v-for="(employee, index) in employeeList" :key="index">
           <!-- bảng trả về từ api hiển thị ở đây -->
-          <tr ref="EmployeeId" :value="employee['EmployeeID']">
+          <tr ref="employeeID" :value="employee['employeeID']">
             <!-- chèn td checkbox -->
             <td>
               <MCheckbox
                 :isTd="true"
-                :value="employee['EmployeeId']"
+                :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
               />
             </td>
@@ -45,7 +45,7 @@
                 v-if="theaditem.formatDate"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -55,7 +55,7 @@
                 v-else-if="theaditem.formatGender"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -65,7 +65,7 @@
                 v-else
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -77,14 +77,14 @@
               <MConntextMenu
                 @edit-click="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 @duplicate-click="
                   $emit('show-form');
-                  postMethod(employee['EmployeeId']);
+                  postMethod(employee['employeeID']);
                 "
-                :deleteId="employee['EmployeeId']"
-                :deleteName="employee['FullName']"
+                :deleteId="employee['employeeID']"
+                :deleteName="employee['fullName']"
                 :hasUp="
                   hasUp &&
                   (index === employeeList.length - 1 ||
