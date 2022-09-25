@@ -8,6 +8,7 @@
       class="combobox"
       :propName="propName"
       :value="uniqueSelected"
+      :valueName="currentInput"
       v-click-out.passive="onClickOutside"
       @keydown.esc.passive="hideComboboxData"
       @keydown.up.passive="prevEleMove"

@@ -290,7 +290,7 @@ export default {
         let pageNumber = this.$store.state.pageNumber;
         let arrFilter = [];
         if (searchFilter != null && searchFilter != "") {
-          arrFilter.push(`employeeFilter=${searchFilter}`);
+          arrFilter.push(`keyword=${searchFilter}`);
         }
         if (pageSize != null && pageSize != "") {
           arrFilter.push(`pageSize=${pageSize}`);

@@ -125,7 +125,6 @@
             labelText="Ngày cấp"
             ref="identityDate"
             class="form__identityDate"
-            :formatDate="true"
           />
           <MInput
             :hasLabel="true"
@@ -369,6 +368,8 @@ export default {
             res["dateOfBirth"],
             "-"
           );
+          this.$refs.identityDate.$el.children[1].value =
+            this.common.formatDate(res["identityDate"], "-");
           // set value MDgender component structure
           this.genderType = res["gender"];
         })
@@ -393,12 +394,20 @@ export default {
       try {
         // focus vào ô nhập đầu tiên
         // lấy ra api
-        let api = this.MISAEnum.API.NEWemployeeCode;
+        let api = this.MISAEnum.API.NEWEMPLOYEECODE;
         fetch(api, { method: "GET" })
           .then((res) => res.text())
           .then((res) => {
-            // gán giá trị cần truyền vào trong input
-            this.newEmpCode = res;
+            // gán giá trị tăng 1 đơn vị cần truyền vào trong input
+            const lastID = res;
+            let lastIDArray;
+            lastID !== "" ? (lastIDArray = lastID) : (lastIDArray = "NV00001");
+            const lastIDNumber =
+              parseInt(lastIDArray.split("").slice(2, 7).join("")) + 1;
+            const zeroPad = (num, places) => String(num).padStart(places, "0");
+            const newIDCout = zeroPad(lastIDNumber, 5);
+            const newNVCount = `NV${newIDCout}`;
+            this.newEmpCode = newNVCount;
           })
           .catch((res) => {
             console.log(res);
@@ -459,33 +468,87 @@ export default {
     confirmSave() {
       try {
         let employee = {};
+        employee["EmployeeID"] = this.$store.state.currentEditID
+          ? this.$store.state.currentEditID
+          : null;
         // get value Minput component structure
         employee["EmployeeCode"] =
           this.$refs.employeeCode.$el.children[1].children[0].value;
         employee["FullName"] =
           this.$refs.fullName.$el.children[1].children[0].value;
-        employee["IdentityCard"] =
-          this.$refs.identityCard.$el.children[1].children[0].value;
-        employee["Address"] =
-          this.$refs.address.$el.children[1].children[0].value;
-        employee["MobilePhone"] =
-          this.$refs.mobilePhone.$el.children[1].children[0].value;
-        employee["Email"] = this.$refs.email.$el.children[1].children[0].value;
+        employee["IdentityCard"] = this.$refs.identityCard.$el.children[1]
+          .children[0].value
+          ? this.$refs.identityCard.$el.children[1].children[0].value
+          : null;
+        employee["IdentityPlace"] = this.$refs.identityPlace.$el.children[1]
+          .children[0].value
+          ? this.$refs.identityPlace.$el.children[1].children[0].value
+          : null;
+        employee["Address"] = this.$refs.address.$el.children[1].children[0]
+          .value
+          ? this.$refs.address.$el.children[1].children[0].value
+          : null;
+        employee["MobilePhone"] = this.$refs.mobilePhone.$el.children[1]
+          .children[0].value
+          ? this.$refs.mobilePhone.$el.children[1].children[0].value
+          : null;
+        employee["Telephone"] = this.$refs.telephone.$el.children[1].children[0]
+          .value
+          ? this.$refs.telephone.$el.children[1].children[0].value
+          : null;
+        employee["Email"] = this.$refs.email.$el.children[1].children[0].value
+          ? this.$refs.email.$el.children[1].children[0].value
+          : null;
+        employee["BankAccount"] = this.$refs.bankAccount.$el.children[1]
+          .children[0].value
+          ? this.$refs.bankAccount.$el.children[1].children[0].value
+          : null;
+        employee["BankName"] = this.$refs.bankName.$el.children[1].children[0]
+          .value
+          ? this.$refs.bankName.$el.children[1].children[0].value
+          : null;
+        employee["BankBranch"] = this.$refs.bankBranch.$el.children[1]
+          .children[0].value
+          ? this.$refs.bankBranch.$el.children[1].children[0].value
+          : null;
 
         // get value LibCombobox component structure
         employee["DepartmentID"] =
-          this.$refs.departmentID.$el.children[1].getAttribute("value");
+          this.$refs.departmentID.$el.children[1].getAttribute("value")
+            ? this.$refs.departmentID.$el.children[1].getAttribute("value")
+            : null;
+        employee["DepartmentName"] =
+          this.$refs.departmentID.$el.children[1].getAttribute("valueName")
+            ? this.$refs.departmentID.$el.children[1].getAttribute("valueName")
+            : null;
         employee["PositionID"] =
-          this.$refs.positionID.$el.children[1].getAttribute("value");
+          this.$refs.positionID.$el.children[1].getAttribute("value")
+            ? this.$refs.positionID.$el.children[1].getAttribute("value")
+            : null;
+        employee["PositionName"] =
+          this.$refs.positionID.$el.children[1].getAttribute("valueName")
+            ? this.$refs.positionID.$el.children[1].getAttribute("valueName")
+            : null;
 
         // get value MDatepicker component structure
-        employee["DateOfBirth"] = this.$refs.dateOfBirth.$el.children[1].value;
-        // employee["identityDate"] = this.$refs.identityDate.$el.children[1].value;
+        employee["DateOfBirth"] = this.$refs.dateOfBirth.$el.children[1].value
+          ? this.$refs.dateOfBirth.$el.children[1].value
+          : null;
+        employee["IdentityDate"] = this.$refs.identityDate.$el.children[1].value
+          ? this.$refs.identityDate.$el.children[1].value
+          : null;
 
         // get value MDgender component structure
         employee["Gender"] = Number(
           this.$refs.gender.$el.children[1].getAttribute("value")
         );
+
+        let temp = new Date(Date.now());
+        // Các trường mặc định
+        employee["CreatedDate"] = temp.toJSON();
+        employee["CreatedBy"] = "Tô Nguyễn Đức Mạnh";
+        employee["ModifiedDate"] = temp.toJSON();
+        employee["ModifiedBy"] = "Tô Nguyễn Đức Mạnh";
 
         // tiến hành POST dữ liệu lên api
         let currentMethod = this.$store.state.method;
