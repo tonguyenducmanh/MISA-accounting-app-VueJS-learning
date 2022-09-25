@@ -31,65 +31,65 @@
         :theadList="[
           {
             align: 'left',
-            propName: 'EmployeeCode',
+            propName: 'employeeCode',
             width: '150',
             name: 'Mã nhân viên',
           },
           {
             align: 'left',
-            propName: 'FullName',
+            propName: 'fullName',
             width: '200',
             name: 'Tên nhân viên',
           },
           {
             align: 'left',
-            propName: 'Gender',
+            propName: 'gender',
             width: '110',
             name: 'Giới tính',
             formatGender: true,
           },
           {
             align: 'center',
-            propName: 'DateOfBirth',
+            propName: 'dateOfBirth',
             width: '130',
             name: 'Ngày sinh',
             formatDate: true,
           },
           {
             align: 'right',
-            propName: 'PersonalTaxCode',
+            propName: 'identityCard',
             width: '200',
             name: 'Số CMND',
             formatRight: true,
           },
           {
             align: 'left',
-            propName: 'PositionName',
+            propName: 'positionName',
             width: '200',
             name: 'Chức danh',
           },
           {
             align: 'left',
-            propName: 'DepartmentName',
+            propName: 'departmentName',
             width: '250',
             name: 'Tên đơn vị',
           },
           {
             align: 'right',
-            propName: '',
+            propName: 'bankAccount',
             width: '200',
             name: 'Số tài khoản',
             formatRight: true,
           },
           {
             align: 'left',
-            propName: '',
+            propName: 'bankName',
             width: '250',
             name: 'Tên ngân hàng',
           },
           {
             align: 'left',
-            propName: '',
+            propName: 'bankBranch',
             width: '250',
             name: 'Chi nhánh TK ngân hàng',
           },
@@ -109,13 +109,22 @@
       @hide-form="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
+      @alert-popup="toggleAlertPopUp"
+      @update-table="
+        testMethod();
+        loadData();
+      "
+      ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
     <MPopup
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
-      @save-now="saveNow"
+      @save-now="
+        toggleAskPopUp();
+        saveNow();
+      "
       AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
@@ -133,6 +142,11 @@
       :WarningMess="WarningMess"
     />
     <!-- popup hiện lên khi điền điều các thông tin bắt buộc -->
+    <MPopup
+      :isAlert="isAlertShow"
+      @hide-popup="toggleAlertPopUp"
+      :AlertMess="AlertMess"
+    />
     <!-- toast message thông báo thành công -->
     <MToastMessage
       v-if="toggleToast"
@@ -179,6 +193,7 @@ export default {
       isFormShow: false,
       apiTable: "",
       WarningMess: "",
+      AlertMess: "",
     };
   },
   beforeMount() {
@@ -254,6 +269,17 @@ export default {
   },
   methods: {
     /**
+     * Test method
+     * Author : Tô Nguyễn Đức Manh (17/09/2022)
+     */
+    testMethod() {
+      try {
+        console.log("đã thực thi test method");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
      * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
@@ -264,7 +290,7 @@ export default {
         let pageNumber = this.$store.state.pageNumber;
         let arrFilter = [];
         if (searchFilter != null && searchFilter != "") {
-          arrFilter.push(`employeeFilter=${searchFilter}`);
+          arrFilter.push(`keyword=${searchFilter}`);
         }
         if (pageSize != null && pageSize != "") {
           arrFilter.push(`pageSize=${pageSize}`);
@@ -278,17 +304,24 @@ export default {
         if (arrFilter.length != 0) {
           apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
         }
-        fetch(apiFetch, { method: "GET" })
+        fetch(apiFetch, { method: this.MISAEnum.method.GET })
           .then((res) => {
             if (res.status == 200) {
               return res.json();
             }
           })
           .then((res) => {
-            this.employeeList = res["Data"];
-            this.$store.dispatch("changeTotalRecords", res["TotalRecord"]);
-            this.$store.dispatch("changeTotalPage", res["TotalPage"]);
-            this.$store.dispatch("changeCurrentPage", res["CurrentPage"]);
+            if (res !== undefined && res !== "") {
+              this.employeeList = res["data"];
+              this.$store.dispatch("changeTotalRecords", res["totalRecord"]);
+              this.$store.dispatch("changeTotalPage", res["totalPage"]);
+              this.$store.dispatch("changeCurrentPage", res["currentPage"]);
+            } else {
+              this.employeeList = [];
+              this.$store.dispatch("changeTotalRecords", 0);
+              this.$store.dispatch("changeTotalPage", 1);
+              this.$store.dispatch("changeCurrentPage", 1);
+            }
           })
           .catch((res) => {
             console.log(res);
@@ -316,10 +349,11 @@ export default {
     },
     /**
      *Lưu trang ngay khi ấn vào nút lưu trong popup hỏi có muốn lưu không.
-     *Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     *Author: Tô Nguyễn Đức Mạnh (16/09/2022)
      */
     saveNow() {
-      console.log("hihi");
+      // trigger tới method saveNew nằm trong component EmployeeForm thông qua refs
+      this.$refs.employeeForm.saveNew();
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
@@ -385,6 +419,19 @@ export default {
         this.$store.dispatch("changeDeleteId", deleteId);
         this.$store.dispatch("changeDeleteName", deleteName);
         this.isAskWarningShow = !this.isAskWarningShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup cảnh báo nhập thiếu
+     * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    toggleAlertPopUp(value) {
+      try {
+        this.isAlertShow = !this.isAlertShow;
+
+        this.AlertMess = value;
       } catch (error) {
         console.log(error);
       }

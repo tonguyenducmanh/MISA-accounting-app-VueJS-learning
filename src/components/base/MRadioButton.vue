@@ -11,6 +11,7 @@
           :value="contentitem.value"
           :propName="propName"
           @click="setValue(contentitem.value)"
+          :checked="contentitem.value === defaultValue"
         />
         <label class="radio__label" :for="`radio__${index}`">{{
           contentitem.name
@@ -36,6 +37,10 @@ export default {
     },
     propName: String,
     propNameBox: String,
+    defaultValue: Number,
+  },
+  beforeCreate() {
+    this.selectedValue = this.defaultValue;
   },
   methods: {
     setValue(value) {

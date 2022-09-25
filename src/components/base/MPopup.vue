@@ -10,7 +10,10 @@
         <div class="popup__action">
           <MButton
             :buttonTwo="true"
-            @click="$emit('hide-popup')"
+            @click="
+              $emit('hide-popup');
+              showCanceledNoti();
+            "
             buttonName="Không"
             dataTitle="Đóng (ESC)"
           />
@@ -42,7 +45,10 @@
               buttonName="Không"
               dataTitle="Không (ctrl + Q)"
               class="button--no"
-              @click="$emit('hide-all')"
+              @click="
+                $emit('hide-all');
+                showCanceledNoti();
+              "
             />
             <MButton buttonName="Có" @click="$emit('save-now')" />
           </div>
@@ -55,7 +61,11 @@
       <div class="popup popup--alert">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
-          <div class="popup__text">{{ AlertMess }}</div>
+          <div class="popup__text">
+            <span v-for="(alertItem, index) in AlertMessFormatted" :key="index">
+              <div>{{ alertItem }}</div>
+            </span>
+          </div>
         </div>
         <div class="popup__action">
           <MButton buttonName="Đóng" @click="$emit('hide-popup')" />
@@ -101,7 +111,14 @@ export default {
     return {
       MISAEnum,
       MISAResource,
+      AlertMessFormatted: "",
     };
+  },
+  //phân ra alert string thành array
+  beforeUpdate() {
+    if (this.AlertMess !== "" && this.AlertMess !== undefined) {
+      this.AlertMessFormatted = this.AlertMess.split("#");
+    }
   },
   methods: {
     /**
@@ -132,6 +149,24 @@ export default {
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiển thị thông báo đã hủy hành động hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    showCanceledNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.CanceledNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }

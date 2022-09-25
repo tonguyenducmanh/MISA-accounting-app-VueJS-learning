@@ -26,12 +26,12 @@
       <tbody class="table__body--real">
         <template v-for="(employee, index) in employeeList" :key="index">
           <!-- bảng trả về từ api hiển thị ở đây -->
-          <tr ref="EmployeeId" :value="employee['EmployeeID']">
+          <tr ref="employeeID" :value="employee['employeeID']">
             <!-- chèn td checkbox -->
             <td>
               <MCheckbox
                 :isTd="true"
-                :value="employee['EmployeeId']"
+                :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
               />
             </td>
@@ -45,7 +45,7 @@
                 v-if="theaditem.formatDate"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -55,7 +55,7 @@
                 v-else-if="theaditem.formatGender"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -65,7 +65,7 @@
                 v-else
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -77,10 +77,14 @@
               <MConntextMenu
                 @edit-click="
                   $emit('show-form');
-                  putMethod(employee['EmployeeId']);
+                  putMethod(employee['employeeID']);
                 "
-                :deleteId="employee['EmployeeId']"
-                :deleteName="employee['FullName']"
+                @duplicate-click="
+                  $emit('show-form');
+                  postMethod(employee['employeeID']);
+                "
+                :deleteId="employee['employeeID']"
+                :deleteName="employee['fullName']"
                 :hasUp="
                   hasUp &&
                   (index === employeeList.length - 1 ||
@@ -169,6 +173,23 @@ export default {
     putMethod(currentId) {
       this.$store.dispatch("changeMethod", "PUT");
       this.$store.dispatch("changeEditID", currentId);
+    },
+    /**
+     * Thay đổi method sang POST và chèn ID hiện tại vào store global để fetch data về.
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    postMethod(currentId) {
+      // chuyển method về put để thực hiện binding dữ liệu giống như là đang edit
+      // để ăn gian đoạn logic này
+      this.$store.dispatch("changeEditID", currentId);
+      this.$store.dispatch("changeMethod", "PUT");
+      // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
+      setTimeout(() => {
+        this.$store.dispatch("changeMethod", "POST");
+        // xóa cả currentID đi
+        this.$store.dispatch("changeEditID", "");
+      }, 1000);
+      // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },
   },
 };

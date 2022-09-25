@@ -68,6 +68,7 @@
         <!-- trang cuối -->
         <div
           tabindex="0"
+          v-if="totalPage !== 1 && pageNumber !== 0"
           class="page__count"
           :class="totalPage === pageNumber ? 'page__count--selected' : ''"
           @click="selectThisPage(totalPage)"

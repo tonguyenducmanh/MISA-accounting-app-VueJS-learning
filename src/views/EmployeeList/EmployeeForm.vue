@@ -10,23 +10,28 @@
         <!-- phần nhập form thứ nhất -->
         <div class="form__part form__one">
           <MInput
-            ref="EmployeeCode"
-            :inputValue="newEmpCode"
+            ref="employeeCode"
+            :inputValue="
+              $store.state.method === 'PUT'
+                ? formObject['employeeCode']
+                : newEmpCode
+            "
             :hasLabel="true"
             labelText="Mã"
             placeHolder="Nhập mã nhân viên"
-            validate="EmployeeCodeNotEmpty"
+            validate="employeeCodeNotEmpty"
             :inputAlert="true"
             idInput="input__checkId"
-            :classInput="'input__focus form__employeecode'"
+            :classInput="'input__focus form__employeeCode'"
             :showAlertStar="true"
             class="form__ele"
             dataTitle="Mã không được để trống."
+            :isNotNull="true"
           />
           <MInput
             :hasLabel="true"
             labelText="Tên"
-            ref="FullName"
+            ref="fullName"
             placeHolder="Nhập họ và tên"
             validate="EmployeeNameNotEmpty"
             :inputAlert="true"
@@ -35,6 +40,10 @@
             :showAlertStar="true"
             class="form__ele"
             dataTitle="Tên không được để trống."
+            :isNotNull="true"
+            :inputValue="
+              formObject['fullName'] !== '' ? formObject['fullName'] : ''
+            "
           />
           <LibCombobox
             id="cbxDepartment"
@@ -42,28 +51,29 @@
             labelText="Đơn vị"
             :showAlertStar="true"
             dataTitle="Đơn vị không được để trống."
-            api="https://cukcuk.manhnv.net/api/v1/Departments"
-            text="DepartmentName"
-            value="DepartmentId"
-            ref="DepartmentId"
-            validate="DepartmentName"
+            :api="MISAEnum.API.GETDEPARTMENTLIST"
+            text="departmentName"
+            value="departmentID"
+            ref="departmentID"
+            validate="departmentName"
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
-            :fetchedValue="DepartmentId"
+            :fetchedValue="departmentID"
             unique=""
+            :isNotNull="true"
           />
           <LibCombobox
             id="cbxPosition"
             :hasLabel="true"
             labelText="Chức danh"
-            api="https://cukcuk.manhnv.net/api/v1/Positions"
-            text="PositionName"
-            value="PositionId"
-            ref="PositionId"
+            :api="MISAEnum.API.GETPOSITIONLIST"
+            text="positionName"
+            value="positionID"
+            ref="positionID"
             class="form__ele"
             placeHolder="Nhập chức danh"
-            :fetchedValue="PositionId"
+            :fetchedValue="positionID"
             unique=""
           />
         </div>
@@ -71,13 +81,14 @@
         <div class="form__part form__two">
           <MDatePicker
             labelText="Ngày sinh"
-            ref="DateOfBirth"
+            ref="dateOfBirth"
             class="form__dateofbirth"
           />
           <MRadioButton
             titleText="Giới tính"
-            ref="Gender"
-            propNameBox="GenderBox"
+            ref="gender"
+            propNameBox="gender"
+            :defaultValue="genderType"
             :content="[
               {
                 name: 'Nam',
@@ -96,27 +107,37 @@
           <MInput
             :hasLabel="true"
             labelText="Số CMND"
-            ref="PersonalTaxCode"
+            ref="identityCard"
             placeHolder="Nhập số CMND"
             validate="EmployeeNameNotEmpty"
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
-            dataTitle="Tên không được để trống."
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
+            :inputValue="
+              formObject['identityCard'] !== ''
+                ? formObject['identityCard']
+                : ''
+            "
           />
           <MDatePicker
             labelText="Ngày cấp"
-            ref="CreatedDate"
-            class="form__createdDate"
-            :formatDate="true"
+            ref="identityDate"
+            class="form__identityDate"
           />
           <MInput
             :hasLabel="true"
             labelText="Nơi cấp"
-            ref="CreatedPlace"
+            ref="identityPlace"
             placeHolder="Nhập nơi cấp"
             :classInput="'form__createdwhere'"
             class="form__ele"
+            :inputValue="
+              formObject['identityPlace'] !== ''
+                ? formObject['identityPlace']
+                : ''
+            "
           />
         </div>
         <!-- phần nhập form thứ 3 -->
@@ -124,60 +145,87 @@
           <MInput
             :hasLabel="true"
             labelText="Địa chỉ"
-            ref="Address"
+            ref="address"
             placeHolder="Nhập địa chỉ"
             :classInput="'form__address'"
             class="form__ele"
+            :inputValue="
+              formObject['address'] !== '' ? formObject['address'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
             labelText="ĐT di động"
             :justNumber="true"
-            ref="PhoneNumber"
+            ref="mobilePhone"
             placeHolder="Nhập số điện thoại di động"
             :classInput="'form__phonenum'"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
+            :inputValue="
+              formObject['mobilePhone'] !== '' ? formObject['mobilePhone'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
             labelText="ĐT cố định"
             :justNumber="true"
-            ref="PhoneFix"
+            ref="telephone"
             placeHolder="Nhập số điện thoại cố định"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
+            :inputValue="
+              formObject['telephone'] !== '' ? formObject['telephone'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
             labelText="Email"
-            ref="Email"
+            ref="email"
             placeHolder="Nhập Email"
             :classInput="'form__email'"
             class="form__ele"
+            :isEmail="true"
+            data-title="Email chưa đúng định dạng."
+            :inputValue="formObject['email'] !== '' ? formObject['email'] : ''"
           />
           <MInput
             :hasLabel="true"
             labelText="Tài khoản ngân hàng"
-            ref="BackAccount"
+            ref="bankAccount"
             :justNumber="true"
             placeHolder="Nhập tài khoản ngân hàng"
             :classInput="'form__banknum'"
             class="form__ele"
+            dataTitle="Chỉ đường điền các số từ 0-9"
+            :isNumber="true"
+            :inputValue="
+              formObject['bankAccount'] !== '' ? formObject['bankAccount'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
             labelText="Tên ngân hàng"
-            ref="BankName"
+            ref="bankName"
             placeHolder="Nhập tên ngân hàng"
             :classInput="'form__bankname'"
             class="form__ele"
+            :inputValue="
+              formObject['bankName'] !== '' ? formObject['bankName'] : ''
+            "
           />
           <MInput
             :hasLabel="true"
             labelText="Chi nhánh"
-            ref="BankBrach"
+            ref="bankBranch"
             placeHolder="Nhập chi nhánh"
             :classInput="'form__bankaddr'"
             class="form__ele"
+            :inputValue="
+              formObject['bankBranch'] !== '' ? formObject['bankBranch'] : ''
+            "
           />
         </div>
       </div>
@@ -231,7 +279,13 @@ import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeeForm",
-  emits: ["hide-form", "hide-all", "refresh-list", "warning-duplicate"],
+  emits: [
+    "hide-form",
+    "hide-all",
+    "warning-duplicate",
+    "alert-popup",
+    "update-table",
+  ],
   components: {
     MButton,
     MCheckbox,
@@ -247,17 +301,19 @@ export default {
       common,
       newEmpCode: "",
       formType: "POST",
-      PositionId: "",
-      DepartmentId: "",
+      positionID: "",
+      departmentID: "",
+      genderType: 0,
+      formObject: {},
     };
   },
-  mounted() {
-    /**
-     * Kiểm tra xem method là post hay put, nếu là post thì :
-     * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
-     * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
-     * Author: Tô Nguyễn Đức Manh (14/09/2022)
-     */
+  /**
+   * Kiểm tra xem method là post hay put, nếu là post thì :
+   * Gọi hàm Api để lấy ra giá trị id đầu tiên rồi tra về trong input đầu tiên
+   * Nếu là put thì tiến hành fetch data theo currentid và chèn vào trong form luôn, chỉ việc edit thôi
+   * Author: Tô Nguyễn Đức Manh (14/09/2022)
+   */
+  beforeMount() {
     // lấy mã id mới nếu là thêm mới
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
@@ -277,74 +333,57 @@ export default {
         .then((res) => {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
-          this.$refs.EmployeeCode.$el.children[1].children[0].value = res[
-            "EmployeeCode"
-          ]
-            ? res["EmployeeCode"]
+          this.formObject["employeeCode"] = res["employeeCode"]
+            ? res["employeeCode"]
             : "";
-          this.$refs.FullName.$el.children[1].children[0].value = res[
-            "FullName"
-          ]
-            ? res["FullName"]
+          this.formObject["fullName"] = res["fullName"] ? res["fullName"] : "";
+          this.formObject["identityCard"] = res["identityCard"]
+            ? res["identityCard"]
             : "";
-          this.$refs.PersonalTaxCode.$el.children[1].children[0].value = res[
-            "PersonalTaxCode"
-          ]
-            ? res["PersonalTaxCode"]
+          this.formObject["identityPlace"] = res["identityPlace"]
+            ? res["identityPlace"]
             : "";
-          this.$refs.CreatedPlace.$el.children[1].children[0].value = res[
-            "CreatedPlace"
-          ]
-            ? res["CreatedPlace"]
+          this.formObject["address"] = res["address"] ? res["address"] : "";
+          this.formObject["mobilePhone"] = res["mobilePhone"]
+            ? res["mobilePhone"]
             : "";
-          this.$refs.Address.$el.children[1].children[0].value = res["Address"]
-            ? res["Address"]
+          this.formObject["telephone"] = res["telephone"]
+            ? res["telephone"]
             : "";
-          this.$refs.PhoneNumber.$el.children[1].children[0].value = res[
-            "PhoneNumber"
-          ]
-            ? res["PhoneNumber"]
+          this.formObject["email"] = res["email"] ? res["email"] : "";
+          this.formObject["bankAccount"] = res["bankAccount"]
+            ? res["bankAccount"]
             : "";
-          this.$refs.PhoneFix.$el.children[1].children[0].value = res[
-            "PhoneFix"
-          ]
-            ? res["PhoneFix"]
-            : "";
-          this.$refs.BackAccount.$el.children[1].children[0].value = res[
-            "BackAccount"
-          ]
-            ? res["BackAccount"]
-            : "";
-          this.$refs.BankName.$el.children[1].children[0].value = res[
-            "BankName"
-          ]
-            ? res["BankName"]
-            : "";
-          this.$refs.BankBrach.$el.children[1].children[0].value = res[
-            "BankBrach"
-          ]
-            ? res["BankBrach"]
+          this.formObject["bankName"] = res["bankName"] ? res["bankName"] : "";
+          this.formObject["bankBranch"] = res["bankBranch"]
+            ? res["bankBranch"]
             : "";
 
           // set value LibCombobox component structure
-          this.DepartmentId = res["DepartmentId"];
-          this.PositionId = res["PositionId"];
+          this.departmentID = res["departmentID"];
+          this.positionID = res["positionID"];
 
           // set value MDatepicker component structure
-          this.$refs.DateOfBirth.$el.children[1].value = this.common.formatDate(
-            res["DateOfBirth"],
+          this.$refs.dateOfBirth.$el.children[1].value = this.common.formatDate(
+            res["dateOfBirth"],
             "-"
           );
-          // set value MDGender component structure
-          this.$refs.Gender.$el.children[1].setAttribute(
-            "value",
-            res["Gender"]
-          );
+          this.$refs.identityDate.$el.children[1].value =
+            this.common.formatDate(res["identityDate"], "-");
+          // set value MDgender component structure
+          this.genderType = res["gender"];
         })
         .catch((res) => {
           console.log(res);
         });
     }
+  },
+  /**
+   * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
+   * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
+   */
+  mounted() {
+    this.$refs.employeeCode.$el.children[1].children[0].focus();
   },
   methods: {
     /**
@@ -354,18 +393,70 @@ export default {
     getNewEmpCode() {
       try {
         // focus vào ô nhập đầu tiên
-        this.$refs.EmployeeCode.$el.children[1].children[0].focus();
         // lấy ra api
         let api = this.MISAEnum.API.NEWEMPLOYEECODE;
         fetch(api, { method: "GET" })
           .then((res) => res.text())
           .then((res) => {
-            // gán giá trị cần truyền vào trong input
-            this.newEmpCode = res;
+            // gán giá trị tăng 1 đơn vị cần truyền vào trong input
+            const lastID = res;
+            let lastIDArray;
+            lastID !== "" ? (lastIDArray = lastID) : (lastIDArray = "NV00001");
+            const lastIDNumber =
+              parseInt(lastIDArray.split("").slice(2, 7).join("")) + 1;
+            const zeroPad = (num, places) => String(num).padStart(places, "0");
+            const newIDCout = zeroPad(lastIDNumber, 5);
+            const newNVCount = `NV${newIDCout}`;
+            this.newEmpCode = newNVCount;
           })
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra form xem có trống các ô bắt buộc không ?
+     * Nếu các ô đó trống thì không cho lưu mà thay vào đó là hiện popup cảnh báo
+     * Author : Tô Nguyễn Đức Mạnh (15/09/2022)
+     */
+    checkBeforeSave() {
+      try {
+        // map dữ liệu vào trong form nhập
+        // set value Minput component structure
+        let employeeCode =
+          this.$refs.employeeCode.$el.children[1].children[0].value;
+        let fullName = this.$refs.fullName.$el.children[1].children[0].value;
+        let departmentID =
+          this.$refs.departmentID.$el.children[1].getAttribute("value");
+        if (employeeCode !== "" && fullName !== "" && departmentID !== "") {
+          return true;
+        } else {
+          let temp = [];
+          let language = this.$store.state.language;
+          if (employeeCode === "") {
+            // gọi hàm của component con thông qua refs
+            this.$refs.employeeCode.notNullValidate();
+            temp.push(
+              this.MISAResource.ErrorValidate.employeeCodeNotEmpty[language]
+            );
+          }
+          if (fullName === "") {
+            // gọi hàm của component con thông qua refs
+            this.$refs.fullName.notNullValidate();
+            temp.push(
+              this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
+            );
+          }
+          if (departmentID === "") {
+            // gọi hàm của component con thông qua refs
+            this.$refs.departmentID.notNullValidate();
+            temp.push(this.MISAResource.ErrorValidate.departmentName[language]);
+          }
+          this.$emit("alert-popup", temp.join("#"));
+          return false;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -377,40 +468,94 @@ export default {
     confirmSave() {
       try {
         let employee = {};
+        employee["EmployeeID"] = this.$store.state.currentEditID
+          ? this.$store.state.currentEditID
+          : null;
         // get value Minput component structure
         employee["EmployeeCode"] =
-          this.$refs.EmployeeCode.$el.children[1].children[0].value;
+          this.$refs.employeeCode.$el.children[1].children[0].value;
         employee["FullName"] =
-          this.$refs.FullName.$el.children[1].children[0].value;
-        employee["PersonalTaxCode"] =
-          this.$refs.PersonalTaxCode.$el.children[1].children[0].value;
-        employee["Address"] =
-          this.$refs.Address.$el.children[1].children[0].value;
-        employee["PhoneNumber"] =
-          this.$refs.PhoneNumber.$el.children[1].children[0].value;
-        employee["Email"] = this.$refs.Email.$el.children[1].children[0].value;
+          this.$refs.fullName.$el.children[1].children[0].value;
+        employee["IdentityCard"] = this.$refs.identityCard.$el.children[1]
+          .children[0].value
+          ? this.$refs.identityCard.$el.children[1].children[0].value
+          : null;
+        employee["IdentityPlace"] = this.$refs.identityPlace.$el.children[1]
+          .children[0].value
+          ? this.$refs.identityPlace.$el.children[1].children[0].value
+          : null;
+        employee["Address"] = this.$refs.address.$el.children[1].children[0]
+          .value
+          ? this.$refs.address.$el.children[1].children[0].value
+          : null;
+        employee["MobilePhone"] = this.$refs.mobilePhone.$el.children[1]
+          .children[0].value
+          ? this.$refs.mobilePhone.$el.children[1].children[0].value
+          : null;
+        employee["Telephone"] = this.$refs.telephone.$el.children[1].children[0]
+          .value
+          ? this.$refs.telephone.$el.children[1].children[0].value
+          : null;
+        employee["Email"] = this.$refs.email.$el.children[1].children[0].value
+          ? this.$refs.email.$el.children[1].children[0].value
+          : null;
+        employee["BankAccount"] = this.$refs.bankAccount.$el.children[1]
+          .children[0].value
+          ? this.$refs.bankAccount.$el.children[1].children[0].value
+          : null;
+        employee["BankName"] = this.$refs.bankName.$el.children[1].children[0]
+          .value
+          ? this.$refs.bankName.$el.children[1].children[0].value
+          : null;
+        employee["BankBranch"] = this.$refs.bankBranch.$el.children[1]
+          .children[0].value
+          ? this.$refs.bankBranch.$el.children[1].children[0].value
+          : null;
 
         // get value LibCombobox component structure
-        employee["DepartmentId"] =
-          this.$refs.DepartmentId.$el.children[1].getAttribute("value");
-        employee["PositionId"] =
-          this.$refs.PositionId.$el.children[1].getAttribute("value");
+        employee["DepartmentID"] =
+          this.$refs.departmentID.$el.children[1].getAttribute("value")
+            ? this.$refs.departmentID.$el.children[1].getAttribute("value")
+            : null;
+        employee["DepartmentName"] =
+          this.$refs.departmentID.$el.children[1].getAttribute("valueName")
+            ? this.$refs.departmentID.$el.children[1].getAttribute("valueName")
+            : null;
+        employee["PositionID"] =
+          this.$refs.positionID.$el.children[1].getAttribute("value")
+            ? this.$refs.positionID.$el.children[1].getAttribute("value")
+            : null;
+        employee["PositionName"] =
+          this.$refs.positionID.$el.children[1].getAttribute("valueName")
+            ? this.$refs.positionID.$el.children[1].getAttribute("valueName")
+            : null;
 
         // get value MDatepicker component structure
-        employee["DateOfBirth"] = this.$refs.DateOfBirth.$el.children[1].value;
-        // employee["CreatedDate"] = this.$refs.CreatedDate.$el.children[1].value;
+        employee["DateOfBirth"] = this.$refs.dateOfBirth.$el.children[1].value
+          ? this.$refs.dateOfBirth.$el.children[1].value
+          : null;
+        employee["IdentityDate"] = this.$refs.identityDate.$el.children[1].value
+          ? this.$refs.identityDate.$el.children[1].value
+          : null;
 
-        // get value MDGender component structure
-        employee["Gender"] =
-          this.$refs.Gender.$el.children[1].getAttribute("value");
+        // get value MDgender component structure
+        employee["Gender"] = Number(
+          this.$refs.gender.$el.children[1].getAttribute("value")
+        );
 
-        console.log(employee);
+        let temp = new Date(Date.now());
+        // Các trường mặc định
+        employee["CreatedDate"] = temp.toJSON();
+        employee["CreatedBy"] = "Tô Nguyễn Đức Mạnh";
+        employee["ModifiedDate"] = temp.toJSON();
+        employee["ModifiedBy"] = "Tô Nguyễn Đức Mạnh";
+
         // tiến hành POST dữ liệu lên api
         let currentMethod = this.$store.state.method;
         let api = this.MISAEnum.API.GETEMPLOYEELIST;
         // check xem là method put hay post, nếu là put thì thêm id vào sau api
         if (currentMethod === this.MISAEnum.method.PUT) {
-          api += "";
+          api += `/${this.$store.state.currentEditID}`;
         }
         fetch(api, {
           method: currentMethod,
@@ -419,9 +564,12 @@ export default {
           },
           body: JSON.stringify(employee),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
+          .then(() => {
+            this.$emit("update-table");
+          })
+          .then(() => {
+            // ẩn form
+            this.$emit("hide-all");
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -436,25 +584,24 @@ export default {
      */
     clearForm() {
       // set value Minput component structure
-      this.$refs.EmployeeCode.$el.children[1].children[0].value = "";
-      this.$refs.FullName.$el.children[1].children[0].value = "";
-      this.$refs.PersonalTaxCode.$el.children[1].children[0].value = "";
-      this.$refs.CreatedPlace.$el.children[1].children[0].value = "";
-      this.$refs.Address.$el.children[1].children[0].value = "";
-      this.$refs.PhoneNumber.$el.children[1].children[0].value = "";
-      this.$refs.PhoneFix.$el.children[1].children[0].value = "";
-      this.$refs.BackAccount.$el.children[1].children[0].value = "";
-      this.$refs.BankName.$el.children[1].children[0].value = "";
-      this.$refs.BankBrach.$el.children[1].children[0].value = "";
+      this.$refs.employeeCode.$el.children[1].children[0].value = "";
+      this.$refs.fullName.$el.children[1].children[0].value = "";
+      this.$refs.identityCard.$el.children[1].children[0].value = "";
+      this.$refs.identityPlace.$el.children[1].children[0].value = "";
+      this.$refs.address.$el.children[1].children[0].value = "";
+      this.$refs.mobilePhone.$el.children[1].children[0].value = "";
+      this.$refs.telephone.$el.children[1].children[0].value = "";
+      this.$refs.bankAccount.$el.children[1].children[0].value = "";
+      this.$refs.bankName.$el.children[1].children[0].value = "";
+      this.$refs.bankBranch.$el.children[1].children[0].value = "";
 
       // set value LibCombobox component structure
-      this.$refs.DepartmentId.$el.children[1].setAttribute("value", "");
-      this.$refs.PositionId.$el.children[1].setAttribute("value", "");
-
+      this.$refs.positionID.clearComboboxSelected();
+      this.$refs.departmentID.clearComboboxSelected();
       // set value MDatepicker component structure
-
-      // set value MDGender component structure
-      this.$refs.Gender.$el.children[1].setAttribute("value", 0);
+      this.$refs.dateOfBirth.$el.children[1].value = "";
+      // set value MDgender component structure
+      this.genderType = 0;
     },
     /**
      * Lưu người dùng vào database
@@ -462,41 +609,65 @@ export default {
      */
     saveNew() {
       try {
-        // kiểm tra xem id đã trùng chưa ?
-        let currentId =
-          this.$refs.EmployeeCode.$el.children[1].children[0].value;
-        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
-
-        fetch(apiTest, { method: "GET" })
-          .then((res) => {
-            if (res.status == 200) {
-              // trả về false
-              return false;
-            } else {
-              return true;
-            }
-          })
-          .then((res) => {
-            if (res === false) {
-              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-              this.$emit(
-                "warning-duplicate",
-                this.$refs.EmployeeCode.$el.children[1].children[0].value
-              );
-            } else {
-              {
-                // thực hiện lưu vào database
-                this.confirmSave();
-                // ẩn form
-                this.$emit("hide-all");
-                // hiện thông báo lưu
-                this.showAddedNoti();
-              }
-            }
-          })
-          .catch((res) => {
-            console.log(res);
-          });
+        // kiểm tra xem đã điền các trường bắt buộc chưa
+        let inputMustHaveEmpty = this.checkBeforeSave();
+        if (inputMustHaveEmpty === true) {
+          let methodNow = this.$store.state.method;
+          // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
+          if (methodNow === this.MISAEnum.method.POST) {
+            // nếu là thêm mới thì
+            // kiểm tra xem id đã trùng chưa ?
+            let currentCode =
+              this.$refs.employeeCode.$el.children[1].children[0].value;
+            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}?EmployeeCode=${currentCode}`;
+            // method ở dưới để kiểm thử trùng id, khác với method ở trên
+            fetch(apiTest, { method: this.MISAEnum.method.GET })
+              .then((res) => {
+                if (res.status == 200) {
+                  // trả về false
+                  return false;
+                } else {
+                  return true;
+                }
+              })
+              .then((res) => {
+                if (res === false) {
+                  // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+                  this.$emit(
+                    "warning-duplicate",
+                    this.$refs.employeeCode.$el.children[1].children[0].value
+                  );
+                } else {
+                  {
+                    // thực hiện lưu vào database
+                    this.confirmSave();
+                    // hiện thông báo lưu
+                    if (this.$store.state.currentEditID === "") {
+                      // nếu là thêm mới thì hiện là thêm mới
+                      this.showAddedNoti();
+                    } else {
+                      // nếu là nhân bản thì hiện là nhân bản
+                      this.showDupplicatedNoti();
+                      this.$store.state.currentEditID = "";
+                    }
+                  }
+                }
+              })
+              .catch((res) => {
+                console.log(res);
+              });
+          } else {
+            // nếu là sửa thì tiến hành update dữ liệu
+            // thực hiện lưu vào database
+            this.confirmSave();
+            // hiện thông báo lưu
+            this.showEditedNoti();
+            // sửa lại method về post
+            this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
+            // xóa edit id đi
+            this.$store.dispatch("changeEditID", "");
+          }
+        }
       } catch (error) {
         console.log(error);
       }
@@ -507,43 +678,78 @@ export default {
      */
     saveNewAndAdd() {
       try {
-        // kiểm tra xem id đã trùng chưa ?
-        let currentId =
-          this.$refs.EmployeeCode.$el.children[1].children[0].value;
-        let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+        // kiểm tra xem đã điền các trường bắt buộc chưa
 
-        fetch(apiTest, { method: "GET" })
-          .then((res) => {
-            if (res.status == 200) {
-              // trả về false
-              return false;
-            } else {
-              return true;
-            }
-          })
-          .then((res) => {
-            if (res === false) {
-              // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-              this.$emit(
-                "warning-duplicate",
-                this.$refs.EmployeeCode.$el.children[1].children[0].value
-              );
-            } else {
-              {
-                // thực hiện lưu vào database
-                this.confirmSave();
-                // hiện thông báo lưu
-                this.showAddedNoti();
-                // clear form đi
-                this.clearForm();
-                // lấy lại dữ liệu mới
-                this.getNewEmpCode();
-                // gán dữ liệu mới vào trong ô đó đi
-                this.$refs.EmployeeCode.$el.children[1].children[0].value =
-                  this.newEmpCode;
-              }
-            }
-          });
+        let inputMustHaveEmpty = this.checkBeforeSave();
+        if (inputMustHaveEmpty === true) {
+          let methodNow = this.$store.state.method;
+          // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
+          if (methodNow === this.MISAEnum.method.POST) {
+            // kiểm tra xem id đã trùng chưa ?
+            let currentId =
+              this.$refs.employeeCode.$el.children[1].children[0].value;
+            let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
+
+            fetch(apiTest, { method: methodNow })
+              .then((res) => {
+                if (res.status == 200) {
+                  // trả về false
+                  return false;
+                } else {
+                  return true;
+                }
+              })
+              .then((res) => {
+                if (res === false) {
+                  // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+                  this.$emit(
+                    "warning-duplicate",
+                    this.$refs.employeeCode.$el.children[1].children[0].value
+                  );
+                } else {
+                  {
+                    // thực hiện lưu vào database
+                    this.confirmSave();
+                    // hiện thông báo lưu
+                    if (this.$store.state.currentEditID === "") {
+                      // nếu là thêm mới thì hiện là thêm mới
+                      this.showAddedNoti();
+                    } else {
+                      // nếu là nhân bản thì hiện là nhân bản
+                      this.showDupplicatedNoti();
+                      this.$store.state.currentEditID = "";
+                    }
+                    // clear form đi
+                    this.clearForm();
+                    // lấy lại dữ liệu mới
+                    this.getNewEmpCode();
+                    // gán dữ liệu mới vào trong ô đó đi
+                    this.$refs.employeeCode.$el.children[1].children[0].value =
+                      this.newEmpCode;
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else {
+            // thực hiện lưu vào database
+            this.confirmSave();
+            // hiện thông báo lưu
+            this.showEditedNoti();
+            // clear form đi
+            this.clearForm();
+            // lấy lại dữ liệu mới
+            this.getNewEmpCode();
+            // sửa lại method về post
+            this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
+            // xóa edit id đi
+            this.$store.dispatch("changeEditID", "");
+            // gán dữ liệu mới vào trong ô đó đi
+            this.$refs.employeeCode.$el.children[1].children[0].value =
+              this.newEmpCode;
+          }
+        }
       } catch (error) {
         console.log(error);
       }
@@ -563,6 +769,48 @@ export default {
         this.$store.dispatch(
           "changeToastText",
           this.MISAResource.ToastMessage.AddedNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiển thị thông báo là đã sửa thành công
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    showEditedNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch(
+          "changeToastType",
+          this.MISAEnum.toasttype.SUCCESS
+        );
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.EditedNoti[lang]
+        );
+        this.$store.dispatch("toggleToast", true);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiển thị thông báo là đã nhân bản thành công
+     * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
+     */
+    showDupplicatedNoti() {
+      try {
+        // hiện toast message thêm người dùng thành công
+        let lang = this.$store.state.language;
+        this.$store.dispatch(
+          "changeToastType",
+          this.MISAEnum.toasttype.SUCCESS
+        );
+        this.$store.dispatch(
+          "changeToastText",
+          this.MISAResource.ToastMessage.DuplicatedNoti[lang]
         );
         this.$store.dispatch("toggleToast", true);
       } catch (error) {
