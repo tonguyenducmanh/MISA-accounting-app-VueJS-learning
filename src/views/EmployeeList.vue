@@ -13,12 +13,14 @@
             dataTitle="Ấn ctrl + K để nhập"
             placeHolder="Tìm theo mã, tên nhân viên"
             @change-filter="changeFilter"
+            ref="inputSearch"
           />
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
             data-title="Lấy lại dữ liệu"
             @click="reloadData"
+            @keydown.enter="reloadData"
           ></div>
         </div>
       </div>
@@ -200,6 +202,12 @@ export default {
     // chèn api từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
     this.loadData();
+  },
+  /**
+   * mặc định lúc mounted sẽ focus vào ô tìm kiếm
+   */
+  mounted() {
+    this.$refs.inputSearch.$el.children[0].children[0].focus();
   },
   /**
    *  lấy các state từ trong store, để watch theo dõi và rerender

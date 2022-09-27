@@ -1,5 +1,10 @@
 <template lang="">
-  <div class="form__wrap" form-type="POST" employee-id="">
+  <div
+    class="form__wrap"
+    form-type="POST"
+    employee-id=""
+    @keydown.esc="$emit('hide-form')"
+  >
     <div class="form">
       <div class="form__heading">
         <div class="form__title">Thông tin nhân viên</div>
