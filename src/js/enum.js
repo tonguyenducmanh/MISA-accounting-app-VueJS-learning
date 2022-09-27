@@ -73,12 +73,12 @@ var MISAEnum = {
   },
   // các địa chỉ api
   API: {
-    GETEMPLOYEELIST: "https://localhost:44307/api/v1/Employees",
-    GETEMPLOYEEFILTER: "https://localhost:44307/api/v1/Employees/filter",
-    NEWEMPLOYEECODE: "https://localhost:44307/api/v1/Employees/max-code",
-    CHECKEMPLOYEECODE: "https://localhost:44307/api/v1/Employees/duplicate-code",
-    GETDEPARTMENTLIST: "https://localhost:44307/api/v1/Departments",
-    GETPOSITIONLIST: "https://localhost:44307/api/v1/Positions",
+    GETEMPLOYEELIST: "https://localhost:44313/api/v1/Employees",
+    GETEMPLOYEEFILTER: "https://localhost:44313/api/v1/Employees/filter",
+    NEWEMPLOYEECODE: "https://localhost:44313/api/v1/Employees/max-code",
+    CHECKEMPLOYEECODE: "https://localhost:44313/api/v1/Employees/duplicate-code",
+    GETDEPARTMENTLIST: "https://localhost:44313/api/v1/Departments",
+    GETPOSITIONLIST: "https://localhost:44313/api/v1/Positions",
   },
   // các từ khóa liên quan tới table
   table: {
