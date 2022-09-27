@@ -310,6 +310,7 @@ export default {
       departmentID: "",
       genderType: 0,
       formObject: {},
+      isReload: false,
     };
   },
   /**
@@ -408,11 +409,16 @@ export default {
             let lastIDArray;
             lastID !== "" ? (lastIDArray = lastID) : (lastIDArray = "NV00001");
             const lastIDNumber =
-              parseInt(lastIDArray.split("").slice(2, 7).join("")) + 1;
+              parseInt(lastIDArray.split("").slice(2, lastID.length).join("")) +
+              1;
             const zeroPad = (num, places) => String(num).padStart(places, "0");
-            const newIDCout = zeroPad(lastIDNumber, 5);
+            const newIDCout = zeroPad(lastIDNumber, lastID.length - 2);
             const newNVCount = `NV${newIDCout}`;
             this.newEmpCode = newNVCount;
+          })
+          .then(() => {
+            this.$refs.employeeCode.$el.children[1].children[0].value =
+              this.newEmpCode;
           })
           .catch((res) => {
             console.log(res);
@@ -470,7 +476,7 @@ export default {
      * Lấy ra form value và fetch lên api
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
-    confirmSave() {
+    confirmSave(isReload) {
       try {
         let employee = {};
         employee["EmployeeID"] = this.$store.state.currentEditID
@@ -570,11 +576,19 @@ export default {
           body: JSON.stringify(employee),
         })
           .then(() => {
-            this.$emit("update-table");
+            if (isReload === true) {
+              this.$emit("update-table");
+            } else {
+              return "";
+            }
           })
           .then(() => {
             // ẩn form
-            this.$emit("hide-all");
+            if (isReload === true) {
+              this.$emit("hide-all");
+            } else {
+              return "";
+            }
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -622,11 +636,10 @@ export default {
           if (methodNow === this.MISAEnum.method.POST) {
             // nếu là thêm mới thì
             // kiểm tra xem id đã trùng chưa ?
-            let currentCode =
+            let currentId =
               this.$refs.employeeCode.$el.children[1].children[0].value;
-            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}?EmployeeCode=${currentCode}`;
-            // method ở dưới để kiểm thử trùng id, khác với method ở trên
-            fetch(apiTest, { method: this.MISAEnum.method.GET })
+            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${currentId}`;
+            fetch(apiTest, { method: "GET" })
               .then((res) => {
                 if (res.status == 200) {
                   // trả về false
@@ -645,7 +658,7 @@ export default {
                 } else {
                   {
                     // thực hiện lưu vào database
-                    this.confirmSave();
+                    this.confirmSave(true);
                     // hiện thông báo lưu
                     if (this.$store.state.currentEditID === "") {
                       // nếu là thêm mới thì hiện là thêm mới
@@ -664,7 +677,7 @@ export default {
           } else {
             // nếu là sửa thì tiến hành update dữ liệu
             // thực hiện lưu vào database
-            this.confirmSave();
+            this.confirmSave(true);
             // hiện thông báo lưu
             this.showEditedNoti();
             // sửa lại method về post
@@ -693,9 +706,8 @@ export default {
             // kiểm tra xem id đã trùng chưa ?
             let currentId =
               this.$refs.employeeCode.$el.children[1].children[0].value;
-            let apiTest = `${this.MISAEnum.API.GETEMPLOYEEFILTER}?employeeFilter=${currentId}&pageSize=1`;
-
-            fetch(apiTest, { method: methodNow })
+            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${currentId}`;
+            fetch(apiTest, { method: "GET" })
               .then((res) => {
                 if (res.status == 200) {
                   // trả về false
@@ -714,7 +726,7 @@ export default {
                 } else {
                   {
                     // thực hiện lưu vào database
-                    this.confirmSave();
+                    this.confirmSave(false);
                     // hiện thông báo lưu
                     if (this.$store.state.currentEditID === "") {
                       // nếu là thêm mới thì hiện là thêm mới
@@ -739,7 +751,7 @@ export default {
               });
           } else {
             // thực hiện lưu vào database
-            this.confirmSave();
+            this.confirmSave(false);
             // hiện thông báo lưu
             this.showEditedNoti();
             // clear form đi
@@ -750,9 +762,6 @@ export default {
             this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
             // xóa edit id đi
             this.$store.dispatch("changeEditID", "");
-            // gán dữ liệu mới vào trong ô đó đi
-            this.$refs.employeeCode.$el.children[1].children[0].value =
-              this.newEmpCode;
           }
         }
       } catch (error) {
