@@ -30,6 +30,7 @@
         @show-form="showForm"
         class="table__container"
         :employeeList="employeeList"
+        :toggleShowLoading="isShowLoading"
         :theadList="[
           {
             align: 'left',
@@ -193,6 +194,7 @@ export default {
       isAskShow: false,
       isWarningShow: false,
       isFormShow: false,
+      isShowLoading: false,
       apiTable: "",
       WarningMess: "",
       AlertMess: "",
@@ -312,6 +314,8 @@ export default {
         if (arrFilter.length != 0) {
           apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
         }
+        // hiện loading
+        this.isShowLoading = true;
         fetch(apiFetch, { method: this.MISAEnum.method.GET })
           .then((res) => {
             if (res.status == 200) {
@@ -330,6 +334,9 @@ export default {
               this.$store.dispatch("changeTotalPage", 1);
               this.$store.dispatch("changeCurrentPage", 1);
             }
+          })
+          .then(() => {
+            this.isShowLoading = false;
           })
           .catch((res) => {
             console.log(res);

@@ -10,7 +10,6 @@ export default {
 .loading {
   width: 32px;
   height: 32px;
-  position: relative;
 }
 .loading::before {
   width: 32px;
