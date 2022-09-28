@@ -8,8 +8,18 @@
     <div class="form">
       <div class="form__heading">
         <div class="form__title">Thông tin nhân viên</div>
-        <MCheckbox labelText="Là khách hàng" checkboxId="checkbox_kh" />
-        <MCheckbox labelText="Là nhà cung cấp" checkboxId="checkbox_ncc" />
+        <MCheckbox
+          labelText="Là khách hàng"
+          checkboxId="checkbox_kh"
+          :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
+          :checkboxValue="formObject['employeeType']"
+        />
+        <MCheckbox
+          labelText="Là nhà cung cấp"
+          checkboxId="checkbox_ncc"
+          :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
+          :checkboxValue="formObject['employeeType']"
+        />
       </div>
       <div class="form__body">
         <!-- phần nhập form thứ nhất -->
@@ -364,7 +374,9 @@ export default {
           this.formObject["bankBranch"] = res["bankBranch"]
             ? res["bankBranch"]
             : "";
-
+          this.formObject["employeeType"] = res["employeeType"]
+            ? res["employeeType"]
+            : "";
           // set value LibCombobox component structure
           this.departmentID = res["departmentID"];
           this.positionID = res["positionID"];

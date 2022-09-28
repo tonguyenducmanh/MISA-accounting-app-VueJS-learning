@@ -1,6 +1,11 @@
 <template lang="">
-  <div class="checkbox">
-    <input type="checkbox" class="checkbox__button" :id="checkboxId" />
+  <div class="checkbox" :value="checkboxValue">
+    <input
+      type="checkbox"
+      class="checkbox__button"
+      :id="checkboxId"
+      :checked="checkboxStatus"
+    />
     <label tabindex="0" class="checkbox__label" :for="checkboxId">{{
       labelText
     }}</label>
@@ -9,7 +14,13 @@
 <script>
 export default {
   name: "MCheckbox",
-  props: ["labelText", "checkboxId"],
+  props: {
+    labelText: String,
+    checkboxId: String,
+    checkboxValue: String,
+    checkboxStatus: Boolean,
+  },
+
 };
 </script>
 <style scoped>
