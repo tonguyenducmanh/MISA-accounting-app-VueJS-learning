@@ -648,6 +648,16 @@ export default {
      */
     clearForm() {
       // set value Minput component structure
+      this.$refs.employeeCode.$el.children[1].children[0].value = "";
+      this.$refs.fullName.$el.children[1].children[0].value = "";
+      this.$refs.identityCard.$el.children[1].children[0].value = "";
+      this.$refs.identityPlace.$el.children[1].children[0].value = "";
+      this.$refs.address.$el.children[1].children[0].value = "";
+      this.$refs.mobilePhone.$el.children[1].children[0].value = "";
+      this.$refs.telephone.$el.children[1].children[0].value = "";
+      this.$refs.bankAccount.$el.children[1].children[0].value = "";
+      this.$refs.bankName.$el.children[1].children[0].value = "";
+      this.$refs.bankBranch.$el.children[1].children[0].value = "";
       this.formObject = {};
       // set value LibCombobox component structure
       this.$refs.positionID.clearComboboxSelected();
