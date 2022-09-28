@@ -576,6 +576,12 @@ export default {
           body: JSON.stringify(employee),
         })
           .then(() => {
+            // clear form đi
+            this.clearForm();
+            // lấy lại dữ liệu mới
+            this.getNewEmpCode();
+          })
+          .then(() => {
             if (isReload === true) {
               this.$emit("update-table");
             } else {
@@ -736,13 +742,6 @@ export default {
                       this.showDupplicatedNoti();
                       this.$store.state.currentEditID = "";
                     }
-                    // clear form đi
-                    this.clearForm();
-                    // lấy lại dữ liệu mới
-                    this.getNewEmpCode();
-                    // gán dữ liệu mới vào trong ô đó đi
-                    this.$refs.employeeCode.$el.children[1].children[0].value =
-                      this.newEmpCode;
                   }
                 }
               })
