@@ -12,13 +12,15 @@
           labelText="Là khách hàng"
           checkboxId="checkbox_kh"
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
-          :checkboxValue="formObject['employeeType']"
+          :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
+          ref="checkboxKH"
         />
         <MCheckbox
           labelText="Là nhà cung cấp"
           checkboxId="checkbox_ncc"
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
-          :checkboxValue="formObject['employeeType']"
+          :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
+          ref="checkboxNCC"
         />
       </div>
       <div class="form__body">
@@ -439,6 +441,7 @@ export default {
         console.log(error);
       }
     },
+
     /**
      * Kiểm tra form xem có trống các ô bắt buộc không ?
      * Nếu các ô đó trống thì không cho lưu mà thay vào đó là hiện popup cảnh báo
@@ -566,6 +569,15 @@ export default {
           this.$refs.gender.$el.children[1].getAttribute("value")
         );
 
+        // get value Checkbox
+        let employeeType = 0;
+        if (this.$refs.checkboxKH.$el.getAttribute("value") !== "") {
+          employeeType = 1;
+        }
+        if (this.$refs.checkboxNCC.$el.getAttribute("value") !== "") {
+          employeeType = 2;
+        }
+        employee["employeeType"] = employeeType;
         let temp = new Date(Date.now());
         // Các trường mặc định
         employee["CreatedDate"] = temp.toJSON();
@@ -621,22 +633,13 @@ export default {
      */
     clearForm() {
       // set value Minput component structure
-      this.$refs.employeeCode.$el.children[1].children[0].value = "";
-      this.$refs.fullName.$el.children[1].children[0].value = "";
-      this.$refs.identityCard.$el.children[1].children[0].value = "";
-      this.$refs.identityPlace.$el.children[1].children[0].value = "";
-      this.$refs.address.$el.children[1].children[0].value = "";
-      this.$refs.mobilePhone.$el.children[1].children[0].value = "";
-      this.$refs.telephone.$el.children[1].children[0].value = "";
-      this.$refs.bankAccount.$el.children[1].children[0].value = "";
-      this.$refs.bankName.$el.children[1].children[0].value = "";
-      this.$refs.bankBranch.$el.children[1].children[0].value = "";
-
+      this.formObject = {};
       // set value LibCombobox component structure
       this.$refs.positionID.clearComboboxSelected();
       this.$refs.departmentID.clearComboboxSelected();
       // set value MDatepicker component structure
       this.$refs.dateOfBirth.$el.children[1].value = "";
+      this.$refs.identityDate.$el.children[1].value = "";
       // set value MDgender component structure
       this.genderType = 0;
     },
