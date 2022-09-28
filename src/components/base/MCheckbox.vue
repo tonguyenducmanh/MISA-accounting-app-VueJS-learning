@@ -6,21 +6,25 @@
       :id="checkboxId"
       :checked="checkboxStatus"
     />
-    <label tabindex="0" class="checkbox__label" :for="checkboxId">{{
-      labelText
-    }}</label>
+    <label
+      tabindex="0"
+      class="checkbox__label"
+      :for="checkboxId"
+      @click="$emit('click-check-box')"
+      >{{ labelText }}</label
+    >
   </div>
 </template>
 <script>
 export default {
   name: "MCheckbox",
+  emits: ["click-check-box"],
   props: {
     labelText: String,
     checkboxId: String,
     checkboxValue: String,
     checkboxStatus: Boolean,
   },
-
 };
 </script>
 <style scoped>

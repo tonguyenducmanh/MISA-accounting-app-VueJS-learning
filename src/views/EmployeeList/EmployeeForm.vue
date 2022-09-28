@@ -14,6 +14,7 @@
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
           :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
           ref="checkboxKH"
+          @click-check-box="changeCheckboxOption(1)"
         />
         <MCheckbox
           labelText="Là nhà cung cấp"
@@ -21,6 +22,7 @@
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
           :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
           ref="checkboxNCC"
+          @click-check-box="changeCheckboxOption(2)"
         />
       </div>
       <div class="form__body">
@@ -437,6 +439,18 @@ export default {
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * thay đổi ô check box trong form
+     * Author: Tô Nguyễn Đức Mạnh (28/09/2022)
+     */
+    changeCheckboxOption(number) {
+      try {
+        console.log(number);
+        this.formObject["employeeType"] = number;
       } catch (error) {
         console.log(error);
       }
