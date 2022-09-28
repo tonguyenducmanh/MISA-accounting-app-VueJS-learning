@@ -1,6 +1,11 @@
 <template lang="">
   <div class="table__wrap" ref="table">
-    <div class="table__wrap--loading table__wrap--hide"></div>
+    <div
+      class="table__wrap--loading"
+      :class="isShowLoading === false ? 'table__wrap--hide' : ''"
+    >
+      <MLoading />
+    </div>
     <table class="table" id="table__employee">
       <thead>
         <tr>
@@ -103,20 +108,34 @@
 import common from "../../js/common.js";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MConntextMenu from "../../components/base/MContextMenu.vue";
+import MLoading from "../../components/base/MLoading.vue";
+
 export default {
   name: "EmployeeTable",
   components: {
     MCheckbox,
     MConntextMenu,
+    MLoading,
   },
   props: {
     employeeList: Array,
     theadList: Array,
+    toggleShowLoading: Boolean,
   },
   data() {
     return {
       hasUp: false,
+      isShowLoading: false,
     };
+  },
+  watch: {
+    toggleShowLoading() {
+      if (this.toggleShowLoading === true) {
+        this.isShowLoading = true;
+      } else {
+        this.isShowLoading = false;
+      }
+    },
   },
   emits: ["delete-employee", "show-form"],
   /**

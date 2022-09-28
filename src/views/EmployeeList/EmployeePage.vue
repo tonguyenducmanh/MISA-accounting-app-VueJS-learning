@@ -18,7 +18,14 @@
         @change-size="changeSize"
       />
       <div class="page__number">
-        <div tabindex="0" class="page__prev" @click="movePrevPage">Trước</div>
+        <div
+          tabindex="0"
+          class="page__prev"
+          @click="movePrevPage"
+          @keydown.enter="movePrevPage"
+        >
+          Trước
+        </div>
         <!-- render ra danh sách trang nhưng giới hạn số trang có thể click -->
         <!-- trang đầu tiên -->
         <div
@@ -26,6 +33,7 @@
           class="page__count"
           :class="1 === pageNumber ? 'page__count--selected' : ''"
           @click="selectThisPage(1)"
+          @keydown.enter="selectThisPage(1)"
         >
           1
         </div>
@@ -38,6 +46,7 @@
             tabindex="0"
             class="page__count"
             @click="selectThisPage(pageNumber - 1)"
+            @keydown.enter="selectThisPage(pageNumber - 1)"
           >
             {{ pageNumber - 1 }}
           </div>
@@ -50,6 +59,7 @@
             class="page__count"
             :class="'page__count--selected'"
             @click="selectThisPage(pageNumber)"
+            @keydown.enter="selectThisPage(pageNumber)"
           >
             {{ pageNumber }}
           </div>
@@ -59,6 +69,7 @@
             tabindex="0"
             class="page__count"
             @click="selectThisPage(pageNumber + 1)"
+            @keydown.enter="selectThisPage(pageNumber + 1)"
           >
             {{ pageNumber + 1 }}
           </div>
@@ -72,10 +83,18 @@
           class="page__count"
           :class="totalPage === pageNumber ? 'page__count--selected' : ''"
           @click="selectThisPage(totalPage)"
+          @keydown.enter="selectThisPage(totalPage)"
         >
           {{ totalPage }}
         </div>
-        <div tabindex="0" class="page__next" @click="moveNextPage">Sau</div>
+        <div
+          tabindex="0"
+          class="page__next"
+          @click="moveNextPage"
+          @keydown.enter="moveNextPage"
+        >
+          Sau
+        </div>
       </div>
     </div>
   </div>

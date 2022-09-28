@@ -1,7 +1,12 @@
 <template lang="">
-  <div>
+  <div ref="popupContainer">
     <!-- phần popup xóa -->
-    <div v-if="isAskWarning" class="popup__wrap" id="popupAskWarning">
+    <div
+      v-if="isAskWarning"
+      class="popup__wrap"
+      id="popupAskWarning"
+      tabindex=""
+    >
       <div class="popup popup--askwarning">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -23,7 +28,7 @@
     </div>
     <!-- phần popup hỏi muốn lưu không -->
 
-    <div v-if="isAsk" class="popup__wrap" id="popupAsk">
+    <div v-if="isAsk" class="popup__wrap" id="popupAsk" tabindex="">
       <div class="popup popup--ask">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -57,7 +62,7 @@
     </div>
 
     <!-- phần popup nhập lỗi -->
-    <div v-if="isAlert" class="popup__wrap" id="popupAlert">
+    <div v-if="isAlert" class="popup__wrap" id="popupAlert" tabindex="">
       <div class="popup popup--alert">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -73,7 +78,7 @@
       </div>
     </div>
     <!-- phần popup trùng id -->
-    <div v-if="isWarning" class="popup__wrap" id="popupWarning">
+    <div v-if="isWarning" class="popup__wrap" id="popupWarning" tabindex="">
       <div class="popup popup--warning">
         <div class="popup__content">
           <div class="icon popup__icon"></div>

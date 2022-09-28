@@ -6,6 +6,7 @@
       :propName="propName"
       class="datepicker__input"
       placeholder="DD/MM/YYYY"
+      tabindex="0"
     />
   </div>
 </template>

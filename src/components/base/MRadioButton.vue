@@ -11,11 +11,18 @@
           :value="contentitem.value"
           :propName="propName"
           @click="setValue(contentitem.value)"
+          tabindex="0"
+          @keydown.enter="setValue(contentitem.value)"
           :checked="contentitem.value === defaultValue"
         />
-        <label class="radio__label" :for="`radio__${index}`">{{
-          contentitem.name
-        }}</label>
+        <label
+          class="radio__label"
+          :for="`radio__${index}`"
+          @click="setValue(contentitem.value)"
+          tabindex="0"
+          @keydown.enter="setValue(contentitem.value)"
+          >{{ contentitem.name }}</label
+        >
       </template>
     </div>
   </div>

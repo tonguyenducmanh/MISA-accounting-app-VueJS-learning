@@ -6,6 +6,7 @@
     </div>
     <div class="input__warp">
       <input
+        tabindex="0"
         type="text"
         class="input__field"
         autocomplete="off"

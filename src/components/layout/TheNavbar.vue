@@ -8,36 +8,90 @@
       </div>
     </div>
     <div class="navbar__list">
-      <MRouterLink name="Tổng quan" link="/demo" className="navbar__tq" />
-      <MRouterLink name="Tiền mặt" link="/" className="navbar__tm" />
-      <MRouterLink name="Tiền gửi" link="/tiengui" className="navbar__tg" />
-      <MRouterLink name="Mua hàng" link="/muahang" className="navbar__mh" />
-      <MRouterLink name="Bán hàng" link="/banhang" className="navbar__bh" />
+      <MRouterLink
+        name="Tổng quan"
+        link="/demo"
+        className="navbar__tq"
+        @keydown.enter="simulateClick"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Tiền mặt"
+        link="/"
+        className="navbar__tm"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Tiền gửi"
+        link="/tiengui"
+        className="navbar__tg"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Mua hàng"
+        link="/muahang"
+        className="navbar__mh"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Bán hàng"
+        link="/banhang"
+        className="navbar__bh"
+        tabindex="0"
+      />
       <MRouterLink
         name="Quản lý hóa đơn"
         link="/hoadon"
         className="navbar__qlhd"
       />
-      <MRouterLink name="Kho" link="/kho" className="navbar__k" />
+      <MRouterLink name="Kho" link="/kho" className="navbar__k" tabindex="0" />
       <MRouterLink
         name="Công cụ dụng cụ"
         link="/congcu"
         className="navbar__ccdc"
+        tabindex="0"
       />
       <MRouterLink
         name="Tài sản cố định"
         link="/taisancodinh"
         className="navbar__tscd"
+        tabindex="0"
       />
-      <MRouterLink name="Thuế" link="/thue" className="navbar__thue" />
-      <MRouterLink name="Giá thành" link="/giathanh" className="navbar__gt" />
-      <MRouterLink name="Tổng hợp" link="/tonghop" className="navbar__th" />
-      <MRouterLink name="Ngân sách" link="/ngansach" className="navbar__ns" />
-      <MRouterLink name="Báo cáo" link="/baocao" className="navbar__bc" />
+      <MRouterLink
+        name="Thuế"
+        link="/thue"
+        className="navbar__thue"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Giá thành"
+        link="/giathanh"
+        className="navbar__gt"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Tổng hợp"
+        link="/tonghop"
+        className="navbar__th"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Ngân sách"
+        link="/ngansach"
+        className="navbar__ns"
+        tabindex="0"
+      />
+      <MRouterLink
+        name="Báo cáo"
+        link="/baocao"
+        className="navbar__bc"
+        tabindex="0"
+      />
       <MRouterLink
         name="Phân tích tài chính"
         link="/taichinh"
         className="navbar__pttc"
+        tabindex="0"
       />
     </div>
   </div>
@@ -48,6 +102,11 @@ export default {
   name: "TheNavbar",
   components: {
     MRouterLink,
+  },
+  methods: {
+    simulateClick() {
+      this.click();
+    },
   },
 };
 </script>

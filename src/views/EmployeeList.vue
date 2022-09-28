@@ -13,12 +13,14 @@
             dataTitle="Ấn ctrl + K để nhập"
             placeHolder="Tìm theo mã, tên nhân viên"
             @change-filter="changeFilter"
+            ref="inputSearch"
           />
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
             data-title="Lấy lại dữ liệu"
             @click="reloadData"
+            @keydown.enter="reloadData"
           ></div>
         </div>
       </div>
@@ -28,6 +30,7 @@
         @show-form="showForm"
         class="table__container"
         :employeeList="employeeList"
+        :toggleShowLoading="isShowLoading"
         :theadList="[
           {
             align: 'left',
@@ -191,6 +194,7 @@ export default {
       isAskShow: false,
       isWarningShow: false,
       isFormShow: false,
+      isShowLoading: false,
       apiTable: "",
       WarningMess: "",
       AlertMess: "",
@@ -200,6 +204,12 @@ export default {
     // chèn api từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
     this.loadData();
+  },
+  /**
+   * mặc định lúc mounted sẽ focus vào ô tìm kiếm
+   */
+  mounted() {
+    this.$refs.inputSearch.$el.children[0].children[0].focus();
   },
   /**
    *  lấy các state từ trong store, để watch theo dõi và rerender
@@ -304,6 +314,8 @@ export default {
         if (arrFilter.length != 0) {
           apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
         }
+        // hiện loading
+        this.isShowLoading = true;
         fetch(apiFetch, { method: this.MISAEnum.method.GET })
           .then((res) => {
             if (res.status == 200) {
@@ -322,6 +334,9 @@ export default {
               this.$store.dispatch("changeTotalPage", 1);
               this.$store.dispatch("changeCurrentPage", 1);
             }
+          })
+          .then(() => {
+            this.isShowLoading = false;
           })
           .catch((res) => {
             console.log(res);

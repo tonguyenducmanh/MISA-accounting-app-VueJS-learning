@@ -1,11 +1,20 @@
 <template lang="">
   <div class="contextmenu">
     <div class="contextmenu__main">
-      <div class="contextmenu__button" @click="$emit('edit-click')">Sửa</div>
+      <div
+        class="contextmenu__button"
+        @click="$emit('edit-click')"
+        tabindex="0"
+        @keydown.enter="$emit('edit-click')"
+      >
+        Sửa
+      </div>
       <div
         class="contextmenu__dropicon"
         v-click-out.self="hideContext"
         @click="tableContext"
+        tabindex="0"
+        @keydown.enter="tableContext"
         :class="hasOpen === true ? MISAEnum.contextMenu.SHOW : ''"
       >
         <div
@@ -17,6 +26,8 @@
             class="contextmenu__item"
             :value="deleteId"
             @click="$emit('duplicate-click', deleteId)"
+            @keydown.enter="$emit('duplicate-click', deleteId)"
+            tabindex="0"
           >
             Nhân bản
           </div>
@@ -24,10 +35,12 @@
             class="contextmenu__item"
             :value="deleteId"
             @click="$emit('delete-id', deleteId, deleteName)"
+            @keydown.enter="$emit('delete-id', deleteId, deleteName)"
+            tabindex="0"
           >
             Xóa
           </div>
-          <div class="contextmenu__item">Ngưng sử dụng</div>
+          <div class="contextmenu__item" tabindex="0">Ngưng sử dụng</div>
         </div>
       </div>
     </div>
