@@ -379,7 +379,28 @@ export default {
      * Author : Tô Nguyễn Đức Mạnh (15/09/2022)
      */
     checkBeforeSave() {
-      return true;
+      // tạo ra mảng thông báo các ô nhập liệu không được để trống
+      let messArr = [];
+      let language = this.$store.state.language;
+      if (this.formObject["employeeCode"] === "") {
+        messArr.push(
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
+        );
+      }
+      if (this.formObject["fullName"] === "") {
+        messArr.push(
+          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
+        );
+      }
+      if (this.formObject["departmentName"] === "") {
+        messArr.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
+      }
+      if (messArr.length > 0) {
+        this.$emit("alert-popup", messArr.join("#"));
+        return false;
+      } else {
+        return true;
+      }
     },
     /**
      * Lấy ra form value và fetch lên api
