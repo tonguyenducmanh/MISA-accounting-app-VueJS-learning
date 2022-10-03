@@ -92,6 +92,7 @@
             titleText="Giới tính"
             propNameBox="gender"
             :defaultValue="formObject['gender']"
+            v-model="formObject['gender']"
             :content="[
               {
                 name: 'Nam',

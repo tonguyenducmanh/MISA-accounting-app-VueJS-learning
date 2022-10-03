@@ -1,7 +1,7 @@
 <template lang="">
   <div class="radio">
     <div class="radio__title">{{ titleText }}</div>
-    <div class="radio__select" :propName="propNameBox" :value="selectedValue">
+    <div class="radio__select" :propName="propNameBox" :value="modelValue">
       <template v-for="(contentitem, index) in content" :key="index">
         <input
           type="radio"
@@ -10,17 +10,17 @@
           :id="`radio__${index}`"
           :value="contentitem.value"
           :propName="propName"
-          @click="setValue(contentitem.value)"
+          @click="$emit('update:modelValue', contentitem.value)"
           tabindex="0"
-          @keydown.enter="setValue(contentitem.value)"
+          @keydown.enter="$emit('update:modelValue', contentitem.value)"
           :checked="contentitem.value === defaultValue"
         />
         <label
           class="radio__label"
           :for="`radio__${index}`"
-          @click="setValue(contentitem.value)"
+          @click="$emit('update:modelValue', contentitem.value)"
           tabindex="0"
-          @keydown.enter="setValue(contentitem.value)"
+          @keydown.enter="$emit('update:modelValue', contentitem.value)"
           >{{ contentitem.name }}</label
         >
       </template>
@@ -30,11 +30,7 @@
 <script>
 export default {
   name: "MRadioButton",
-  data() {
-    return {
-      selectedValue: "",
-    };
-  },
+  emits: ["update:modelValue"],
   props: {
     titleText: {
       type: String,
@@ -45,14 +41,7 @@ export default {
     propName: String,
     propNameBox: String,
     defaultValue: Number,
-  },
-  beforeCreate() {
-    this.selectedValue = this.defaultValue;
-  },
-  methods: {
-    setValue(value) {
-      this.selectedValue = value;
-    },
+    modelValue: String,
   },
 };
 </script>
