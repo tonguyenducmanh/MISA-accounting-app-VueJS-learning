@@ -254,7 +254,7 @@
           class="form__cancel"
           buttonName="Hủy"
           :buttonTwo="true"
-          @click="$emit('hide-form')"
+          @click="$emit('hide-all')"
         />
         <div class="form__action--right">
           <MButton
