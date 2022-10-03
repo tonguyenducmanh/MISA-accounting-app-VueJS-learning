@@ -16,7 +16,7 @@ export default {
   height: 32px;
   position: absolute;
   content: "";
-  background-image: url("../../assets/loading.svg");
+  background-image: url("@/assets/loading.svg");
   background-position: center;
   background-repeat: no-repeat;
   top: 0;
