@@ -14,6 +14,7 @@
             placeHolder="Tìm theo mã, tên nhân viên"
             @change-filter="changeFilter"
             ref="inputSearch"
+            v-model="searchValue"
           />
           <div
             tabindex="0"
@@ -198,6 +199,7 @@ export default {
       apiTable: "",
       WarningMess: "",
       AlertMess: "",
+      searchValue: "",
     };
   },
   beforeMount() {
