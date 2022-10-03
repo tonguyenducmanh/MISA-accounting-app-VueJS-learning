@@ -433,8 +433,10 @@ export default {
             this.newEmpCode = newNVCount;
           })
           .then(() => {
-            this.$refs.employeeCode.$el.children[1].children[0].value =
-              this.newEmpCode;
+            if (this.$refs.employeeCode) {
+              this.$refs.employeeCode.$el.children[1].children[0].value =
+                this.newEmpCode;
+            }
           })
           .catch((res) => {
             console.log(res);
