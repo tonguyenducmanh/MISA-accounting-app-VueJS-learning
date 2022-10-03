@@ -82,18 +82,18 @@
             unique=""
             :isNotNull="true"
           />
-          <LibCombobox
-            id="cbxPosition"
+          <MInput
             :hasLabel="true"
             labelText="Chức danh"
-            :api="MISAEnum.API.GETPOSITIONLIST"
-            text="positionName"
-            value="positionID"
-            ref="positionID"
-            class="form__ele"
+            ref="positionName"
             placeHolder="Nhập chức danh"
-            :fetchedValue="positionID"
-            unique=""
+            :classInput="'form__personaName'"
+            class="form__ele"
+            :inputValue="
+              formObject['positionName'] !== ''
+                ? formObject['positionName']
+                : ''
+            "
           />
         </div>
         <!-- phần nhập form thứ 2 -->
@@ -320,7 +320,6 @@ export default {
       common,
       newEmpCode: "",
       formType: "POST",
-      positionID: "",
       departmentID: "",
       genderType: 0,
       formObject: {},
@@ -371,6 +370,9 @@ export default {
           this.formObject["telephone"] = res["telephone"]
             ? res["telephone"]
             : "";
+          this.formObject["positionName"] = res["positionName"]
+            ? res["positionName"]
+            : "";
           this.formObject["email"] = res["email"] ? res["email"] : "";
           this.formObject["bankAccount"] = res["bankAccount"]
             ? res["bankAccount"]
@@ -384,7 +386,6 @@ export default {
             : "";
           // set value LibCombobox component structure
           this.departmentID = res["departmentID"];
-          this.positionID = res["positionID"];
 
           // set value MDatepicker component structure
           this.$refs.dateOfBirth.$el.children[1].value = this.common.formatDate(
@@ -562,6 +563,10 @@ export default {
           .children[0].value
           ? this.$refs.bankBranch.$el.children[1].children[0].value
           : null;
+        employee["PositionName"] = this.$refs.positionName.$el.children[1]
+          .children[0].value
+          ? this.$refs.positionName.$el.children[1].children[0].value
+          : null;
 
         // get value LibCombobox component structure
         employee["DepartmentID"] =
@@ -571,14 +576,6 @@ export default {
         employee["DepartmentName"] =
           this.$refs.departmentID.$el.children[1].getAttribute("valueName")
             ? this.$refs.departmentID.$el.children[1].getAttribute("valueName")
-            : null;
-        employee["PositionID"] =
-          this.$refs.positionID.$el.children[1].getAttribute("value")
-            ? this.$refs.positionID.$el.children[1].getAttribute("value")
-            : null;
-        employee["PositionName"] =
-          this.$refs.positionID.$el.children[1].getAttribute("valueName")
-            ? this.$refs.positionID.$el.children[1].getAttribute("valueName")
             : null;
 
         // get value MDatepicker component structure
@@ -668,9 +665,9 @@ export default {
       this.$refs.bankAccount.$el.children[1].children[0].value = "";
       this.$refs.bankName.$el.children[1].children[0].value = "";
       this.$refs.bankBranch.$el.children[1].children[0].value = "";
+      this.$refs.positionName.$el.children[1].children[0].value = "";
       this.formObject = {};
       // set value LibCombobox component structure
-      this.$refs.positionID.clearComboboxSelected();
       this.$refs.departmentID.clearComboboxSelected();
       // set value MDatepicker component structure
       this.$refs.dateOfBirth.$el.children[1].value = "";
