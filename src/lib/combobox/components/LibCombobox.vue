@@ -7,7 +7,6 @@
     <div
       class="combobox"
       :propName="propName"
-      :value="uniqueSelected"
       :valueName="currentInput"
       v-click-out.passive="onClickOutside"
       @keydown.esc.passive="hideComboboxData"
@@ -16,6 +15,7 @@
       @keydown.down.passive="nextEleMove"
       @keydown.right.passive="nextEleMove"
       :data-title="dataTitle"
+      :value="modelValue"
     >
       <input
         tabindex="0"
@@ -58,12 +58,12 @@
             class="combobox__item"
             :value="comboboxItem.value"
             @click="
-              $emit('change-size', comboboxItem.value);
+              $emit('update:modelValue', comboboxItem.value);
               itemComboboxOnClick();
               notNullValidate();
             "
             @keydown.enter="
-              $emit('change-size', comboboxItem.value);
+              $emit('update:modelValue', comboboxItem.value);
               itemComboboxOnClick();
               notNullValidate();
             "
@@ -116,6 +116,7 @@ export default {
     value: String,
     isNotNull: Boolean,
     isDefaultError: Boolean,
+    modelValue: String,
   },
   data() {
     return {
@@ -128,7 +129,7 @@ export default {
       isErrorTying: false,
     };
   },
-  emits: ["change-size"],
+  emits: ["update:modelValue"],
   mounted() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
