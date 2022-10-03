@@ -6,6 +6,7 @@
     </div>
     <div class="input__warp">
       <input
+        ref="input"
         tabindex="0"
         type="text"
         class="input__field"
@@ -77,9 +78,19 @@ export default {
     "isNumber",
     "isNotNull",
     "setError",
+    "isFocus",
   ],
   beforeMount() {
     this.isErrorTying = this.setError;
+  },
+  /**
+   * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
+   * Author: Tô Nguyễn Đức Mạnh (03/10/2022)
+   */
+  mounted() {
+    if (this.isFocus) {
+      this.$refs.input.focus();
+    }
   },
   methods: {
     /**

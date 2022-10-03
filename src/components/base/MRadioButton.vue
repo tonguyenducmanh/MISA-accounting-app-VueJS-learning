@@ -13,7 +13,7 @@
           @click="$emit('update:modelValue', contentitem.value)"
           tabindex="0"
           @keydown.enter="$emit('update:modelValue', contentitem.value)"
-          :checked="contentitem.value === defaultValue"
+          :checked="contentitem.value === modelValue"
         />
         <label
           class="radio__label"
@@ -40,8 +40,7 @@ export default {
     },
     propName: String,
     propNameBox: String,
-    defaultValue: Number,
-    modelValue: String,
+    modelValue: Number,
   },
 };
 </script>

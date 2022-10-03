@@ -29,7 +29,7 @@
         <!-- phần nhập form thứ nhất -->
         <div class="form__part form__one">
           <MInput
-            ref="employeeCode"
+            :isFocus="true"
             v-model="formObject['employeeCode']"
             :hasLabel="true"
             labelText="Mã"
@@ -91,7 +91,6 @@
           <MRadioButton
             titleText="Giới tính"
             propNameBox="gender"
-            :defaultValue="formObject['gender']"
             v-model="formObject['gender']"
             :content="[
               {
@@ -315,13 +314,6 @@ export default {
         });
     }
   },
-  /**
-   * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
-   * Author: Tô Nguyễn Đức Mạnh (15/09/2022)
-   */
-  mounted() {
-    this.$refs.employeeCode.$el.children[1].children[0].focus();
-  },
   methods: {
     /**
      * Lấy ra mã người dùng mới rồi focus vào ô đầu tiên
@@ -475,7 +467,7 @@ export default {
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
                   this.$emit(
                     "warning-duplicate",
-                    this.$refs.employeeCode.$el.children[1].children[0].value
+                    this.formObject["employeeCode"]
                   );
                 } else {
                   {
