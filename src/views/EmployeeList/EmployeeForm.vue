@@ -8,8 +8,22 @@
     <div class="form">
       <div class="form__heading">
         <div class="form__title">Thông tin nhân viên</div>
-        <MCheckbox labelText="Là khách hàng" checkboxId="checkbox_kh" />
-        <MCheckbox labelText="Là nhà cung cấp" checkboxId="checkbox_ncc" />
+        <MCheckbox
+          labelText="Là khách hàng"
+          checkboxId="checkbox_kh"
+          :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
+          :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
+          ref="checkboxKH"
+          @click-check-box="changeCheckboxOption(1)"
+        />
+        <MCheckbox
+          labelText="Là nhà cung cấp"
+          checkboxId="checkbox_ncc"
+          :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
+          :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
+          ref="checkboxNCC"
+          @click-check-box="changeCheckboxOption(2)"
+        />
       </div>
       <div class="form__body">
         <!-- phần nhập form thứ nhất -->
@@ -364,7 +378,9 @@ export default {
           this.formObject["bankBranch"] = res["bankBranch"]
             ? res["bankBranch"]
             : "";
-
+          this.formObject["employeeType"] = res["employeeType"]
+            ? res["employeeType"]
+            : "";
           // set value LibCombobox component structure
           this.departmentID = res["departmentID"];
           this.positionID = res["positionID"];
@@ -429,6 +445,20 @@ export default {
         console.log(error);
       }
     },
+    /**
+     * thay đổi ô check box trong form
+     * Author: Tô Nguyễn Đức Mạnh (28/09/2022)
+     */
+    changeCheckboxOption(number) {
+      try {
+        event.preventDefault();
+        console.log(number);
+        this.formObject["employeeType"] = number;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     /**
      * Kiểm tra form xem có trống các ô bắt buộc không ?
      * Nếu các ô đó trống thì không cho lưu mà thay vào đó là hiện popup cảnh báo
@@ -556,6 +586,15 @@ export default {
           this.$refs.gender.$el.children[1].getAttribute("value")
         );
 
+        // get value Checkbox
+        let employeeType = 0;
+        if (this.$refs.checkboxKH.$el.getAttribute("value") !== "") {
+          employeeType = 1;
+        }
+        if (this.$refs.checkboxNCC.$el.getAttribute("value") !== "") {
+          employeeType = 2;
+        }
+        employee["employeeType"] = employeeType;
         let temp = new Date(Date.now());
         // Các trường mặc định
         employee["CreatedDate"] = temp.toJSON();
@@ -621,12 +660,13 @@ export default {
       this.$refs.bankAccount.$el.children[1].children[0].value = "";
       this.$refs.bankName.$el.children[1].children[0].value = "";
       this.$refs.bankBranch.$el.children[1].children[0].value = "";
-
+      this.formObject = {};
       // set value LibCombobox component structure
       this.$refs.positionID.clearComboboxSelected();
       this.$refs.departmentID.clearComboboxSelected();
       // set value MDatepicker component structure
       this.$refs.dateOfBirth.$el.children[1].value = "";
+      this.$refs.identityDate.$el.children[1].value = "";
       // set value MDgender component structure
       this.genderType = 0;
     },
