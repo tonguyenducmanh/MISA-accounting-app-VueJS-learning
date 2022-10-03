@@ -59,11 +59,13 @@
             :value="comboboxItem.value"
             @click="
               $emit('update:modelValue', comboboxItem.value);
+              $emit('change-size', comboboxItem.value);
               itemComboboxOnClick();
               notNullValidate();
             "
             @keydown.enter="
               $emit('update:modelValue', comboboxItem.value);
+              $emit('change-size', comboboxItem.value);
               itemComboboxOnClick();
               notNullValidate();
             "
@@ -129,7 +131,8 @@ export default {
       isErrorTying: false,
     };
   },
-  emits: ["update:modelValue"],
+  // trường hợp change-size là dùng để emit thay đổi số trang bên EmployeePage
+  emits: ["update:modelValue", "change-size"],
   mounted() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
