@@ -17,7 +17,9 @@
         :id="idInput"
         :class="[
           hasItalic === true ? MISAEnum.input.Italic : '',
-          isErrorTying === true ? MISAEnum.input.InputAlert : '',
+          isErrorTying === true || inputAlert === true
+            ? MISAEnum.input.InputAlert
+            : '',
           classInput,
         ]"
         :placeholder="placeHolder"

@@ -77,7 +77,7 @@ var MISAEnum = {
     GETEMPLOYEEFILTER: "https://localhost:44313/api/v1/Employees/filter",
     NEWEMPLOYEECODE: "https://localhost:44313/api/v1/Employees/max-code",
     CHECKEMPLOYEECODE:
-      "https://localhost:44313/api/v1/Employees/duplicate-code/?employeeCode=",
+      "https://localhost:44313/api/v1/Employees/duplicate-code/?recordCode=",
     GETDEPARTMENTLIST: "https://localhost:44313/api/v1/Departments",
     GETPOSITIONLIST: "https://localhost:44313/api/v1/Positions",
   },

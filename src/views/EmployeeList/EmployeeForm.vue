@@ -39,7 +39,8 @@
             labelText="Mã"
             placeHolder="Nhập mã nhân viên"
             validate="employeeCodeNotEmpty"
-            :inputAlert="true"
+            :inputAlert="isDuplicateCode"
+            @input="disableAlertInput"
             idInput="input__checkId"
             :classInput="'input__focus form__employeeCode'"
             :showAlertStar="true"
@@ -53,7 +54,6 @@
             ref="fullName"
             placeHolder="Nhập họ và tên"
             validate="EmployeeNameNotEmpty"
-            :inputAlert="true"
             idInput="input__checkId"
             :classInput="'form__employeename'"
             :showAlertStar="true"
@@ -254,7 +254,7 @@
           class="form__cancel"
           buttonName="Hủy"
           :buttonTwo="true"
-          @click="$emit('hide-form')"
+          @click="$emit('hide-all')"
         />
         <div class="form__action--right">
           <MButton
@@ -325,6 +325,7 @@ export default {
       genderType: 0,
       formObject: {},
       isReload: false,
+      isDuplicateCode: false,
     };
   },
   /**
@@ -444,6 +445,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Tự động tắt cái trùng mã đi khi mà nhập lại vào ô mã record
+     * Author: Tô Nguyễn Đức Mạnh (03/10/2022)
+     */
+    disableAlertInput() {
+      this.isDuplicateCode = false;
     },
     /**
      * thay đổi ô check box trong form
@@ -698,6 +706,7 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
+                  this.isDuplicateCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
                   this.$emit(
                     "warning-duplicate",
@@ -705,6 +714,7 @@ export default {
                   );
                 } else {
                   {
+                    this.isDuplicateCode = false;
                     // thực hiện lưu vào database
                     this.confirmSave(true);
                     // hiện thông báo lưu
