@@ -4,7 +4,15 @@
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
       <div class="employee__menu">
-        <div class="employee__menuleft">Đã chọn x nhân viên</div>
+        <div class="employee__container--left">
+          <MButton
+            dataTitle="Thao tác hàng loạt"
+            class="employee__menuleft"
+            buttonName="Thực hiện hàng loạt"
+            :buttonTwo="true"
+          />
+          <div class="employee__deletecontext">Xóa</div>
+        </div>
         <div class="employee__menuright">
           <MInput
             :hasItalic="true"
@@ -23,6 +31,11 @@
             data-title="Lấy lại dữ liệu"
             @click="reloadData"
             @keydown.enter="reloadData"
+          ></div>
+          <div
+            tabindex="0"
+            class="icon employee__exportbtn"
+            data-title="Xuất ra file Excell"
           ></div>
         </div>
       </div>
@@ -169,6 +182,7 @@ import MISAResource from "../js/resource.js";
 import MInput from "../components/base/MInput.vue";
 import MPopup from "../components/base/MPopup.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
+import MButton from "../components/base/MButton.vue";
 
 // import component fragment
 import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
@@ -178,6 +192,7 @@ import EmployeeForm from "./EmployeeList/EmployeeForm.vue";
 export default {
   name: "TheEmployee",
   components: {
+    MButton,
     MInput,
     MPopup,
     MToastMessage,
@@ -500,8 +515,56 @@ export default {
   align-items: center;
 }
 
+.employee .employee__bottom .employee__menu .employee__container--left {
+  position: relative;
+}
+
 .employee .employee__bottom .employee__menu .employee__menuleft {
-  opacity: 0;
+  cursor: pointer;
+  border-radius: 25px;
+  border: 2px solid var(--ColorPrimaryText);
+  padding-right: 40px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+.employee .employee__bottom .employee__menu .employee__menuleft:hover {
+}
+.employee .employee__bottom .employee__menu .employee__menuleft::before {
+  position: absolute;
+  content: "";
+  background-image: url(@/assets/img/Sprites.64af8f61.svg);
+  background-position: -368px -360px;
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  scale: 80%;
+  right: 18px;
+}
+
+.employee .employee__bottom .employee__menu .employee__deletecontext {
+  position: absolute;
+  background-color: var(--ColorBackgroundWhite);
+  min-width: 100px;
+  height: 40px;
+  z-index: 9;
+  cursor: pointer;
+  display: flex;
+  padding-left: 8px;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0px 1px 6px -2px rgb(165, 165, 165);
+  right: 10px;
+  top: calc(100% + 4px);
+}
+
+.employee .employee__bottom .employee__menu .employee__deletecontext:hover {
+  background-color: var(--ColorBackground);
+  color: var(--LightGreen500);
+}
+
+.employee .employee__bottom .employee__menu .employee__deletecontext:active {
+  background-color: var(--ColorPrimaryTextWhite);
 }
 
 .employee .employee__bottom .employee__menu .employee__menuleft--show {
@@ -537,6 +600,22 @@ export default {
   .employee__menuright
   .employee__reloadbtn::before {
   background-position: -1096px -88px;
+}
+
+.employee
+  .employee__bottom
+  .employee__menu
+  .employee__menuright
+  .employee__exportbtn {
+  margin-left: 3px;
+}
+
+.employee
+  .employee__bottom
+  .employee__menu
+  .employee__menuright
+  .employee__exportbtn::before {
+  background-position: -704px -200px;
 }
 
 .employee .employee__bottom .page__navi .combobox .combobox__drop::before {
