@@ -6,41 +6,41 @@
     </div>
     <div class="input__warp">
       <input
+        ref="input"
         tabindex="0"
         type="text"
         class="input__field"
         autocomplete="off"
         :propName="propName"
-        :validate="validate"
         :just-number="justNumber"
         :format-date="formatDate"
         :id="idInput"
         :class="[
           hasItalic === true ? MISAEnum.input.Italic : '',
-          isErrorTying === true || inputAlert === true
-            ? MISAEnum.input.InputAlert
-            : '',
+          isErrorTying === true ? MISAEnum.input.InputAlert : '',
           classInput,
         ]"
         :placeholder="placeHolder"
-        v-model="currentValue"
         @input="
           notNullValidate();
           justNumberValidate();
           emailValidate();
+          $emit('update:modelValue', $event.target.value);
         "
         @focusout="
           notNullValidate();
           justNumberValidate();
           emailValidate();
+          $emit('update:modelValue', $event.target.value);
         "
+        :value="modelValue"
       />
       <span
         tabindex="0"
         v-if="hasIcon"
         class="icon input__icon"
-        @click="$emit('change-filter', currentValue)"
-        @keydown.enter.passive="$emit('change-filter', currentValue)"
+        @click="$emit('change-filter', modelValue)"
+        @keydown.enter.passive="$emit('change-filter', modelValue)"
       ></span>
     </div>
   </div>
@@ -54,11 +54,10 @@ export default {
   data() {
     return {
       MISAEnum,
-      currentValue: "",
       isErrorTying: false,
     };
   },
-  emits: ["change-filter"],
+  emits: ["change-filter", "update:modelValue"],
   props: [
     "showAlertStar",
     "inputAlert",
@@ -74,36 +73,24 @@ export default {
     "dataTitle",
     "justNumber",
     "formatDate",
-    "inputValue",
+    "modelValue",
     "isEmail",
     "isNumber",
     "isNotNull",
     "setError",
+    "isFocus",
   ],
   beforeMount() {
-    this.currentValue = this.inputValue;
     this.isErrorTying = this.setError;
   },
   /**
-   * Theo dõi khi nào giá trị input rỗng thì load lại trang bằng cách giả lập click vào trong nút tìm kiếm.
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+   * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
+   * Author: Tô Nguyễn Đức Mạnh (03/10/2022)
    */
-  watch: {
-    // xem lúc khởi tạo nó có giá trị gì truyền vào không ?
-    inputValue() {
-      if (this.currentValue != this.inputValue) {
-        this.currentValue = this.inputValue;
-      }
-    },
-    currentValue() {
-      try {
-        if (this.currentValue === "") {
-          this.$emit("change-filter", this.currentValue);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+  mounted() {
+    if (this.isFocus) {
+      this.$refs.input.focus();
+    }
   },
   methods: {
     /**
@@ -115,11 +102,12 @@ export default {
         // kiểm tra xem nó có phải ô nhập email không đã
         if (
           this.isEmail === true &&
-          this.currentValue !== "" &&
-          this.currentValue !== undefined
+          this.modelValue !== "" &&
+          this.modelValue !== undefined &&
+          this.modelValue !== null
         ) {
           const emailRegex = /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).com/gm;
-          let result = emailRegex.test(this.currentValue);
+          let result = emailRegex.test(this.modelValue);
           if (result === false) {
             this.isErrorTying = true;
           } else {
@@ -139,7 +127,9 @@ export default {
         // kiểm tra xem có phải trường not null không
         if (
           this.isNotNull === true &&
-          (this.currentValue === "" || this.currentValue === undefined)
+          (this.modelValue === "" ||
+            this.modelValue === undefined ||
+            this.modelValue === null)
         ) {
           this.isErrorTying = true;
         } else {
@@ -157,9 +147,13 @@ export default {
       try {
         // kiểm tra xem nó có phải trường chỉ điền số không
         if (this.isNumber === true) {
-          if (this.currentValue !== "" && this.currentValue !== undefined) {
+          if (
+            this.modelValue !== "" &&
+            this.modelValue !== undefined &&
+            this.modelValue !== null
+          ) {
             const numberRegex = /^\d+$/;
-            let result = numberRegex.test(this.currentValue);
+            let result = numberRegex.test(this.modelValue);
             if (result === false) {
               this.isErrorTying = true;
             } else {
