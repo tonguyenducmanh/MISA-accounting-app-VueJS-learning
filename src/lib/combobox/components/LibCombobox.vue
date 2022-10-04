@@ -125,6 +125,7 @@ export default {
     value: String,
     isNotNull: Boolean,
     isDefaultError: Boolean,
+    setError: Boolean,
     buttonClass: String,
     // v-model để binding 2 chiều 2 cái dưới vào form bên ngoài combobox nếu có
     modelValue: String,
@@ -144,6 +145,14 @@ export default {
   },
   // trường hợp change-size là dùng để emit thay đổi số trang bên EmployeePage
   emits: ["update:modelValue", "update:modelName", "change-size"],
+  beforeMount() {
+    this.isErrorTying = this.setError;
+  },
+  watch: {
+    setError() {
+      this.isErrorTying = this.setError;
+    },
+  },
   mounted() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc

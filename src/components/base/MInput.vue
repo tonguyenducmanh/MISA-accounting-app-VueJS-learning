@@ -83,6 +83,11 @@ export default {
   beforeMount() {
     this.isErrorTying = this.setError;
   },
+  watch: {
+    setError() {
+      this.isErrorTying = this.setError;
+    },
+  },
   /**
    * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
    * Author: Tô Nguyễn Đức Mạnh (03/10/2022)
