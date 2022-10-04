@@ -34,13 +34,18 @@
         :validate="validate"
         @focus="inputComboboxOnClick"
         @input="
-          inputComboboxOnClick();
+          inputComboboxOnTyping();
           notNullValidate();
         "
         @focusout="notNullValidate"
         v-model="currentInput"
       />
-      <button tabindex="0" class="combobox__button" @click="btnComboboxOnClick">
+      <button
+        tabindex="0"
+        class="combobox__button"
+        :class="buttonClass"
+        @click="btnComboboxOnClick"
+      >
         <div class="combobox__drop"></div>
       </button>
       <div
@@ -79,6 +84,7 @@
                 ? ComboboxEnum.comboboxItem.SELECTED
                 : false,
               currentInput !== '' &&
+              showAll === false &&
               !comboboxItem.name
                 .toLowerCase()
                 .includes(currentInput.toLowerCase())
@@ -119,6 +125,9 @@ export default {
     value: String,
     isNotNull: Boolean,
     isDefaultError: Boolean,
+    setError: Boolean,
+    buttonClass: String,
+    // v-model để binding 2 chiều 2 cái dưới vào form bên ngoài combobox nếu có
     modelValue: String,
     modelName: String,
   },
@@ -131,10 +140,19 @@ export default {
       currentInput: "",
       uniqueSelected: "",
       isErrorTying: false,
+      showAll: true,
     };
   },
   // trường hợp change-size là dùng để emit thay đổi số trang bên EmployeePage
   emits: ["update:modelValue", "update:modelName", "change-size"],
+  beforeMount() {
+    this.isErrorTying = this.setError;
+  },
+  watch: {
+    setError() {
+      this.isErrorTying = this.setError;
+    },
+  },
   mounted() {
     /**
      * Tiến hành fetch dữ liệu từ API để chèn vào combobox hoặc
@@ -213,12 +231,25 @@ export default {
       }
     },
     /**
-     * lắng nghe nhập liệu vào ô input của combobox
+     * lắng nghe click vào ô input của combobox
      * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
      */
     inputComboboxOnClick() {
       try {
         this.isShowData = true;
+        this.showAll = true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * lắng nghe nhập liệu vào ô input của combobox
+     * Author: Tô Nguyễn Đức Mạnh (11/09/2022)
+     */
+    inputComboboxOnTyping() {
+      try {
+        this.isShowData = true;
+        this.showAll = false;
       } catch (error) {
         console.log(error);
       }
@@ -231,6 +262,7 @@ export default {
     btnComboboxOnClick() {
       try {
         this.isShowData = !this.isShowData;
+        this.showAll = true;
       } catch (error) {
         console.log(error);
       }

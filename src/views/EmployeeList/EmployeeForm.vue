@@ -40,8 +40,9 @@
             :classInput="'input__focus form__employeeCode'"
             :showAlertStar="true"
             class="form__ele"
-            dataTitle="Mã không được để trống."
+            :dataTitle="employeeCodeDataTitle"
             :isNotNull="true"
+            :setError="setError.employeeCode"
           />
           <MInput
             :hasLabel="true"
@@ -54,6 +55,7 @@
             dataTitle="Tên không được để trống."
             :isNotNull="true"
             v-model="formObject['fullName']"
+            :setError="setError.fullName"
           />
           <LibCombobox
             :hasLabel="true"
@@ -66,10 +68,12 @@
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
+            buttonClass="combobox__button--white"
             v-model:modelValue="formObject['departmentID']"
             v-model:modelName="formObject['departmentName']"
             unique=""
             :isNotNull="true"
+            :setError="setError.departmentName"
           />
           <MInput
             :hasLabel="true"
@@ -278,6 +282,12 @@ export default {
       formObject: {},
       isReload: false,
       isDuplicateCode: false,
+      setError: {
+        employeeCode: false,
+        fullName: false,
+        departmentName: false,
+      },
+      employeeCodeDataTitle: "Mã nhân viên không được phép để trống.",
     };
   },
   /**
@@ -379,17 +389,28 @@ export default {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
         );
+        this.employeeCodeDataTitle =
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language];
+        this.setError.employeeCode = true;
+      } else {
+        this.setError.employeeCode = false;
       }
       if (!this.formObject["fullName"]) {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
         );
+        this.setError.fullName = true;
+      } else {
+        this.setError.fullName = false;
       }
       if (
         !this.formObject["departmentName"] ||
         !this.formObject["departmentID"]
       ) {
         messArr.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
+        this.setError.departmentName = true;
+      } else {
+        this.setError.departmentName = false;
       }
       if (messArr.length > 0) {
         this.$emit("alert-popup", messArr.join("#"));
@@ -489,7 +510,13 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
+                  let language = this.$store.state.language;
                   this.isDuplicateCode = true;
+                  this.employeeCodeDataTitle =
+                    this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
+                      language
+                    ];
+                  this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
                   this.$emit(
                     "warning-duplicate",
@@ -497,6 +524,12 @@ export default {
                   );
                 } else {
                   {
+                    let language = this.$store.state.language;
+                    this.employeeCodeDataTitle =
+                      this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
+                        language
+                      ];
+                    this.setError.employeeCode = false;
                     this.isDuplicateCode = false;
                     // thực hiện lưu vào database
                     this.confirmSave(true);
@@ -565,6 +598,13 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
+                  let language = this.$store.state.language;
+                  this.isDuplicateCode = true;
+                  this.employeeCodeDataTitle =
+                    this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
+                      language
+                    ];
+                  this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
                   this.$emit(
                     "warning-duplicate",
@@ -572,6 +612,13 @@ export default {
                   );
                 } else {
                   {
+                    let language = this.$store.state.language;
+                    this.isDuplicateCode = false;
+                    this.employeeCodeDataTitle =
+                      this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
+                        language
+                      ];
+                    this.setError.employeeCode = false;
                     // thực hiện lưu vào database
                     this.confirmSave(false);
                     // hiện thông báo lưu

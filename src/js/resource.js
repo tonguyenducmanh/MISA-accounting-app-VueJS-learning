@@ -4,6 +4,10 @@ var MISAResource = {
       VI: "Mã nhân viên không được phép để trống.",
       EN: "Employee code is not empty.",
     },
+    EmployeeCodeIsDuplicated: {
+      VI: "Mã nhân viên đã tồn tại.",
+      EN: "Employee code is duplicated.",
+    },
     EmployeeNameNotEmpty: {
       VI: "Tên không được phép để trống.",
       EN: "Employee name is not empty.",
