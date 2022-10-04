@@ -21,12 +21,7 @@
           classInput,
         ]"
         :placeholder="placeHolder"
-        @input="
-          notNullValidate();
-          justNumberValidate();
-          emailValidate();
-          $emit('update:modelValue', $event.target.value);
-        "
+        @input="$emit('update:modelValue', $event.target.value)"
         @focusout="
           notNullValidate();
           justNumberValidate();
@@ -87,6 +82,11 @@ export default {
     setError() {
       this.isErrorTying = this.setError;
     },
+    modelValue() {
+      this.notNullValidate();
+      this.justNumberValidate();
+      this.emailValidate();
+    },
   },
   /**
    * khi form đã mounted vào trong DOM thì tiến hành focus vào trong ô nhập liệu đầu tiên
@@ -108,8 +108,7 @@ export default {
         if (
           this.isEmail === true &&
           this.modelValue !== "" &&
-          this.modelValue !== undefined &&
-          this.modelValue !== null
+          this.modelValue !== undefined
         ) {
           const emailRegex = /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).com/gm;
           let result = emailRegex.test(this.modelValue);
@@ -132,9 +131,7 @@ export default {
         // kiểm tra xem có phải trường not null không
         if (
           this.isNotNull === true &&
-          (this.modelValue === "" ||
-            this.modelValue === undefined ||
-            this.modelValue === null)
+          (this.modelValue === "" || this.modelValue === undefined)
         ) {
           this.isErrorTying = true;
         } else {
@@ -152,11 +149,7 @@ export default {
       try {
         // kiểm tra xem nó có phải trường chỉ điền số không
         if (this.isNumber === true) {
-          if (
-            this.modelValue !== "" &&
-            this.modelValue !== undefined &&
-            this.modelValue !== null
-          ) {
+          if (this.modelValue !== "" && this.modelValue !== undefined) {
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.modelValue);
             if (result === false) {
