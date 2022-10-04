@@ -297,7 +297,7 @@ export default {
    * Author: Tô Nguyễn Đức Manh (14/09/2022)
    */
   beforeMount() {
-    // lấy mã id mới nếu là thêm mới
+    // lấy mã nhân mới nếu là thêm mới
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
       this.getNewEmpCode();
@@ -317,6 +317,11 @@ export default {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
           this.formObject = res;
+          // tăng 1 đơn vị mã nhân viên nếu là nhân bản
+          let isClone = this.$store.state.isClone;
+          if (isClone) {
+            this.increamentOne(this.formObject["employeeCode"]);
+          }
         })
         .catch((res) => {
           console.log(res);
@@ -337,20 +342,29 @@ export default {
           .then((res) => res.text())
           .then((res) => {
             // gán giá trị tăng 1 đơn vị cần truyền vào trong input
-            const lastID = res;
-            let lastIDArray;
-            lastID !== "" ? (lastIDArray = lastID) : (lastIDArray = "NV00001");
-            const lastIDNumber =
-              parseInt(lastIDArray.split("").slice(2, lastID.length).join("")) +
-              1;
-            const zeroPad = (num, places) => String(num).padStart(places, "0");
-            const newIDCout = zeroPad(lastIDNumber, lastID.length - 2);
-            const newNVCount = `NV${newIDCout}`;
-            this.formObject["employeeCode"] = newNVCount;
+            this.increamentOne(res);
           })
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tăng giá trị hiện tại lên thêm 1 đơn vị
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    increamentOne(value) {
+      try {
+        let lastIDArray;
+        value !== "" ? (lastIDArray = value) : (lastIDArray = "NV00001");
+        const lastIDNumber =
+          parseInt(lastIDArray.split("").slice(2, value.length).join("")) + 1;
+        const zeroPad = (num, places) => String(num).padStart(places, "0");
+        const newIDCout = zeroPad(lastIDNumber, value.length - 2);
+        const newNVCount = `NV${newIDCout}`;
+        this.formObject["employeeCode"] = newNVCount;
       } catch (error) {
         console.log(error);
       }

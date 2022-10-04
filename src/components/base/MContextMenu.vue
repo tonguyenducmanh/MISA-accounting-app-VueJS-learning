@@ -25,8 +25,14 @@
           <div
             class="contextmenu__item"
             :value="deleteId"
-            @click="$emit('duplicate-click', deleteId)"
-            @keydown.enter="$emit('duplicate-click', deleteId)"
+            @click="
+              enableClone();
+              $emit('duplicate-click', deleteId);
+            "
+            @keydown.enter="
+              enableClone();
+              $emit('duplicate-click', deleteId);
+            "
             tabindex="0"
           >
             Nhân bản
@@ -78,6 +84,17 @@ export default {
     hideContext() {
       try {
         this.hasOpen = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * thay đổi trạng thái sang nhân bản
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    enableClone() {
+      try {
+        this.$store.dispatch("changeStatusClone", true);
       } catch (error) {
         console.log(error);
       }
