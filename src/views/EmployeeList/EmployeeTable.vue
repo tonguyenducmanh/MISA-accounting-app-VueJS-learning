@@ -11,7 +11,11 @@
         <tr>
           <!-- chèn th checkbox -->
           <th class="table__th table__thcheck">
-            <MCheckbox class="checkbox" checkboxId="checkbox__all" />
+            <MCheckbox
+              class="checkbox"
+              @click-check-box="toggleCheckAll"
+              :checkboxStatus="checkAllEnable"
+            />
           </th>
           <!-- render ra th dựa vào prop theadList -->
           <template v-for="(theaditem, index) in theadList" :key="index">
@@ -38,6 +42,8 @@
                 :isTd="true"
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
+                @click-check-box="toggleSelectedID(employee['employeeID'])"
+                :checkboxStatus="forceCheckAll"
               />
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
@@ -126,7 +132,14 @@ export default {
     return {
       hasUp: false,
       isShowLoading: false,
+      forceCheckAll: false,
+      checkAllEnable: false,
     };
+  },
+  computed: {
+    totalSelected() {
+      return this.$store.state.selectedIDs.length;
+    },
   },
   watch: {
     toggleShowLoading() {
@@ -134,6 +147,13 @@ export default {
         this.isShowLoading = true;
       } else {
         this.isShowLoading = false;
+      }
+    },
+    totalSelected() {
+      if (this.$store.state.selectedIDs.length === this.employeeList.length) {
+        this.checkAllEnable = true;
+      } else {
+        this.checkAllEnable = false;
       }
     },
   },
@@ -213,6 +233,56 @@ export default {
         this.$store.dispatch("changeEditCode", "");
       }, 1000);
       // gọi hàm tạo ra mã id mới để chèn vô form nữa
+    },
+    /**
+     * Thêm hoặc xóa 1 record vào trong store selectedIDs
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    toggleSelectedID(value) {
+      try {
+        let currentSelectedArr = this.$store.state.selectedIDs;
+        // kiểm tra xem trong mảng đã có chưa, chưa có thì mới thêm
+        // có rồi thì xóa khỏi mảng
+        let check = currentSelectedArr.includes(value);
+        if (currentSelectedArr.length > 0) {
+          if (check === false) {
+            currentSelectedArr.push(value);
+          } else {
+            currentSelectedArr.splice(currentSelectedArr.indexOf(value), 1);
+          }
+        } else {
+          currentSelectedArr.push(value);
+        }
+        this.$store.dispatch("changeSelectedIDs", currentSelectedArr);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thêm toàn bộ các ID record đang hiển thị trên table vào
+     * trong store, đỡ phải ấn từng cái 1
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    toggleCheckAll() {
+      try {
+        this.forceCheckAll = !this.forceCheckAll;
+        this.checkAllEnable = !this.checkAllEnable;
+        // kiểm tra xem trạng thái hiện tại là check all hay bỏ check,
+        // nếu là check all thì thêm tất cả vào trong store
+        // nếu là bỏ check thì làm trống store
+        if (this.forceCheckAll) {
+          let arr = [];
+          let arrEmp = this.employeeList;
+          for (let i = 0; i < arrEmp.length; i++) {
+            arr.push(arrEmp[i]["employeeID"]);
+          }
+          this.$store.dispatch("changeSelectedIDs", arr);
+        } else {
+          this.$store.dispatch("changeSelectedIDs", []);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
