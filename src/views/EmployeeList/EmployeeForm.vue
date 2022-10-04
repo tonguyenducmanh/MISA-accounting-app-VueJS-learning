@@ -66,6 +66,7 @@
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
+            buttonClass="combobox__button--white"
             v-model:modelValue="formObject['departmentID']"
             v-model:modelName="formObject['departmentName']"
             unique=""
