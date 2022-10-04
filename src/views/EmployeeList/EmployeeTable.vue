@@ -38,6 +38,7 @@
                 :isTd="true"
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
+                @click-check-box="toggleSelectedID(employee['employeeID'])"
               />
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
@@ -213,6 +214,30 @@ export default {
         this.$store.dispatch("changeEditCode", "");
       }, 1000);
       // gọi hàm tạo ra mã id mới để chèn vô form nữa
+    },
+    /**
+     * Thêm hoặc xóa 1 record vào trong store selectedIDs
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    toggleSelectedID(value) {
+      try {
+        let currentSelectedArr = this.$store.state.selectedIDs;
+        // kiểm tra xem trong mảng đã có chưa, chưa có thì mới thêm
+        // có rồi thì xóa khỏi mảng
+        let check = currentSelectedArr.includes(value);
+        if (currentSelectedArr.length > 0) {
+          if (check === false) {
+            currentSelectedArr.push(value);
+          } else {
+            currentSelectedArr.splice(currentSelectedArr.indexOf(value), 1);
+          }
+        } else {
+          currentSelectedArr.push(value);
+        }
+        this.$store.dispatch("changeSelectedIDs", currentSelectedArr);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

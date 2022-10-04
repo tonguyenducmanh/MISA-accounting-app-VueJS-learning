@@ -19,6 +19,7 @@ const store = createStore({
       method: "",
       currentEditID: "",
       currentEditCode: "",
+      selectedIDs: [],
     };
   },
   mutations: {
@@ -77,6 +78,9 @@ const store = createStore({
     },
     changeEditCode(state, value) {
       state.currentEditCode = value;
+    },
+    changeSelectedIDs(state, value) {
+      state.selectedIDs = value;
     },
   },
   actions: {
@@ -195,6 +199,13 @@ const store = createStore({
      */
     changeEditCode(context, value) {
       context.commit("changeEditCode", value);
+    },
+    /**
+     * Thay đổi array selected ID hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    changeSelectedIDs(context, value) {
+      context.commit("changeSelectedIDs", value);
     },
   },
 });
