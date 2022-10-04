@@ -84,17 +84,22 @@ export default {
     setError() {
       this.isErrorTying = this.setError;
     },
+    /**
+     * Tự động chạy 1 số fn khi modelValue thay đổi giá trị
+     * Author : Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
     modelValue() {
       this.notNullValidate();
       this.justNumberValidate();
       this.emailValidate();
-
-      // debounce tìm kiếm
-      clearTimeout(this.timeOut);
-      this.timeOut = setTimeout(() => {
-        // tự động tìm kiếm khi modelValue thay đổi
-        this.$emit("change-filter", this.modelValue);
-      }, this.timeDelay);
+      // debounce tìm kiếm ( options ), chỉ khi có timeDelay thì mới chạy đoạn này
+      if (this.timeDelay) {
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(() => {
+          // tự động tìm kiếm khi modelValue thay đổi
+          this.$emit("change-filter", this.modelValue);
+        }, this.timeDelay);
+      }
     },
   },
   /**
