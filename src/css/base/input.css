@@ -61,7 +61,7 @@
     tùy chỉnh position thông báo lỗi
 */
 
-.form__ele{
+.form__ele {
   position: relative;
 }
 
@@ -99,8 +99,8 @@
   margin-right: 8px;
 }
 
-.input__warp .input__field {
-  padding-right: 28px;
+.input__warp:has(.input__icon) .input__field {
+  padding-right: 40px;
 }
 
 .input__warp .input__field--italic {
