@@ -66,7 +66,8 @@
             class="form__ele"
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
-            v-model="formObject['departmentID']"
+            v-model:modelValue="formObject['departmentID']"
+            v-model:modelName="formObject['departmentName']"
             unique=""
             :isNotNull="true"
           />
