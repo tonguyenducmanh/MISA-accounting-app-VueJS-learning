@@ -594,7 +594,7 @@ export default {
   background-color: var(--ColorBackgroundWhite);
   min-width: 100px;
   height: 40px;
-  z-index: 9;
+  z-index: 3;
   cursor: pointer;
   display: flex;
   padding-left: 8px;
