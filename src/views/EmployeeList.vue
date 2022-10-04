@@ -15,6 +15,7 @@
             @change-filter="changeFilter"
             ref="inputSearch"
             v-model="searchValue"
+            :timeDelay="1500"
           />
           <div
             tabindex="0"
