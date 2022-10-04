@@ -123,7 +123,9 @@
     background-color: var(--ColorTableHover);
 }
 
-.table__wrap .table tbody tr:has(input:checked){
+/* thay màu background cho tr khi 1 cái đã check */
+
+/* .table__wrap .table tbody tr:has(input:checked){
     background-color: var(--LightGreen100);
 }
 
@@ -133,7 +135,7 @@
 
 .table__wrap .table tbody tr:has(input:checked) td:last-child{
     background-color: var(--LightGreen100);
-}
+} */
 
 .table__wrap .table tbody tr td:not(:first-child, :nth-last-child(2)){
     border-right: 1px dotted var(--ColorBorder);
