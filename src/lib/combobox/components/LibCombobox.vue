@@ -106,7 +106,6 @@ export default {
     placeHolder: String,
     propName: String,
     defaultValue: String,
-    fetchedValue: String,
     unique: String,
     // giá trị chèn vào khi không có api
     data: String,
@@ -152,7 +151,7 @@ export default {
             // gán giá trị mong muốn vào trong comboboxList
             for (let item of res) {
               // kiểm tra xem nếu có giá trị mặc định thì chèn cho nó vào input và gán value vào combobox
-              if (item[combobox.value] === combobox.fetchedValue) {
+              if (item[combobox.value] === combobox.modelValue) {
                 combobox.currentInput = item[combobox.text];
                 combobox.isShowData = false;
                 // select cái đã chọn

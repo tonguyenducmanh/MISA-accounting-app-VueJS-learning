@@ -56,7 +56,6 @@
             v-model="formObject['fullName']"
           />
           <LibCombobox
-            id="cbxDepartment"
             :hasLabel="true"
             labelText="Đơn vị"
             :showAlertStar="true"
@@ -68,7 +67,6 @@
             placeHolder="Nhập đơn vị"
             classInput="input__musthave"
             v-model="formObject['departmentID']"
-            :fetchedValue="formObject['departmentID']"
             unique=""
             :isNotNull="true"
           />
@@ -337,13 +335,7 @@ export default {
             const zeroPad = (num, places) => String(num).padStart(places, "0");
             const newIDCout = zeroPad(lastIDNumber, lastID.length - 2);
             const newNVCount = `NV${newIDCout}`;
-            this.newEmpCode = newNVCount;
-          })
-          .then(() => {
-            if (this.$refs.employeeCode) {
-              this.$refs.employeeCode.$el.children[1].children[0].value =
-                this.newEmpCode;
-            }
+            this.formObject["employeeCode"] = newNVCount;
           })
           .catch((res) => {
             console.log(res);
@@ -382,17 +374,20 @@ export default {
       // tạo ra mảng thông báo các ô nhập liệu không được để trống
       let messArr = [];
       let language = this.$store.state.language;
-      if (this.formObject["employeeCode"] === "") {
+      if (!this.formObject["employeeCode"]) {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
         );
       }
-      if (this.formObject["fullName"] === "") {
+      if (!this.formObject["fullName"]) {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
         );
       }
-      if (this.formObject["departmentName"] === "") {
+      if (
+        !this.formObject["departmentName"] ||
+        !this.formObject["departmentID"]
+      ) {
         messArr.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
       }
       if (messArr.length > 0) {
@@ -416,6 +411,7 @@ export default {
         if (currentMethod === this.MISAEnum.method.PUT) {
           api += `/${this.$store.state.currentEditID}`;
         }
+        // debugger
         fetch(api, {
           method: currentMethod,
           headers: {
@@ -468,11 +464,19 @@ export default {
         let inputMustHaveEmpty = this.checkBeforeSave();
         if (inputMustHaveEmpty === true) {
           let methodNow = this.$store.state.method;
-          // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
-          if (methodNow === this.MISAEnum.method.POST) {
+          let currentCode = this.$store.state.currentEditCode;
+          let formCode = this.formObject["employeeCode"];
+          let methodPost = this.MISAEnum.method.POST;
+          let methodPut = this.MISAEnum.method.PUT;
+          // kiểm tra xem có cần check mã trùng không, nếu là thêm mới thì luôn check, nếu là sửa
+          // thì chỉ check mã trùng khi mã code khác mã code của nhân viên đang edit
+          if (
+            methodNow === methodPost ||
+            (methodNow === methodPut && currentCode !== formCode)
+          ) {
             // nếu là thêm mới thì
             // kiểm tra xem id đã trùng chưa ?
-            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${this.formObject["employeeCode"]}`;
+            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${formCode}`;
             fetch(apiTest, { method: this.MISAEnum.method.GET })
               .then((res) => {
                 if (res.status == 200) {
@@ -518,8 +522,9 @@ export default {
             this.showEditedNoti();
             // sửa lại method về post
             this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
-            // xóa edit id đi
+            // xóa edit id, edit code đi
             this.$store.dispatch("changeEditID", "");
+            this.$store.dispatch("changeEditCode", "");
           }
         }
       } catch (error) {
@@ -537,9 +542,17 @@ export default {
         let inputMustHaveEmpty = this.checkBeforeSave();
         if (inputMustHaveEmpty === true) {
           let methodNow = this.$store.state.method;
-          // kiểm tra xem phương thức hiện tại là sửa hay thêm mới
-          if (methodNow === this.MISAEnum.method.POST) {
-            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${this.formObject["employeeCode"]}`;
+          let currentCode = this.$store.state.currentEditCode;
+          let formCode = this.formObject["employeeCode"];
+          let methodPost = this.MISAEnum.method.POST;
+          let methodPut = this.MISAEnum.method.PUT;
+          // kiểm tra xem có cần check mã trùng không, nếu là thêm mới thì luôn check, nếu là sửa
+          // thì chỉ check mã trùng khi mã code khác mã code của nhân viên đang edit
+          if (
+            methodNow === methodPost ||
+            (methodNow === methodPut && currentCode !== formCode)
+          ) {
+            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${formCode}`;
             fetch(apiTest, { method: this.MISAEnum.method.GET })
               .then((res) => {
                 if (res.status == 200) {
@@ -554,7 +567,7 @@ export default {
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
                   this.$emit(
                     "warning-duplicate",
-                    this.$refs.employeeCode.$el.children[1].children[0].value
+                    this.formObject["employeeCode"]
                   );
                 } else {
                   {
@@ -588,6 +601,7 @@ export default {
             this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
             // xóa edit id đi
             this.$store.dispatch("changeEditID", "");
+            this.$store.dispatch("changeEditCode", "");
           }
         }
       } catch (error) {

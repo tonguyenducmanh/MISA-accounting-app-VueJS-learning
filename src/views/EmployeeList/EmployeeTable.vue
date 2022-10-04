@@ -50,7 +50,7 @@
                 v-if="theaditem.formatDate"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['employeeID']);
+                  putMethod(employee['employeeID'], employee['employeeCode']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -60,7 +60,7 @@
                 v-else-if="theaditem.formatGender"
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['employeeID']);
+                  putMethod(employee['employeeID'], employee['employeeCode']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -70,7 +70,7 @@
                 v-else
                 @dblclick="
                   $emit('show-form');
-                  putMethod(employee['employeeID']);
+                  putMethod(employee['employeeID'], employee['employeeCode']);
                 "
                 :class="`text__align--${theaditem.align}`"
               >
@@ -82,11 +82,11 @@
               <MConntextMenu
                 @edit-click="
                   $emit('show-form');
-                  putMethod(employee['employeeID']);
+                  putMethod(employee['employeeID'], employee['employeeCode']);
                 "
                 @duplicate-click="
                   $emit('show-form');
-                  postMethod(employee['employeeID']);
+                  postMethod(employee['employeeID'], employee['employeeCode']);
                 "
                 :deleteId="employee['employeeID']"
                 :deleteName="employee['fullName']"
@@ -186,27 +186,31 @@ export default {
       }
     },
     /**
-     * Thay đổi method sang PUT và chèn ID hiện tại vào store global để fetch data về.
+     * Thay đổi method sang PUT và chèn ID, edit code hiện tại vào store global để fetch data về.
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
-    putMethod(currentId) {
+    putMethod(currentId, currentCode) {
       this.$store.dispatch("changeMethod", "PUT");
       this.$store.dispatch("changeEditID", currentId);
+      this.$store.dispatch("changeEditCode", currentCode);
     },
     /**
      * Thay đổi method sang POST và chèn ID hiện tại vào store global để fetch data về.
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
-    postMethod(currentId) {
+    postMethod(currentId, currentCode) {
       // chuyển method về put để thực hiện binding dữ liệu giống như là đang edit
       // để ăn gian đoạn logic này
       this.$store.dispatch("changeEditID", currentId);
+      this.$store.dispatch("changeEditCode", currentCode);
+
       this.$store.dispatch("changeMethod", "PUT");
       // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
       setTimeout(() => {
         this.$store.dispatch("changeMethod", "POST");
         // xóa cả currentID đi
         this.$store.dispatch("changeEditID", "");
+        this.$store.dispatch("changeEditCode", "");
       }, 1000);
       // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },
