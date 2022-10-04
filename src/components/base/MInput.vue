@@ -50,6 +50,7 @@ export default {
     return {
       MISAEnum,
       isErrorTying: false,
+      timeOut: null,
     };
   },
   emits: ["change-filter", "update:modelValue"],
@@ -74,6 +75,7 @@ export default {
     "isNotNull",
     "setError",
     "isFocus",
+    "timeDelay",
   ],
   beforeMount() {
     this.isErrorTying = this.setError;
@@ -86,6 +88,13 @@ export default {
       this.notNullValidate();
       this.justNumberValidate();
       this.emailValidate();
+
+      // debounce tìm kiếm
+      clearTimeout(this.timeOut);
+      this.timeOut = setTimeout(() => {
+        // tự động tìm kiếm khi modelValue thay đổi
+        this.$emit("change-filter", this.modelValue);
+      }, this.timeDelay);
     },
   },
   /**
