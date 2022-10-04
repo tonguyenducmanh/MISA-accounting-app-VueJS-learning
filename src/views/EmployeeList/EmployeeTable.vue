@@ -11,7 +11,11 @@
         <tr>
           <!-- chèn th checkbox -->
           <th class="table__th table__thcheck">
-            <MCheckbox class="checkbox" checkboxId="checkbox__all" />
+            <MCheckbox
+              class="checkbox"
+              checkboxId="checkbox__all"
+              @click-check-box="toggleCheckAll"
+            />
           </th>
           <!-- render ra th dựa vào prop theadList -->
           <template v-for="(theaditem, index) in theadList" :key="index">
@@ -39,6 +43,7 @@
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
                 @click-check-box="toggleSelectedID(employee['employeeID'])"
+                :checkboxStatus="forceCheckAll"
               />
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
@@ -127,6 +132,7 @@ export default {
     return {
       hasUp: false,
       isShowLoading: false,
+      forceCheckAll: false,
     };
   },
   watch: {
@@ -235,6 +241,31 @@ export default {
           currentSelectedArr.push(value);
         }
         this.$store.dispatch("changeSelectedIDs", currentSelectedArr);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thêm toàn bộ các ID record đang hiển thị trên table vào
+     * trong store, đỡ phải ấn từng cái 1
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    toggleCheckAll() {
+      try {
+        this.forceCheckAll = !this.forceCheckAll;
+        // kiểm tra xem trạng thái hiện tại là check all hay bỏ check,
+        // nếu là check all thì thêm tất cả vào trong store
+        // nếu là bỏ check thì làm trống store
+        if (this.forceCheckAll) {
+          let arr = [];
+          let arrEmp = this.employeeList;
+          for (let i = 0; i < arrEmp.length; i++) {
+            arr.push(arrEmp[i]["employeeID"]);
+          }
+          this.$store.dispatch("changeSelectedIDs", arr);
+        } else {
+          this.$store.dispatch("changeSelectedIDs", []);
+        }
       } catch (error) {
         console.log(error);
       }
