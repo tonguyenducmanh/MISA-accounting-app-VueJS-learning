@@ -19,6 +19,8 @@ const store = createStore({
       method: "",
       currentEditID: "",
       currentEditCode: "",
+      selectedIDs: [],
+      isClone: false,
     };
   },
   mutations: {
@@ -77,6 +79,12 @@ const store = createStore({
     },
     changeEditCode(state, value) {
       state.currentEditCode = value;
+    },
+    changeSelectedIDs(state, value) {
+      state.selectedIDs = value;
+    },
+    changeStatusClone(state, value) {
+      state.isClone = value;
     },
   },
   actions: {
@@ -195,6 +203,20 @@ const store = createStore({
      */
     changeEditCode(context, value) {
       context.commit("changeEditCode", value);
+    },
+    /**
+     * Thay đổi array selected ID hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    changeSelectedIDs(context, value) {
+      context.commit("changeSelectedIDs", value);
+    },
+    /**
+     * Thay đổi trạng thái xem có đang ở trạng thái nhân bản không
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    changeStatusClone(context, value) {
+      context.commit("changeStatusClone", value);
     },
   },
 });

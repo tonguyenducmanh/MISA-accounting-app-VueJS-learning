@@ -4,15 +4,27 @@
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
       <div class="employee__menu">
-        <div class="employee__container--left">
+        <div v-if="isAutoActionBoxShow" class="employee__container--left">
           <MButton
-            dataTitle="Thao tác hàng loạt"
             class="employee__menuleft"
             buttonName="Thực hiện hàng loạt"
             :buttonTwo="true"
+            @click="toggleMoreActionMenu"
+            v-click-out="hideMoreActionMenu"
           />
-          <div class="employee__deletecontext">Xóa</div>
+          <div
+            v-if="isAutoActionShow"
+            class="employee__deletecontext"
+            @click="toggleMoreActionMenu"
+          >
+            Xóa
+          </div>
         </div>
+        <!-- element dưới dùng v-else để thay thế element employee__menu--left trên
+        khi mà không có nó trong DOM thì vẫn cần 1 element giả để có thể dùng display flex và justify-content space between
+        thì mới có thể làm employee__menuright nằm về bên phải của trang web được
+         -->
+        <div v-else></div>
         <div class="employee__menuright">
           <MInput
             :hasItalic="true"
@@ -212,6 +224,8 @@ export default {
       isWarningShow: false,
       isFormShow: false,
       isShowLoading: false,
+      isAutoActionBoxShow: false,
+      isAutoActionShow: false,
       apiTable: "",
       WarningMess: "",
       AlertMess: "",
@@ -272,6 +286,9 @@ export default {
     language() {
       return this.$store.state.language;
     },
+    countSelectedIDs() {
+      return this.$store.state.selectedIDs.length;
+    },
   },
   /**
    * Bất cứ khi nào pageSize, searchFilter thay đổi thì load lại trang
@@ -280,6 +297,14 @@ export default {
   watch: {
     tableInfo() {
       this.loadData();
+    },
+    countSelectedIDs() {
+      let selectLength = this.$store.state.selectedIDs.length;
+      if (selectLength > 0) {
+        this.isAutoActionBoxShow = true;
+      } else {
+        this.isAutoActionBoxShow = false;
+      }
     },
   },
   /**
@@ -471,7 +496,7 @@ export default {
     },
     /**
      * Hiện popup warning trùng ID
-     * Author: Tô Nguyễn Đức Mạnh (1309/2022)
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     toggleWarningPopup(value) {
       try {
@@ -481,6 +506,28 @@ export default {
         let textAlertTwo = this.MISAResource.ErrorValidate.IsExisted[language];
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
         this.isWarningShow = !this.isWarningShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện moreaction menu khi bấm vào thao tác hàng loạt
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    toggleMoreActionMenu() {
+      try {
+        this.isAutoActionShow = !this.isAutoActionShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * ẩn action menu khi bấm ra ngoài
+     * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
+     */
+    hideMoreActionMenu() {
+      try {
+        this.isAutoActionShow = false;
       } catch (error) {
         console.log(error);
       }
