@@ -80,6 +80,11 @@ var MISAEnum = {
       "https://localhost:44313/api/v1/Employees/duplicate-code/?recordCode=",
     GETDEPARTMENTLIST: "https://localhost:44313/api/v1/Departments",
     GETPOSITIONLIST: "https://localhost:44313/api/v1/Positions",
+    DELETEMANYEMPLOYEES: "https://localhost:44313/api/v1/Employees/delete-many",
+  },
+  // header API
+  APIHEADER: {
+    APPJSON: "application/json",
   },
   // các từ khóa liên quan tới table
   table: {

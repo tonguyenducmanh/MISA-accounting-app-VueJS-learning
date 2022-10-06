@@ -15,7 +15,7 @@
           <div
             v-if="isAutoActionShow"
             class="employee__deletecontext"
-            @click="toggleMoreActionMenu"
+            @click="deleteManyAction"
           >
             Xóa
           </div>
@@ -35,7 +35,7 @@
             @change-filter="changeFilter"
             ref="inputSearch"
             v-model="searchValue"
-            :timeDelay="1500"
+            :timeDelay="500"
           />
           <div
             tabindex="0"
@@ -528,6 +528,65 @@ export default {
     hideMoreActionMenu() {
       try {
         this.isAutoActionShow = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Method xóa nhiều nhân viên trong 1 bảng
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    deleteManyAction() {
+      try {
+        let apiFetch = this.MISAEnum.API.DELETEMANYEMPLOYEES;
+        let deleteList = this.$store.state.selectedIDs;
+
+        // gọi tới be để xóa danh sách nhân viên
+        fetch(apiFetch, {
+          method: this.MISAEnum.method.POST,
+          headers: {
+            "Content-Type": this.MISAEnum.APIHEADER.APPJSON,
+          },
+          body: JSON.stringify(deleteList),
+        })
+          .then((res) => {
+            // nếu xóa thành công thì xóa IDs cần xóa đi, load lại table
+            if (res.status === 200) {
+              // xóa danh sách cần xóa đi
+              this.$store.dispatch("changeSelectedIDs", []);
+
+              // hiện thông báo xóa nhiều thành công
+              let language = this.$store.state.language;
+              this.$store.dispatch(
+                "changeToastType",
+                this.MISAEnum.toasttype.SUCCESS
+              );
+              this.$store.dispatch(
+                "changeToastText",
+                this.MISAResource.ToastMessage.DeleteManyNoti[language]
+              );
+              this.$store.dispatch("toggleToast", true);
+              // load lại danh sách
+              this.loadData();
+            } else {
+              console.log(res);
+
+              // hiện thông báo xóa nhiều thất bại
+              let language = this.$store.state.language;
+              this.$store.dispatch(
+                "changeToastType",
+                this.MISAEnum.toasttype.ERROR
+              );
+              this.$store.dispatch(
+                "changeToastText",
+                this.MISAResource.ToastMessage.DeleteManyNotiError[language]
+              );
+              this.$store.dispatch("toggleToast", true);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       } catch (error) {
         console.log(error);
       }

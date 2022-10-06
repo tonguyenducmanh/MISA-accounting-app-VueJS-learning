@@ -115,6 +115,7 @@ import common from "../../js/common.js";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MConntextMenu from "../../components/base/MContextMenu.vue";
 import MLoading from "../../components/base/MLoading.vue";
+import MISAEnum from "../../js/enum.js";
 
 export default {
   name: "EmployeeTable",
@@ -210,7 +211,7 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
     putMethod(currentId, currentCode) {
-      this.$store.dispatch("changeMethod", "PUT");
+      this.$store.dispatch("changeMethod", MISAEnum.method.PUT);
       this.$store.dispatch("changeEditID", currentId);
       this.$store.dispatch("changeEditCode", currentCode);
     },
@@ -224,10 +225,10 @@ export default {
       this.$store.dispatch("changeEditID", currentId);
       this.$store.dispatch("changeEditCode", currentCode);
 
-      this.$store.dispatch("changeMethod", "PUT");
+      this.$store.dispatch("changeMethod", MISAEnum.method.PUT);
       // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
       setTimeout(() => {
-        this.$store.dispatch("changeMethod", "POST");
+        this.$store.dispatch("changeMethod", MISAEnum.method.POST);
         // xóa cả currentID đi
         this.$store.dispatch("changeEditID", "");
         this.$store.dispatch("changeEditCode", "");

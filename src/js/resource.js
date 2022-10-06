@@ -46,6 +46,14 @@ var MISAResource = {
       VI: "Đã xóa nhân viên khỏi bảng.",
       EN: "The employee is deleted from table.",
     },
+    DeleteManyNoti: {
+      VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
+      EN: "The employees are deleted from table.",
+    },
+    DeleteManyNotiError: {
+      VI: "Thao tác xóa nhiều thất bại.",
+      EN: "Delete many action is failure.",
+    },
     AddedNoti: {
       VI: "Đã thêm nhân viên mới vào bảng.",
       EN: "The employee is added to table.",

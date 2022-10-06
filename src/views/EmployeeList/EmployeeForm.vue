@@ -451,7 +451,7 @@ export default {
         fetch(api, {
           method: currentMethod,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": this.MISAEnum.APIHEADER.APPJSON,
           },
           body: JSON.stringify(me.formObject),
         })
