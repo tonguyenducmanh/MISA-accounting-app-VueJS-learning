@@ -261,6 +261,7 @@ export default {
     "warning-duplicate",
     "alert-popup",
     "update-table",
+    "show-toast-message",
   ],
   components: {
     MButton,
@@ -554,7 +555,10 @@ export default {
                     } else {
                       // nếu là nhân bản thì hiện là nhân bản
                       this.showDupplicatedNoti();
-                      this.$store.state.currentEditID = "";
+                      // nếu là nhân bản thì hiện là nhân bản
+                      this.showDupplicatedNoti();
+                      this.$store.dispatch("changeEditID", "");
+                      this.$store.dispatch("changeEditCode", "");
                     }
                   }
                 }
@@ -642,7 +646,8 @@ export default {
                     } else {
                       // nếu là nhân bản thì hiện là nhân bản
                       this.showDupplicatedNoti();
-                      this.$store.state.currentEditID = "";
+                      this.$store.dispatch("changeEditID", "");
+                      this.$store.dispatch("changeEditCode", "");
                     }
                   }
                 }
@@ -677,16 +682,11 @@ export default {
     showAddedNoti() {
       try {
         // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.AddedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.AddedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -697,17 +697,12 @@ export default {
      */
     showEditedNoti() {
       try {
-        // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        // hiện toast message sửa người dùng thành công
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.EditedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.EditedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -718,17 +713,12 @@ export default {
      */
     showDupplicatedNoti() {
       try {
-        // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        // hiện toast message nhân bản người dùng thành công
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.DuplicatedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.DuplicatedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }

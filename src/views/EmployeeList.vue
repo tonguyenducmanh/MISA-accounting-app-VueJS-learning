@@ -140,10 +140,8 @@
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
       @alert-popup="toggleAlertPopUp"
-      @update-table="
-        testMethod();
-        loadData();
-      "
+      @update-table="loadData()"
+      @show-toast-message="createToastMessage"
       ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
@@ -151,6 +149,7 @@
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
+      @show-toast-message="createToastMessage"
       @save-now="
         toggleAskPopUp();
         saveNow();
@@ -162,6 +161,7 @@
       :isAskWarning="isAskWarningShow"
       @hide-popup="toggleAskWarningPopUp"
       @re-load="loadData"
+      @show-toast-message="createToastMessage"
       :AskWarningMess="`Bạn có thực sự muốn xóa nhân viên ${deleteName} không?`"
       :deleteId="deleteId"
     />
@@ -322,12 +322,17 @@ export default {
   },
   methods: {
     /**
-     * Test method
-     * Author : Tô Nguyễn Đức Manh (17/09/2022)
+     * Tạo ra 1 toastmessage
+     * @param toastType: loại toast message
+     * @param toastText: đoạn văn bản muốn hiển thị
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
      */
-    testMethod() {
+    createToastMessage(toastType, toastText) {
       try {
-        console.log("đã thực thi test method");
+        let language = this.$store.state.language;
+        this.$store.dispatch("changeToastType", toastType);
+        this.$store.dispatch("changeToastText", toastText[language]);
+        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -396,11 +401,10 @@ export default {
       try {
         this.loadData();
         // hiện toast mesage lên
-        let language = this.$store.state.language;
-        let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
-        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
-        this.$store.dispatch("changeToastText", message);
-        this.$store.dispatch("toggleToast", true);
+        this.createToastMessage(
+          this.MISAEnum.toasttype.NOTI,
+          this.MISAResource.ToastMessage.ReloadedNoti
+        );
       } catch (error) {
         console.log(error);
       }
@@ -556,32 +560,20 @@ export default {
               this.$store.dispatch("changeSelectedIDs", []);
 
               // hiện thông báo xóa nhiều thành công
-              let language = this.$store.state.language;
-              this.$store.dispatch(
-                "changeToastType",
-                this.MISAEnum.toasttype.SUCCESS
+              this.createToastMessage(
+                this.MISAEnum.toasttype.SUCCESS,
+                this.MISAResource.ToastMessage.DeleteManyNoti
               );
-              this.$store.dispatch(
-                "changeToastText",
-                this.MISAResource.ToastMessage.DeleteManyNoti[language]
-              );
-              this.$store.dispatch("toggleToast", true);
               // load lại danh sách
               this.loadData();
             } else {
               console.log(res);
 
               // hiện thông báo xóa nhiều thất bại
-              let language = this.$store.state.language;
-              this.$store.dispatch(
-                "changeToastType",
-                this.MISAEnum.toasttype.ERROR
+              this.createToastMessage(
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.DeleteManyNotiError
               );
-              this.$store.dispatch(
-                "changeToastText",
-                this.MISAResource.ToastMessage.DeleteManyNotiError[language]
-              );
-              this.$store.dispatch("toggleToast", true);
             }
           })
           .catch((error) => {

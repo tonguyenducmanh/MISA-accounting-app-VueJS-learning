@@ -100,7 +100,13 @@ export default {
   components: {
     MButton,
   },
-  emits: ["hide-popup", "hide-all", "re-load", "save-now"],
+  emits: [
+    "hide-popup",
+    "hide-all",
+    "re-load",
+    "save-now",
+    "show-toast-message",
+  ],
   props: [
     "isAskWarning",
     "AskWarningMess",
@@ -132,8 +138,6 @@ export default {
      */
     deleteEmployee() {
       try {
-        let language = this.$store.state.language;
-        let message = this.MISAResource.ToastMessage.DeleteNoti[language];
         // gọi api xóa đi
         let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
         fetch(apiDelete, { method: "DELETE" })
@@ -143,12 +147,11 @@ export default {
             this.$emit("hide-popup");
             this.$emit("re-load");
             // hiện toast mesage lên
-            this.$store.dispatch(
-              "changeToastType",
-              this.MISAEnum.toasttype.SUCCESS
+            this.$emit(
+              "show-toast-message",
+              this.MISAEnum.toasttype.SUCCESS,
+              this.MISAResource.ToastMessage.DeleteNoti
             );
-            this.$store.dispatch("changeToastText", message);
-            this.$store.dispatch("toggleToast", true);
             // ẩn đi sau 3 giây
           })
           .catch((res) => {
@@ -165,13 +168,11 @@ export default {
     showCanceledNoti() {
       try {
         // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.CanceledNoti[lang]
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.NOTI,
+          this.MISAResource.ToastMessage.CanceledNoti
         );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
