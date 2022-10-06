@@ -10,7 +10,7 @@
       <div class="popup popup--askwarning">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
-          <div class="popup__text">{{ AskWarningMess }}</div>
+          <div class="popup__text">{{ AskWarningFormatName }}</div>
         </div>
         <div class="popup__action">
           <MButton
@@ -22,7 +22,7 @@
             buttonName="Không"
             dataTitle="Đóng (ESC)"
           />
-          <MButton buttonName="Có" @click="deleteEmployee" />
+          <MButton buttonName="Có" @click="$emit('delete-now')" />
         </div>
       </div>
     </div>
@@ -104,63 +104,43 @@ export default {
     "hide-popup",
     "hide-all",
     "re-load",
+    "delete-now",
     "save-now",
     "show-toast-message",
   ],
   props: [
     "isAskWarning",
     "AskWarningMess",
+    "AskWarningName",
     "isAsk",
     "AskMess",
     "isAlert",
     "AlertMess",
     "isWarning",
     "WarningMess",
-    "deleteId",
   ],
   data() {
     return {
       MISAEnum,
       MISAResource,
       AlertMessFormatted: "",
+      AskWarningFormatName: "",
     };
   },
   //phân ra alert string thành array
   beforeUpdate() {
+    let mess = this.AskWarningMess;
+    if (this.AskWarningName) {
+      this.AskWarningFormatName = mess.replace("{0}", this.AskWarningName);
+    } else {
+      this.AskWarningFormatName = mess;
+    }
+
     if (this.AlertMess !== "" && this.AlertMess !== undefined) {
       this.AlertMessFormatted = this.AlertMess.split("#");
     }
   },
   methods: {
-    /**
-     * Xóa người dùng đi
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
-     */
-    deleteEmployee() {
-      try {
-        // gọi api xóa đi
-        let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
-        fetch(apiDelete, { method: "DELETE" })
-          .then((res) => res.json())
-          .then(() => {
-            // ẩn popup xóa đi
-            this.$emit("hide-popup");
-            this.$emit("re-load");
-            // hiện toast mesage lên
-            this.$emit(
-              "show-toast-message",
-              this.MISAEnum.toasttype.SUCCESS,
-              this.MISAResource.ToastMessage.DeleteNoti
-            );
-            // ẩn đi sau 3 giây
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    },
     /**
      * Hiển thị thông báo đã hủy hành động hiện tại
      * Author: Tô Nguyễn Đức Mạnh (15/09/2022)

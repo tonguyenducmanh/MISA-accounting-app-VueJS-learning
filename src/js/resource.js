@@ -75,6 +75,20 @@ var MISAResource = {
       EN: "This action is canceled.",
     },
   },
+  PopupMessage: {
+    AskChange: {
+      VI: "Dữ liệu đã được thay đổi, bạn có muốn cất không ?",
+      EN: "Data is changed, do you want to save this ?",
+    },
+    AskDeleteOne: {
+      VI: "Bạn có thực sự muốn xóa nhân viên {0}không?",
+      EN: "Do you really want to delete {0}employee?",
+    },
+    AskDeleteMany: {
+      VI: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
+      EN: "Do you really want to delete all selected employees?",
+    },
+  },
 };
 
 export default MISAResource;

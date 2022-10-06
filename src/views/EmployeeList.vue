@@ -15,7 +15,7 @@
           <div
             v-if="isAutoActionShow"
             class="employee__deletecontext"
-            @click="deleteManyAction"
+            @click="toggleAskWarningPopUp"
           >
             Xóa
           </div>
@@ -154,16 +154,24 @@
         toggleAskPopUp();
         saveNow();
       "
-      AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
+      :AskMess="askChangeText"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
     <MPopup
       :isAskWarning="isAskWarningShow"
-      @hide-popup="toggleAskWarningPopUp"
+      @hide-popup="
+        toggleAskWarningPopUp();
+        clearDeleteInfo();
+      "
       @re-load="loadData"
       @show-toast-message="createToastMessage"
-      :AskWarningMess="`Bạn có thực sự muốn xóa nhân viên ${deleteName} không?`"
-      :deleteId="deleteId"
+      :AskWarningMess="
+        deleteName !== undefined ? askDeleteOneText : askDeleteManyText
+      "
+      :AskWarningName="deleteName"
+      @delete-now="
+        deleteName !== undefined ? deleteOneAction() : deleteManyAction()
+      "
     />
     <!-- popup hiện lên khi trùng Id nhân viên -->
     <MPopup
@@ -227,14 +235,24 @@ export default {
       isAutoActionBoxShow: false,
       isAutoActionShow: false,
       apiTable: "",
+      askChangeText: "",
+      askDeleteOneText: "",
+      askDeleteManyText: "",
       WarningMess: "",
       AlertMess: "",
       searchValue: "",
     };
   },
   beforeMount() {
-    // chèn api từ enum vào
+    // chèn thông tin từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
+    let language = this.$store.state.language;
+    this.askChangeText = this.MISAResource.PopupMessage.AskChange[language];
+    this.askDeleteOneText =
+      this.MISAResource.PopupMessage.AskDeleteOne[language];
+    this.askDeleteManyText =
+      this.MISAResource.PopupMessage.AskDeleteMany[language];
+    // tải table data
     this.loadData();
   },
   /**
@@ -537,6 +555,34 @@ export default {
       }
     },
     /**
+     * Xóa 1 người nhân viên trong bảng
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    deleteOneAction() {
+      try {
+        // gọi api xóa đi
+        let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
+        fetch(apiDelete, { method: "DELETE" })
+          .then((res) => res.json())
+          .then(() => {
+            // ẩn popup xóa đi
+            this.toggleAskWarningPopUp();
+            this.loadData();
+            // hiện toast mesage lên
+            this.createToastMessage(
+              this.MISAEnum.toasttype.SUCCESS,
+              this.MISAResource.ToastMessage.DeleteNoti
+            );
+            // ẩn đi sau 3 giây
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
      * Method xóa nhiều nhân viên trong 1 bảng
      * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
      */
@@ -544,6 +590,8 @@ export default {
       try {
         let apiFetch = this.MISAEnum.API.DELETEMANYEMPLOYEES;
         let deleteList = this.$store.state.selectedIDs;
+        // ẩn popup xóa đi
+        this.toggleAskWarningPopUp();
 
         // gọi tới be để xóa danh sách nhân viên
         fetch(apiFetch, {
@@ -579,6 +627,17 @@ export default {
           .catch((error) => {
             console.error("Error:", error);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Xóa các giá trị cần xóa trong store đi sau khi hủy
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    clearDeleteInfo() {
+      try {
+        this.$store.dispatch("changeSelectedIDs", []);
       } catch (error) {
         console.log(error);
       }
