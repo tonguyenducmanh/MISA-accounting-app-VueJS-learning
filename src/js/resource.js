@@ -74,6 +74,18 @@ var MISAResource = {
       VI: "Thao tác đã bị hủy.",
       EN: "This action is canceled.",
     },
+    ExportExcelNoti: {
+      VI: "Xuất khẩu danh sách nhân viên thành công.",
+      EN: "The employeelist is succesfully exported.",
+    },
+    CancelExportExcelNoti: {
+      VI: "Đã hủy thao tác xuất khẩu danh sách nhân viên.",
+      EN: "Export employee list action was canceled.",
+    },
+    ErrorExportExcelNoti: {
+      VI: "Thao tác xuất khẩu bị lỗi, vui lòng kiểm tra lại.",
+      EN: "Export action was failed, please check again.",
+    },
   },
   PopupMessage: {
     AskChange: {
@@ -87,6 +99,12 @@ var MISAResource = {
     AskDeleteMany: {
       VI: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
       EN: "Do you really want to delete all selected employees?",
+    },
+  },
+  ExportExcel: {
+    FileExportName: {
+      VI: "Danh_sach_nhan_vien.xlsx",
+      EN: "Employee_list.xlsx",
     },
   },
 };

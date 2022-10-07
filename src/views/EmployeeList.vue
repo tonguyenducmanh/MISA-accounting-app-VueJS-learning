@@ -48,6 +48,8 @@
             tabindex="0"
             class="icon employee__exportbtn"
             data-title="Xuất ra file Excell"
+            @click="exportToExcel"
+            @keydown.enter="exportToExcel"
           ></div>
         </div>
       </div>
@@ -638,6 +640,44 @@ export default {
     clearDeleteInfo() {
       try {
         this.$store.dispatch("changeSelectedIDs", []);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Xuất toàn bộ danh sách ra file excell
+     * Author: Tô Nguyễn Đức Mạnh (07/10/2022)
+     */
+    exportToExcel() {
+      try {
+        let apiExport = this.MISAEnum.API.EXPORTEMPLOYEES;
+        fetch(apiExport, {
+          method: this.MISAEnum.method.GET,
+          headers: {
+            "Content-Type": this.MISAEnum.APIHEADER.APPEXCEL,
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              return res.blob();
+            }
+          })
+          .then((blob) => {
+            if (blob) {
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement("a");
+              a.href = url;
+              let language = this.$store.state.language;
+              a.download =
+                this.MISAResource.ExportExcel.FileExportName[language];
+              document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+              a.click();
+              a.remove(); //afterwards we remove the element again
+            }
+          })
+          .catch((res) => {
+            console.log(res);
+          });
       } catch (error) {
         console.log(error);
       }

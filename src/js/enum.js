@@ -81,10 +81,13 @@ var MISAEnum = {
     GETDEPARTMENTLIST: "https://localhost:44313/api/v1/Departments",
     GETPOSITIONLIST: "https://localhost:44313/api/v1/Positions",
     DELETEMANYEMPLOYEES: "https://localhost:44313/api/v1/Employees/delete-many",
+    EXPORTEMPLOYEES: "https://localhost:44313/api/v1/Employees/export-all",
   },
   // header API
   APIHEADER: {
     APPJSON: "application/json",
+    APPEXCEL:
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   },
   // các từ khóa liên quan tới table
   table: {
