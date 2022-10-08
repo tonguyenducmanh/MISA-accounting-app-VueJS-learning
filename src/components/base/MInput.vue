@@ -63,7 +63,6 @@ export default {
     "hasLabel",
     "hasItalic",
     "propName",
-    "validate",
     "classInput",
     "idInput",
     "dataTitle",
@@ -71,7 +70,6 @@ export default {
     "formatDate",
     "modelValue",
     "isEmail",
-    "isNumber",
     "isNotNull",
     "setError",
     "isFocus",
@@ -124,7 +122,8 @@ export default {
           this.modelValue !== "" &&
           this.modelValue !== undefined
         ) {
-          const emailRegex = /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).com/gm;
+          const emailRegex =
+            /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).(com|vn|org)/gm;
           let result = emailRegex.test(this.modelValue);
           if (result === false) {
             this.isErrorTying = true;
@@ -162,7 +161,7 @@ export default {
     justNumberValidate() {
       try {
         // kiểm tra xem nó có phải trường chỉ điền số không
-        if (this.isNumber === true) {
+        if (this.justNumber === true) {
           if (this.modelValue !== "" && this.modelValue !== undefined) {
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.modelValue);

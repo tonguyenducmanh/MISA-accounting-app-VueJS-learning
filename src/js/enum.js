@@ -16,6 +16,12 @@ var MISAEnum = {
     LabelAlert: "input__label--alert",
     InputAlert: "input__field--alert",
   },
+  // các class được binding vào date picker
+  datepicker: {
+    DatePickerAlert: "datepicker--alert",
+    InputAlert: "inputdate--alert",
+    DatePickerNAN: "NaN-NaN-NaN",
+  },
   // các class được binding vào toastmessage
   toastmessage: {
     SUCCESS: "toastmessage__content--success",

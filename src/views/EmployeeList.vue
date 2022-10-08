@@ -723,7 +723,7 @@ export default {
   padding-right: 40px;
   box-sizing: border-box;
   position: relative;
-  z-index: 10;
+  z-index: 4;
 }
 .employee .employee__bottom .employee__menu .employee__menuleft:hover {
 }

@@ -1,3 +1,14 @@
+.datepicker::after {
+  display: none;
+}
+
+.datepicker--alert::after {
+  left: 0;
+  top: 100%;
+  transform: translate(-10%, 0%);
+  display: block;
+}
+
 .datepicker .datepicker__label {
   font-weight: 600;
   margin-top: 8px;
@@ -14,27 +25,35 @@
   padding: 8px 12px;
   outline: none;
   height: 36px;
+  position: relative;
 }
 
 .datepicker .datepicker__input:focus {
   border: 1px solid var(--LightGreen500);
 }
 
+.datepicker--alert {
+  position: relative;
+}
 
-.datepicker .datepicker__input--alert {
+.datepicker--alert .inputdate--alert {
+  border: 1px solid var(--ColorAlert);
+}
+.datepicker--alert .inputdate--alert:focus {
   border: 1px solid var(--ColorAlert);
 }
 
-.datepicker .datepicker__input--alert:focus {
+.datepicker--alert .inputdate--alert:hover {
   border: 1px solid var(--ColorAlert);
 }
 
+.datepicker--alert .inputdate--alert:hover:focus {
+  border: 1px solid var(--ColorAlert);
+}
 
 /* chỉ áp dụng css dưới với trình duyệt chrome */
 
-input[type=date]::-webkit-datetime-edit {
-  color: var(--ColorDisable);
-}
+input[type=date]::-webkit-datetime-edit {}
 
 /* 
 .datepicker .datepicker__input::placeholder{

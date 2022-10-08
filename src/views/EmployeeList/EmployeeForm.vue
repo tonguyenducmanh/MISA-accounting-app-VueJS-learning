@@ -89,6 +89,7 @@
           <MDatePicker
             labelText="Ngày sinh"
             class="form__dateofbirth"
+            dataTitle="Ngày không được phép lớn hơn ngày hiện tại."
             v-model="formObject['dateOfBirth']"
           />
           <MRadioButton
@@ -118,11 +119,11 @@
             :justNumber="true"
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
             v-model="formObject['identityCard']"
           />
           <MDatePicker
             labelText="Ngày cấp"
+            dataTitle="Ngày không được phép lớn hơn ngày hiện tại."
             class="form__identityDate"
             v-model="formObject['identityDate']"
           />
@@ -153,7 +154,6 @@
             :classInput="'form__phonenum'"
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
             v-model="formObject['mobilePhone']"
           />
           <MInput
@@ -163,7 +163,6 @@
             placeHolder="Nhập số điện thoại cố định"
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
             v-model="formObject['telephone']"
           />
           <MInput
@@ -184,7 +183,6 @@
             :classInput="'form__banknum'"
             class="form__ele"
             dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
             v-model="formObject['bankAccount']"
           />
           <MInput
