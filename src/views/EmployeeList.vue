@@ -30,7 +30,8 @@
             :hasItalic="true"
             :hasIcon="true"
             idInput="input__search"
-            dataTitle="Ấn ctrl + K để nhập"
+            :iconTitle="MISAResource.DataTile.InputSearch[language]"
+            :showTitle="true"
             placeHolder="Tìm theo mã, tên nhân viên"
             @change-filter="changeFilter"
             ref="inputSearch"
@@ -40,14 +41,14 @@
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
-            data-title="Lấy lại dữ liệu"
+            :data-title="MISAResource.DataTile.ReloadBtn[language]"
             @click="reloadData"
             @keydown.enter="reloadData"
           ></div>
           <div
             tabindex="0"
             class="icon employee__exportbtn"
-            data-title="Xuất ra file Excell"
+            :data-title="MISAResource.DataTile.ExcelBtn[language]"
             @click="exportToExcel"
             @keydown.enter="exportToExcel"
           ></div>

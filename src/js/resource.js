@@ -107,6 +107,36 @@ var MISAResource = {
       EN: "Employee_list.xlsx",
     },
   },
+  DataTile: {
+    HeaderName: {
+      VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
+      EN: "Qui Phuc Production - Commercial - Service Company",
+    },
+    HeaderNotiIcon: {
+      VI: "Thông báo",
+      EN: "Notification",
+    },
+    HeaderMenuBtn: {
+      VI: "Ẩn hiện menu",
+      EN: "Toggle menu",
+    },
+    GoHome: {
+      VI: "Về trang chủ",
+      EN: "Home",
+    },
+    ReloadBtn: {
+      VI: "Lấy lại dữ liệu",
+      EN: "Reload data",
+    },
+    ExcelBtn: {
+      VI: "Xuất ra file Excel",
+      EN: "Export to excel",
+    },
+    InputSearch: {
+      VI: "Ấn ctrl + K để nhập",
+      EN: "Press ctrl + K to typing",
+    },
+  },
 };
 
 export default MISAResource;

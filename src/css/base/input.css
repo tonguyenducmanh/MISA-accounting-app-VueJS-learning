@@ -97,6 +97,7 @@
   top: 0;
   transform: translateY(25%);
   margin-right: 8px;
+  z-index: 4;
 }
 
 .input__warp:has(.input__icon) .input__field {

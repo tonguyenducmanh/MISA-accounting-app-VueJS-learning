@@ -3,7 +3,11 @@
     <div class="navbar__top">
       <div tabindex="0" class="icon navbar__button"></div>
       <div class="navbar__logo"></div>
-      <div tabindex="0" class="navbar__title" data-title="Về trang chủ">
+      <div
+        tabindex="0"
+        class="navbar__title"
+        :data-title="MISAResource.DataTile.GoHome[language]"
+      >
         Kế toán
       </div>
     </div>
@@ -98,10 +102,22 @@
 </template>
 <script>
 import MRouterLink from "../base/MRouterLink.vue";
+import MISAResource from "../../js/resource.js";
+
 export default {
   name: "TheNavbar",
   components: {
     MRouterLink,
+  },
+
+  data() {
+    return {
+      MISAResource,
+      language: "",
+    };
+  },
+  beforeMount() {
+    this.language = this.$store.state.language;
   },
   methods: {
     simulateClick() {

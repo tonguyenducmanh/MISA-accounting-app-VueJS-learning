@@ -34,6 +34,7 @@
         tabindex="0"
         v-if="hasIcon"
         class="icon input__icon"
+        :data-title="iconTitle"
         @click="$emit('change-filter', modelValue)"
         @keydown.enter.passive="$emit('change-filter', modelValue)"
       ></span>
@@ -74,6 +75,7 @@ export default {
     "setError",
     "isFocus",
     "timeDelay",
+    "iconTitle",
   ],
   beforeMount() {
     this.isErrorTying = this.setError;
