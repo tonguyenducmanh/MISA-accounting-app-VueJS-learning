@@ -251,7 +251,8 @@ export default {
     // chèn thông tin từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
     this.language = this.$store.state.language;
-    this.askChangeText = this.MISAResource.PopupMessage.AskChange[this.language];
+    this.askChangeText =
+      this.MISAResource.PopupMessage.AskChange[this.language];
     this.askDeleteOneText =
       this.MISAResource.PopupMessage.AskDeleteOne[this.language];
     this.askDeleteManyText =
@@ -334,6 +335,12 @@ export default {
      */
     getLanguage() {
       this.language = this.$store.state.language;
+      this.askChangeText =
+        this.MISAResource.PopupMessage.AskChange[this.language];
+      this.askDeleteOneText =
+        this.MISAResource.PopupMessage.AskDeleteOne[this.language];
+      this.askDeleteManyText =
+        this.MISAResource.PopupMessage.AskDeleteMany[this.language];
     },
   },
   /**
@@ -533,10 +540,11 @@ export default {
      */
     toggleWarningPopup(value) {
       try {
-        let language = this.MISAEnum.language;
         // gọi ra văn bản validate
-        let textAlert = this.MISAResource.ErrorValidate.EmployeeCode[language];
-        let textAlertTwo = this.MISAResource.ErrorValidate.IsExisted[language];
+        let textAlert =
+          this.MISAResource.ErrorValidate.EmployeeCode[this.language];
+        let textAlertTwo =
+          this.MISAResource.ErrorValidate.IsExisted[this.language];
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
         this.isWarningShow = !this.isWarningShow;
       } catch (error) {

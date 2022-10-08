@@ -93,8 +93,8 @@ var MISAResource = {
       EN: "Data is changed, do you want to save this ?",
     },
     AskDeleteOne: {
-      VI: "Bạn có thực sự muốn xóa nhân viên {0}không?",
-      EN: "Do you really want to delete {0}employee?",
+      VI: "Bạn có thực sự muốn xóa nhân viên {0} không?",
+      EN: "Do you really want to delete {0} employee?",
     },
     AskDeleteMany: {
       VI: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
