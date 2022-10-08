@@ -28,7 +28,9 @@
             </th>
           </template>
           <!-- render ra th chức năng, tách riêng với các cột propname -->
-          <th class="text__align--center" style="width: 100px">Chức năng</th>
+          <th class="text__align--center" style="width: 100px">
+            {{ this.MISAResource.LabelText.TableFuctionColumn[language] }}
+          </th>
         </tr>
       </thead>
       <!-- render ra tr dựa vào data employeeList -->
@@ -86,6 +88,10 @@
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
               <MConntextMenu
+                :btnName="MISAResource.ButtonText.EditBtn[language]"
+                :btnOne="MISAResource.ButtonText.DuplicateBtn[language]"
+                :btnTwo="MISAResource.ButtonText.DeleteBtn[language]"
+                :btnThree="MISAResource.ButtonText.StopUsingBtn[language]"
                 @edit-click="
                   $emit('show-form');
                   putMethod(employee['employeeID'], employee['employeeCode']);
@@ -116,6 +122,7 @@ import MCheckbox from "../../components/base/MCheckbox.vue";
 import MConntextMenu from "../../components/base/MContextMenu.vue";
 import MLoading from "../../components/base/MLoading.vue";
 import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 
 export default {
   name: "EmployeeTable",
@@ -131,11 +138,16 @@ export default {
   },
   data() {
     return {
+      MISAResource,
       hasUp: false,
       isShowLoading: false,
       forceCheckAll: false,
       checkAllEnable: false,
+      language: "",
     };
+  },
+  beforeMount() {
+    this.language = this.$store.state.language;
   },
   computed: {
     totalSelected() {

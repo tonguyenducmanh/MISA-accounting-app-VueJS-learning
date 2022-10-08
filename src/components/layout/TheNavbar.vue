@@ -8,91 +8,96 @@
         class="navbar__title"
         :data-title="MISAResource.DataTile.GoHome[language]"
       >
-        Kế toán
+        {{ this.MISAResource.RouterName.Accounting[language] }}
       </div>
     </div>
     <div class="navbar__list">
       <MRouterLink
-        name="Tổng quan"
+        :name="MISAResource.RouterName.Demo[language]"
         link="/demo"
         className="navbar__tq"
         @keydown.enter="simulateClick"
         tabindex="0"
       />
       <MRouterLink
-        name="Tiền mặt"
+        :name="MISAResource.RouterName.Money[language]"
         link="/"
         className="navbar__tm"
         tabindex="0"
       />
       <MRouterLink
-        name="Tiền gửi"
+        :name="MISAResource.RouterName.MoneySend[language]"
         link="/tiengui"
         className="navbar__tg"
         tabindex="0"
       />
       <MRouterLink
-        name="Mua hàng"
+        :name="MISAResource.RouterName.Buy[language]"
         link="/muahang"
         className="navbar__mh"
         tabindex="0"
       />
       <MRouterLink
-        name="Bán hàng"
+        :name="MISAResource.RouterName.Sell[language]"
         link="/banhang"
         className="navbar__bh"
         tabindex="0"
       />
       <MRouterLink
-        name="Quản lý hóa đơn"
+        :name="MISAResource.RouterName.InvoiceManagement[language]"
         link="/hoadon"
         className="navbar__qlhd"
       />
-      <MRouterLink name="Kho" link="/kho" className="navbar__k" tabindex="0" />
       <MRouterLink
-        name="Công cụ dụng cụ"
+        :name="MISAResource.RouterName.Directory[language]"
+        link="/kho"
+        className="navbar__k"
+        tabindex="0"
+      />
+      <MRouterLink
+        :name="MISAResource.RouterName.Tool[language]"
         link="/congcu"
         className="navbar__ccdc"
         tabindex="0"
       />
       <MRouterLink
-        name="Tài sản cố định"
+        :name="MISAResource.RouterName.FixedAsset[language]"
         link="/taisancodinh"
         className="navbar__tscd"
         tabindex="0"
       />
       <MRouterLink
-        name="Thuế"
+        :name="MISAResource.RouterName.Tax[language]"
         link="/thue"
         className="navbar__thue"
         tabindex="0"
       />
       <MRouterLink
-        name="Giá thành"
+        :name="MISAResource.RouterName.Price[language]"
         link="/giathanh"
         className="navbar__gt"
         tabindex="0"
       />
       <MRouterLink
-        name="Tổng hợp"
+        :name="MISAResource.RouterName.Generic[language]"
         link="/tonghop"
         className="navbar__th"
         tabindex="0"
       />
       <MRouterLink
-        name="Ngân sách"
+        :name="MISAResource.RouterName.Budget[language]"
         link="/ngansach"
         className="navbar__ns"
         tabindex="0"
       />
       <MRouterLink
-        name="Báo cáo"
+        :name="MISAResource.RouterName.Report[language]"
         link="/baocao"
         className="navbar__bc"
         tabindex="0"
       />
       <MRouterLink
-        name="Phân tích tài chính"
+        :name="MISAResource.RouterName.FinancialAnalysis[language]"
         link="/taichinh"
         className="navbar__pttc"
         tabindex="0"

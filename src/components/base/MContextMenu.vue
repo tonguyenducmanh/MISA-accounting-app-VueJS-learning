@@ -7,7 +7,7 @@
         tabindex="0"
         @keydown.enter="$emit('edit-click')"
       >
-        Sửa
+        {{ this.btnName }}
       </div>
       <div
         class="contextmenu__dropicon"
@@ -35,7 +35,7 @@
             "
             tabindex="0"
           >
-            Nhân bản
+            {{ btnOne }}
           </div>
           <div
             class="contextmenu__item"
@@ -44,9 +44,9 @@
             @keydown.enter="$emit('delete-id', deleteId, deleteName)"
             tabindex="0"
           >
-            Xóa
+            {{ btnTwo }}
           </div>
-          <div class="contextmenu__item" tabindex="0">Ngưng sử dụng</div>
+          <div class="contextmenu__item" tabindex="0">{{ btnThree }}</div>
         </div>
       </div>
     </div>
@@ -63,7 +63,15 @@ export default {
       hasOpen: false,
     };
   },
-  props: ["deleteId", "deleteName", "hasUp"],
+  props: [
+    "deleteId",
+    "deleteName",
+    "hasUp",
+    "btnName",
+    "btnOne",
+    "btnTwo",
+    "btnThree",
+  ],
   emits: ["delete-id", "edit-click", "duplicate-click"],
   methods: {
     /**

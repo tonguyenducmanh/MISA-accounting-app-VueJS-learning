@@ -7,7 +7,7 @@
         <div v-if="isAutoActionBoxShow" class="employee__container--left">
           <MButton
             class="employee__menuleft"
-            buttonName="Thực hiện hàng loạt"
+            :buttonName="MISAResource.ButtonText.MultiActionBtn[language]"
             :buttonTwo="true"
             @click="toggleMoreActionMenu"
             v-click-out="hideMoreActionMenu"
@@ -17,7 +17,7 @@
             class="employee__deletecontext"
             @click="toggleAskWarningPopUp"
           >
-            Xóa
+            {{ this.MISAResource.ButtonText.DeleteBtn[language] }}
           </div>
         </div>
         <!-- element dưới dùng v-else để thay thế element employee__menu--left trên
@@ -32,7 +32,7 @@
             idInput="input__search"
             :iconTitle="MISAResource.DataTile.InputSearch[language]"
             :showTitle="true"
-            placeHolder="Tìm theo mã, tên nhân viên"
+            :placeHolder="MISAResource.PlaceHolder.Search[language]"
             @change-filter="changeFilter"
             ref="inputSearch"
             v-model="searchValue"
@@ -66,65 +66,65 @@
             align: 'left',
             propName: 'employeeCode',
             width: '150',
-            name: 'Mã nhân viên',
+            name: MISAResource.TableColumn.EmployeeCode[language],
           },
           {
             align: 'left',
             propName: 'fullName',
             width: '200',
-            name: 'Tên nhân viên',
+            name: MISAResource.TableColumn.FullName[language],
           },
           {
             align: 'left',
             propName: 'gender',
             width: '110',
-            name: 'Giới tính',
+            name: MISAResource.TableColumn.Gender[language],
             formatGender: true,
           },
           {
             align: 'center',
             propName: 'dateOfBirth',
             width: '130',
-            name: 'Ngày sinh',
+            name: MISAResource.TableColumn.DateOfBirth[language],
             formatDate: true,
           },
           {
             align: 'right',
             propName: 'identityCard',
             width: '200',
-            name: 'Số CMND',
+            name: MISAResource.TableColumn.IdentityCardNumber[language],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'positionName',
             width: '200',
-            name: 'Chức danh',
+            name: MISAResource.TableColumn.PositionName[language],
           },
           {
             align: 'left',
             propName: 'departmentName',
             width: '250',
-            name: 'Tên đơn vị',
+            name: MISAResource.TableColumn.DepartmentName[language],
           },
           {
             align: 'right',
             propName: 'bankAccount',
             width: '200',
-            name: 'Số tài khoản',
+            name: MISAResource.TableColumn.BankAccount[language],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'bankName',
             width: '250',
-            name: 'Tên ngân hàng',
+            name: MISAResource.TableColumn.BankName[language],
           },
           {
             align: 'left',
             propName: 'bankBranch',
             width: '250',
-            name: 'Chi nhánh TK ngân hàng',
+            name: MISAResource.TableColumn.BankBranch[language],
           },
         ]"
       />

@@ -1,9 +1,11 @@
 <template lang="">
   <div class="page__navi">
     <div class="page__total">
-      <span>Tổng số: </span>
+      <span> {{ this.MISAResource.LabelText.PageNaviTotal[language] }} </span>
       <span class="page__records">{{ totalRecords }}</span>
-      <span>bản ghi</span>
+      <span>
+        {{ this.MISAResource.LabelText.PageNaviRecord[language] }}
+      </span>
     </div>
     <div class="page__categories">
       <LibCombobox
@@ -11,7 +13,7 @@
         classInput="input__field"
         propName="PageNavigation"
         :data="MISAEnum.combobox.data"
-        placeHolder="Hãy chọn số trang"
+        :placeHolder="MISAResource.PlaceHolder.PageSizeChange[language]"
         :defaultValue="MISAEnum.combobox.defautValue"
         :unique="MISAEnum.combobox.unique"
         :isUp="true"
@@ -24,7 +26,7 @@
           @click="movePrevPage"
           @keydown.enter="movePrevPage"
         >
-          Trước
+          {{ this.MISAResource.ButtonText.PrevPageBtn[language] }}
         </div>
         <!-- render ra danh sách trang nhưng giới hạn số trang có thể click -->
         <!-- trang đầu tiên -->
@@ -93,7 +95,7 @@
           @click="moveNextPage"
           @keydown.enter="moveNextPage"
         >
-          Sau
+          {{ this.MISAResource.ButtonText.NextPageBtn[language] }}
         </div>
       </div>
     </div>
@@ -101,6 +103,7 @@
 </template>
 <script>
 import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeePage",
@@ -110,9 +113,14 @@ export default {
   props: ["totalRecords", "currentPage"],
   data() {
     return {
+      MISAResource,
       pageSize: 10,
       MISAEnum,
+      language: "",
     };
+  },
+  beforeMount() {
+    this.language = this.$store.state.language;
   },
   computed: {
     totalPage() {
