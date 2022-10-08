@@ -86,6 +86,9 @@ const store = createStore({
     changeStatusClone(state, value) {
       state.isClone = value;
     },
+    changeLanguage(state, value) {
+      state.language = value;
+    },
   },
   actions: {
     increment(context) {
@@ -217,6 +220,13 @@ const store = createStore({
      */
     changeStatusClone(context, value) {
       context.commit("changeStatusClone", value);
+    },
+    /**
+     * Thay đổi ngôn ngữ
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    changeLanguage(context, value) {
+      context.commit("changeLanguage", value);
     },
   },
 });

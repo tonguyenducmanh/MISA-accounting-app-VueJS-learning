@@ -180,7 +180,7 @@ var MISAResource = {
   RouterName: {
     Accounting: {
       VI: "Kế toán",
-      En: "Accounting",
+      EN: "AMIS",
     },
     Demo: {
       VI: "Tổng quan",
@@ -204,7 +204,7 @@ var MISAResource = {
     },
     InvoiceManagement: {
       VI: "Quản lý hóa đơn",
-      EN: "Invoice Management",
+      EN: "Invoice",
     },
     Directory: {
       VI: "Kho",
@@ -426,6 +426,10 @@ var MISAResource = {
       VI: "Nhân viên",
       EN: "Employee",
     },
+    CompanyName: {
+      VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
+      EN: "Qui Phuc Production - Commercial - Service Company",
+    },
   },
   PlaceHolder: {
     Search: {
@@ -487,6 +491,34 @@ var MISAResource = {
     PageSizeChange: {
       VI: "Hãy chọn số trang",
       EN: "Select page size",
+    },
+  },
+  Gender: {
+    Male: {
+      VI: "Nam",
+      EN: "Male",
+    },
+    Female: {
+      VI: "Nữ",
+      EN: "Female",
+    },
+    Other: {
+      VI: "Khác",
+      EN: "Other",
+    },
+  },
+  Combobox: {
+    Data: {
+      VI: "10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100",
+      EN: "10 records per page:10;20 records per page:20;50 records per page: 50;100 records per page:100",
+    },
+    DefautValue: {
+      VI: "10 bản ghi trên trang",
+      EN: "10 records per page",
+    },
+    Unique: {
+      VI: "10",
+      EN: "10",
     },
   },
 };

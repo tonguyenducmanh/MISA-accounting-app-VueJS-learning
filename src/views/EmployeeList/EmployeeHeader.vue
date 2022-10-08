@@ -40,6 +40,24 @@ export default {
   beforeMount() {
     this.language = this.$store.state.language;
   },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
+  },
   methods: {
     /**
      * Phương thức được dùng để test State Management

@@ -12,10 +12,10 @@
         id="page_ranges"
         classInput="input__field"
         propName="PageNavigation"
-        :data="MISAEnum.combobox.data"
+        :data="MISAResource.Combobox.Data[language]"
         :placeHolder="MISAResource.PlaceHolder.PageSizeChange[language]"
-        :defaultValue="MISAEnum.combobox.defautValue"
-        :unique="MISAEnum.combobox.unique"
+        :defaultValue="MISAResource.Combobox.DefautValue[language]"
+        :unique="MISAResource.Combobox.Unique[language]"
         :isUp="true"
         @change-size="changeSize"
       />
@@ -120,9 +120,20 @@ export default {
     };
   },
   beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     this.language = this.$store.state.language;
   },
   computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
     totalPage() {
       return this.$store.state.totalPage;
     },
@@ -130,18 +141,25 @@ export default {
       return this.$store.state.pageNumber;
     },
   },
-  /**
-   * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
-   * hiểu rằng component này chỉ là hành động trung gian thôi
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
-   */
   watch: {
+    /**
+     * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
+     * hiểu rằng component này chỉ là hành động trung gian thôi
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
     pageSize() {
       try {
         this.$emit("change-size", this.pageSize);
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
     },
   },
   emits: ["change-size"],

@@ -16,7 +16,6 @@
         :name="MISAResource.RouterName.Demo[language]"
         link="/demo"
         className="navbar__tq"
-        @keydown.enter="simulateClick"
         tabindex="0"
       />
       <MRouterLink
@@ -103,6 +102,7 @@
         tabindex="0"
       />
     </div>
+    <div class="navbar__changelanguage" @click="changeLanguage">VI / EN</div>
   </div>
 </template>
 <script>
@@ -122,11 +122,46 @@ export default {
     };
   },
   beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     this.language = this.$store.state.language;
   },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
+  },
   methods: {
-    simulateClick() {
-      this.click();
+    /**
+     * Thay đổi ngôn ngữ
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    changeLanguage() {
+      try {
+        let currentLang = this.$store.state.language;
+        if (currentLang == "VI") {
+          this.$store.dispatch("changeLanguage", "EN");
+        } else {
+          this.$store.dispatch("changeLanguage", "VI");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

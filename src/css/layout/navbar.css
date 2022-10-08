@@ -126,3 +126,11 @@
 .navbar .navbar__pttc::before{
     background-position: -203px -1662px;
 }
+
+.navbar .navbar__changelanguage{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+  color: white;
+}

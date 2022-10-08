@@ -147,14 +147,32 @@ export default {
     };
   },
   beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     this.language = this.$store.state.language;
   },
   computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
     totalSelected() {
       return this.$store.state.selectedIDs.length;
     },
   },
   watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
     toggleShowLoading() {
       if (this.toggleShowLoading === true) {
         this.isShowLoading = true;

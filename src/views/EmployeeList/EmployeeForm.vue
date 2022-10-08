@@ -100,15 +100,15 @@
             v-model="formObject['gender']"
             :content="[
               {
-                name: 'Nam',
+                name: MISAResource.Gender.Male[language],
                 value: 0,
               },
               {
-                name: 'Nữ',
+                name: MISAResource.Gender.Female[language],
                 value: 1,
               },
               {
-                name: 'Khác',
+                name: MISAResource.Gender.Other[language],
                 value: 2,
               },
             ]"
@@ -332,6 +332,24 @@ export default {
           console.log(res);
         });
     }
+  },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
   },
   methods: {
     /**

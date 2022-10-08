@@ -10,7 +10,7 @@
         class="header__name"
         :data-title="MISAResource.DataTile.HeaderName[language]"
       >
-        Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc
+        {{ this.MISAResource.TitleName.CompanyName[language] }}
       </div>
       <div
         tabindex="0"
@@ -43,7 +43,29 @@ export default {
     };
   },
   beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     this.language = this.$store.state.language;
+  },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
   },
 };
 </script>

@@ -244,17 +244,18 @@ export default {
       WarningMess: "",
       AlertMess: "",
       searchValue: "",
+      language: "",
     };
   },
   beforeMount() {
     // chèn thông tin từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
-    let language = this.$store.state.language;
-    this.askChangeText = this.MISAResource.PopupMessage.AskChange[language];
+    this.language = this.$store.state.language;
+    this.askChangeText = this.MISAResource.PopupMessage.AskChange[this.language];
     this.askDeleteOneText =
-      this.MISAResource.PopupMessage.AskDeleteOne[language];
+      this.MISAResource.PopupMessage.AskDeleteOne[this.language];
     this.askDeleteManyText =
-      this.MISAResource.PopupMessage.AskDeleteMany[language];
+      this.MISAResource.PopupMessage.AskDeleteMany[this.language];
     // tải table data
     this.loadData();
   },
@@ -304,7 +305,7 @@ export default {
     toastText() {
       return this.$store.state.toastText;
     },
-    language() {
+    getLanguage() {
       return this.$store.state.language;
     },
     countSelectedIDs() {
@@ -326,6 +327,13 @@ export default {
       } else {
         this.isAutoActionBoxShow = false;
       }
+    },
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
     },
   },
   /**
