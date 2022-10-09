@@ -80,8 +80,8 @@
             />
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.Export[language]"
-              buttonOne="Alt"
-              buttonTwo="E"
+              buttonOne="Ctrl"
+              buttonTwo="Q"
             />
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.ChangeLanguage[language]"
