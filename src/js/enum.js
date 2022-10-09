@@ -98,6 +98,7 @@ var MISAEnum = {
   // các từ khóa liên quan tới table
   table: {
     HIDE: "table__wrap--hide",
+    OVERFLOW: "table__wrap--disableflow",
   },
   // ngôn ngữ hiện tại đang dùng là tiếng Việt
   language: "VI",

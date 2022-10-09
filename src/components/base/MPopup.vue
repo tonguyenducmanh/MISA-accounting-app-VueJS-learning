@@ -140,6 +140,7 @@ export default {
       this.AlertMessFormatted = this.AlertMess.split("#");
     }
   },
+  mounted() {},
   methods: {
     /**
      * Hiển thị thông báo đã hủy hành động hiện tại

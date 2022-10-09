@@ -1,11 +1,10 @@
 <template lang="">
-  <div class="table__wrap" ref="table">
-    <div
-      class="table__wrap--loading"
-      :class="isShowLoading === false ? 'table__wrap--hide' : ''"
-    >
-      <MLoading />
-    </div>
+  <div
+    class="table__wrap"
+    ref="table"
+    :class="isShowLoading ? MISAEnum.table.OVERFLOW : ''"
+  >
+    <MLoading v-if="isShowLoading" />
     <table class="table" id="table__employee">
       <thead>
         <tr>
@@ -139,6 +138,7 @@ export default {
   data() {
     return {
       MISAResource,
+      MISAEnum,
       hasUp: false,
       isShowLoading: false,
       forceCheckAll: false,
