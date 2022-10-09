@@ -37,6 +37,7 @@
   flex: 1;
   display: grid;
   grid-template-columns: auto auto auto;
+  padding: 16px;
 }
 
 
