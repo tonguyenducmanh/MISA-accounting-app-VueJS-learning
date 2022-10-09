@@ -190,9 +190,49 @@ export default {
         this.isShowLoading = false;
       }
     },
+    /**
+     * Lúc mới chọn tất cả thì chỉ cần check số lượng xem có bằng với số lượng bản ghi hiện có không
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
     totalSelected() {
+      // số bản ghi mà bằng 0 thì tức là mới xóa tất cả, bỏ check check box luôn
+      if (this.$store.state.selectedIDs.length === 0) {
+        this.forceCheckAll = false;
+        this.checkAllEnable = false;
+      }
+      // 2 độ dài bằng nhau thì mới check all
       if (this.$store.state.selectedIDs.length === this.employeeList.length) {
         this.checkAllEnable = true;
+      } else {
+        this.checkAllEnable = false;
+      }
+    },
+    /**
+     * Mỗi lần giá trị của employeeList thay đổi cần check lại form
+     * và check lại cả từng id 1, nếu chẳng may 1 id bị xóa dạng đơn lẻ thì cũng cần remove nó đi
+     * nếu trùng toàn bộ id thì mới giữ lại check all
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    employeeList() {
+      if (this.$store.state.selectedIDs.length === 0) {
+        this.forceCheckAll = false;
+        this.checkAllEnable = false;
+      }
+      // 2 độ dài bằng nhau thì mới check all
+      if (this.$store.state.selectedIDs.length === this.employeeList.length) {
+        // kiểm tra từng id 1 xem có không, không có thì xóa nó khỏi store,
+        // nếu có hết và độ dài store = độ dài employeelist thì mới check all
+        return this.$store.state.selectedIDs.every((element) => {
+          if (this.employeeList.includes(element)) {
+            this.checkAllEnable = true;
+          } else {
+            let temp = this.$store.state.selectedIDs;
+            temp.splice(temp.indexOf(element), 1);
+            this.$store.dispatch("changeSelectedIDs", temp);
+          }
+
+          this.checkAllEnable = false;
+        });
       } else {
         this.checkAllEnable = false;
       }

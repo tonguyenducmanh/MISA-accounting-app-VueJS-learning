@@ -401,7 +401,6 @@ export default {
     changeCheckboxOption(number) {
       try {
         event.preventDefault();
-        console.log(number);
         this.formObject["employeeType"] = number;
       } catch (error) {
         console.log(error);
