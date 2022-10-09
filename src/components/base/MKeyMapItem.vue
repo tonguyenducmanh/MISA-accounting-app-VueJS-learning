@@ -18,32 +18,6 @@
 export default {
   name: "MKeyMapItem",
   props: ["keyMapName", "buttonOne", "buttonTwo"],
-  data() {
-    return {
-      language: "",
-    };
-  },
-  beforeMount() {
-    this.language = this.$store.state.language;
-  },
-  computed: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      return this.$store.state.language;
-    },
-  },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
-    },
-  },
 };
 </script>
 <style scoped>
