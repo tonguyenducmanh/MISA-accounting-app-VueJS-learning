@@ -46,9 +46,17 @@ var MISAEnum = {
     ESC: 27,
     SLASH: 191,
     L: 76,
-    FThree: 114,
+    F3: 114,
     R: 82,
     E: 69,
+    F8: 119,
+    F2: 113,
+    F9: 120,
+    INSERT: 45,
+    CTRL: 17,
+    ALT: 18,
+    SHIFT: 16,
+    DELETE: 46,
   },
   // các tên phím keyboard
   keyname: {

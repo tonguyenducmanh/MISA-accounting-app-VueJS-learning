@@ -334,6 +334,18 @@ var MISAResource = {
     },
   },
   ButtonText: {
+    OkBtn: {
+      VI: "Đồng ý",
+      EN: "OK",
+    },
+    YesBtn: {
+      VI: "Có",
+      EN: "Yes",
+    },
+    NoBtn: {
+      VI: "Không",
+      EN: "No",
+    },
     AddNewEmployee: {
       VI: "Thêm mới nhân viên",
       EN: "Add new employee",
@@ -341,6 +353,10 @@ var MISAResource = {
     CancelBtn: {
       VI: "Hủy",
       EN: "Cancel",
+    },
+    CloseBtn: {
+      VI: "Đóng",
+      EN: "Close",
     },
     SaveBtn: {
       VI: "Cất",

@@ -31,7 +31,7 @@
 }
 
 .page__navi .page__number .page__number--disable{
-    color: var(--ColorSecondaryText);
+    color: var(--ColorDisable);
     cursor: default;
     pointer-events: none;
 }

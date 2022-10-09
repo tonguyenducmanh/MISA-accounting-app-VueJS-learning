@@ -4,7 +4,7 @@
       <div
         class="icon keymap__closebtn keymap__cancel"
         :data-title="MISAResource.DataTile.FormCloseBtn[language]"
-        @click="$emit('hide-form')"
+        @click="$emit('hide-key-map')"
       ></div>
       <div class="keymap__title">
         {{ this.MISAResource.KeyMap.KeyMapPopup[language] }}
@@ -85,7 +85,7 @@
             />
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.ChangeLanguage[language]"
-              buttonOne="Ctrl"
+              buttonOne="Alt"
               buttonTwo="L"
             />
             <MKeyMapItem
@@ -108,6 +108,7 @@ export default {
   components: {
     MKeyMapItem,
   },
+  emits: ["hide-key-map"],
   data() {
     return {
       MISAResource,

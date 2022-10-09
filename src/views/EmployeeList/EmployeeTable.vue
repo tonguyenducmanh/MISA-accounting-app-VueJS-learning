@@ -36,7 +36,17 @@
       <tbody class="table__body--real">
         <template v-for="(employee, index) in employeeList" :key="index">
           <!-- bảng trả về từ api hiển thị ở đây -->
-          <tr ref="employeeID" :value="employee['employeeID']">
+          <tr
+            ref="employeeID"
+            :value="employee['employeeID']"
+            @keyup="
+              checkKeyUp(
+                employee['employeeID'],
+                employee['employeeCode'],
+                employee['fullName']
+              )
+            "
+          >
             <!-- chèn td checkbox -->
             <td>
               <MCheckbox
@@ -308,6 +318,31 @@ export default {
         } else {
           this.$store.dispatch("changeSelectedIDs", []);
         }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra các phím được nhấn
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyUp(ID, code, name) {
+      try {
+        const check = (event) => {
+          // nếu là ấn phím F2 thì sửa
+          if (event.which === this.MISAEnum.keycode.F2) {
+            event.preventDefault();
+            this.$emit("show-form");
+            this.putMethod(ID, code);
+          }
+          // nếu là phím Delete thì xóa
+          if (event.which === this.MISAEnum.keycode.DELETE) {
+            event.preventDefault();
+            this.deleteEmployee(ID, name);
+          }
+        };
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(check(event), 500);
       } catch (error) {
         console.log(error);
       }

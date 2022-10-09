@@ -1,11 +1,11 @@
 <template lang="">
-  <div ref="popupContainer">
+  <div @keyup="checkKeyUp">
     <!-- phần popup xóa -->
     <div
       v-if="isAskWarning"
+      ref="popupAskWarning"
       class="popup__wrap"
-      id="popupAskWarning"
-      tabindex=""
+      tabindex="0"
     >
       <div class="popup popup--askwarning">
         <div class="popup__content">
@@ -19,16 +19,18 @@
               $emit('hide-popup');
               showCanceledNoti();
             "
-            buttonName="Không"
-            dataTitle="Đóng (ESC)"
+            :buttonName="this.MISAResource.ButtonText.NoBtn[getLanguage]"
           />
-          <MButton buttonName="Có" @click="$emit('delete-now')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.YesBtn[getLanguage]"
+            @click="$emit('delete-now')"
+          />
         </div>
       </div>
     </div>
     <!-- phần popup hỏi muốn lưu không -->
 
-    <div v-if="isAsk" class="popup__wrap" id="popupAsk" tabindex="">
+    <div v-if="isAsk" ref="popupAsk" class="popup__wrap" tabindex="0">
       <div class="popup popup--ask">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -40,29 +42,30 @@
           <MButton
             :buttonTwo="true"
             class="button--cancel"
-            buttonName="Hủy"
+            :buttonName="this.MISAResource.ButtonText.CancelBtn[getLanguage]"
             @click="$emit('hide-popup')"
-            dataTitle="Hủy (ESC)"
           />
           <div class="">
             <MButton
               :buttonTwo="true"
-              buttonName="Không"
-              dataTitle="Không (ctrl + Q)"
+              :buttonName="this.MISAResource.ButtonText.NoBtn[getLanguage]"
               class="button--no"
               @click="
                 $emit('hide-all');
                 showCanceledNoti();
               "
             />
-            <MButton buttonName="Có" @click="$emit('save-now')" />
+            <MButton
+              :buttonName="this.MISAResource.ButtonText.YesBtn[getLanguage]"
+              @click="$emit('save-now')"
+            />
           </div>
         </div>
       </div>
     </div>
 
     <!-- phần popup nhập lỗi -->
-    <div v-if="isAlert" class="popup__wrap" id="popupAlert" tabindex="">
+    <div v-if="isAlert" ref="popupAlert" class="popup__wrap" tabindex="0">
       <div class="popup popup--alert">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -73,19 +76,25 @@
           </div>
         </div>
         <div class="popup__action">
-          <MButton buttonName="Đóng" @click="$emit('hide-popup')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.CloseBtn[getLanguage]"
+            @click="$emit('hide-popup')"
+          />
         </div>
       </div>
     </div>
     <!-- phần popup trùng id -->
-    <div v-if="isWarning" class="popup__wrap" id="popupWarning" tabindex="">
+    <div v-if="isWarning" ref="popupWarning" class="popup__wrap" tabindex="0">
       <div class="popup popup--warning">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
           <div class="popup__text">{{ WarningMess }}</div>
         </div>
         <div class="popup__action">
-          <MButton buttonName="Đồng ý" @click="$emit('hide-popup')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.OkBtn[getLanguage]"
+            @click="$emit('hide-popup')"
+          />
         </div>
       </div>
     </div>
@@ -125,7 +134,14 @@ export default {
       MISAResource,
       AlertMessFormatted: "",
       AskWarningFormatName: "",
+      timeOut: null,
+      language: "",
     };
+  },
+  computed: {
+    getLanguage() {
+      return this.$store.state.language;
+    },
   },
   //phân ra alert string thành array
   beforeUpdate() {
@@ -140,7 +156,23 @@ export default {
       this.AlertMessFormatted = this.AlertMess.split("#");
     }
   },
-  mounted() {},
+  updated() {
+    // dùng nextick để đợi DOM render đã, sau đó focus vào cái popup để có thể dùng tabindex
+    this.$nextTick(() => {
+      if (this.$refs.popupAskWarning) {
+        this.$refs.popupAskWarning.focus();
+      }
+      if (this.$refs.popupAsk) {
+        this.$refs.popupAsk.focus();
+      }
+      if (this.$refs.popupAlert) {
+        this.$refs.popupAlert.focus();
+      }
+      if (this.$refs.popupWarning) {
+        this.$refs.popupWarning.focus();
+      }
+    });
+  },
   methods: {
     /**
      * Hiển thị thông báo đã hủy hành động hiện tại
@@ -154,6 +186,25 @@ export default {
           this.MISAEnum.toasttype.NOTI,
           this.MISAResource.ToastMessage.CanceledNoti
         );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tự động ẩn form khi ấn vào phím esc
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyUp() {
+      try {
+        const check = (event) => {
+          // nếu là ấn phím ESC thì đóng
+          if (event.which === this.MISAEnum.keycode.ESC) {
+            event.preventDefault();
+            this.$emit("hide-popup");
+          }
+        };
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(check(event), 500);
       } catch (error) {
         console.log(error);
       }
