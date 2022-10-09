@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="employee" @keydown="checkKeyDown">
+  <div class="employee">
     <!-- Employee header gồm ô nhập liệu, nút tìm kiếm và nút reload -->
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
@@ -197,7 +197,7 @@
     />
 
     <!-- Hiện bảng toàn bộ phím tắt dùng trong trang web -->
-    <EmployeeKeyMap v-if="isKeyMapShow" />
+    <EmployeeKeyMap v-if="isKeyMapShow" @hide-key-map="toggleKeyMapPopup" />
   </div>
 </template>
 <script>
@@ -271,6 +271,8 @@ export default {
    */
   mounted() {
     this.$refs.inputSearch.$el.children[0].children[0].focus();
+    // thêm global keydown
+    window.addEventListener("keyup", this.checkKeyUp);
   },
   /**
    *  lấy các state từ trong store, để watch theo dõi và rerender
@@ -358,6 +360,8 @@ export default {
       this.$store.dispatch("changeCurrentPage", 1);
       this.$store.dispatch("changeFilter", "");
       this.$store.dispatch("changeSize", 10);
+      // xóa bỏ global keydown
+      window.removeEventListener("keyup", this.checkKeyUp);
     } catch (error) {
       console.log(error);
     }
@@ -739,55 +743,52 @@ export default {
      * Kiểm tra các phím được nhấn
      * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
      */
-    checkKeyDown() {
+    checkKeyUp() {
       try {
         // nếu là ấn phím ctrl và phím gạch chéo
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.SLASH) {
           event.preventDefault();
-
           this.toggleKeyMapPopup();
         }
         // nếu là ấn phím ctrl + phím L thì đổi ngôn ngữ
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.L) {
           event.preventDefault();
-
           this.changeLanguage();
         }
         // nếu là ấn ESC thì đóng các loại popup
         if (event.which === this.MISAEnum.keycode.ESC) {
           event.preventDefault();
-
           this.isKeyMapShow = false;
         }
         // nếu là ấn ctrl và F3 thì sẽ focus vào ô tìm kiếm
-        if (event.ctrlKey && event.which === this.MISAEnum.keycode.FThree) {
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.F3) {
           event.preventDefault();
-
           this.$refs.inputSearch.$el.children[0].children[0].focus();
         }
         // nếu là ấn alt + R thì sẽ load lại danh sách
         if (event.altKey && event.which === this.MISAEnum.keycode.R) {
           event.preventDefault();
-
           this.reloadData();
         }
         // nếu là ấn alt + E thì sẽ xuất khẩu ra file excel
         if (event.altKey && event.which === this.MISAEnum.keycode.E) {
           event.preventDefault();
-
           this.exportToExcel();
         }
         // nếu là ấn ctrl + left thì sẽ chuyển qua trang danh sách trước
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.LEFT) {
           event.preventDefault();
-
           this.$store.dispatch("movePrevPage");
         }
         // nếu là ấn ctrl + right thì sẽ chuyển qua trang tiếp theo
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.RIGHT) {
           event.preventDefault();
-
           this.$store.dispatch("moveNextPage");
+        }
+        // nếu là ấn phím insert thì hiện form thêm mới
+        if (event.which === this.MISAEnum.keycode.INSERT) {
+          event.preventDefault();
+          this.showForm();
         }
       } catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 <template lang="">
-  <div>
+  <div @keyup="checkKeyUp">
     <!-- phần popup xóa -->
     <div
       v-if="isAskWarning"
@@ -125,6 +125,7 @@ export default {
       MISAResource,
       AlertMessFormatted: "",
       AskWarningFormatName: "",
+      timeOut: null,
     };
   },
   //phân ra alert string thành array
@@ -170,6 +171,25 @@ export default {
           this.MISAEnum.toasttype.NOTI,
           this.MISAResource.ToastMessage.CanceledNoti
         );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tự động ẩn form khi ấn vào phím esc
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyUp() {
+      try {
+        const check = (event) => {
+          // nếu là ấn phím ESC thì đóng
+          if (event.which === this.MISAEnum.keycode.ESC) {
+            event.preventDefault();
+            this.$emit("hide-popup");
+          }
+        };
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(check(event), 500);
       } catch (error) {
         console.log(error);
       }

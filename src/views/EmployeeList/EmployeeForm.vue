@@ -1,10 +1,5 @@
 <template lang="">
-  <div
-    class="form__wrap"
-    form-type="POST"
-    employee-id=""
-    @keydown.esc="$emit('hide-form')"
-  >
+  <div class="form__wrap" form-type="POST" employee-id="" @keyup="checkKeyUp">
     <div class="form">
       <div class="form__heading">
         <div class="form__title">
@@ -292,6 +287,7 @@ export default {
       },
       employeeCodeDataTitle: "Mã nhân viên không được phép để trống.",
       language: "",
+      timeOut: null,
     };
   },
   /**
@@ -738,6 +734,35 @@ export default {
           this.MISAEnum.toasttype.SUCCESS,
           this.MISAResource.ToastMessage.DuplicatedNoti
         );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra các phím được nhấn
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyUp() {
+      try {
+        const check = (event) => {
+          // nếu là ấn phím ESC thì đóng
+          if (event.which === this.MISAEnum.keycode.ESC) {
+            event.preventDefault();
+            this.$emit("hide-form");
+          }
+          // nếu là ấn phím ctrl và phím F8
+          if (event.ctrlKey && event.which === this.MISAEnum.keycode.F8) {
+            event.preventDefault();
+            this.saveNew();
+          }
+          // nếu là ấn phím ctrl và phím F9 thì hủy thêm hoặc sửa
+          if (event.ctrlKey && event.which === this.MISAEnum.keycode.F9) {
+            event.preventDefault();
+            this.$emit("hide-all");
+          }
+        };
+        clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(check(event), 500);
       } catch (error) {
         console.log(error);
       }
