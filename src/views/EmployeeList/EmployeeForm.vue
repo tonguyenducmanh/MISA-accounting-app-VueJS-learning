@@ -11,7 +11,7 @@
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
           :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
           ref="checkboxKH"
-          @click-check-box="changeCheckboxOption(1)"
+          @click-label-box="changeCheckboxOption(1)"
         />
         <MCheckbox
           :labelText="MISAResource.LabelText.IsProvider[language]"
@@ -19,7 +19,7 @@
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
           :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
           ref="checkboxNCC"
-          @click-check-box="changeCheckboxOption(2)"
+          @click-label-box="changeCheckboxOption(2)"
         />
       </div>
       <div class="form__body">
@@ -318,8 +318,10 @@ export default {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
           this.formObject = res;
-          // tăng 1 đơn vị mã nhân viên nếu là nhân bản
-          this.getNewEmpCode();
+          // nếu là nhân bản thì lấy mã nhân viên mới
+          if (this.$store.state.isClone) {
+            this.getNewEmpCode();
+          }
         })
         .catch((res) => {
           console.log(res);
@@ -399,7 +401,6 @@ export default {
     changeCheckboxOption(number) {
       try {
         event.preventDefault();
-        console.log(number);
         this.formObject["employeeType"] = number;
       } catch (error) {
         console.log(error);

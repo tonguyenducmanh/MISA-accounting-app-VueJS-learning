@@ -765,8 +765,8 @@ export default {
         if (event.altKey && event.which === this.MISAEnum.keycode.R) {
           this.reloadData();
         }
-        // nếu là ấn alt + E thì sẽ xuất khẩu ra file excel
-        if (event.altKey && event.which === this.MISAEnum.keycode.E) {
+        // nếu là ấn ctrl + Q thì sẽ xuất khẩu ra file excel
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.Q) {
           this.exportToExcel();
         }
         // nếu là ấn ctrl + left thì sẽ chuyển qua trang danh sách trước

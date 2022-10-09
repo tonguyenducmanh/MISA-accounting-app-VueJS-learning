@@ -18,7 +18,6 @@
           : ''
       "
       :class="isErrorDate === true ? MISAEnum.datepicker.InputAlert : ''"
-      @input="$emit('update:modelValue', $event.target.value)"
       @focusout="
         $emit('update:modelValue', $event.target.value);
         dateValidate();
