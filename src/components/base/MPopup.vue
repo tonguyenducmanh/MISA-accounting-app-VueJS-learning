@@ -19,10 +19,12 @@
               $emit('hide-popup');
               showCanceledNoti();
             "
-            buttonName="Không"
-            dataTitle="Đóng (ESC)"
+            :buttonName="this.MISAResource.ButtonText.NoBtn[getLanguage]"
           />
-          <MButton buttonName="Có" @click="$emit('delete-now')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.YesBtn[getLanguage]"
+            @click="$emit('delete-now')"
+          />
         </div>
       </div>
     </div>
@@ -40,22 +42,23 @@
           <MButton
             :buttonTwo="true"
             class="button--cancel"
-            buttonName="Hủy"
+            :buttonName="this.MISAResource.ButtonText.CancelBtn[getLanguage]"
             @click="$emit('hide-popup')"
-            dataTitle="Hủy (ESC)"
           />
           <div class="">
             <MButton
               :buttonTwo="true"
-              buttonName="Không"
-              dataTitle="Không (ctrl + Q)"
+              :buttonName="this.MISAResource.ButtonText.NoBtn[getLanguage]"
               class="button--no"
               @click="
                 $emit('hide-all');
                 showCanceledNoti();
               "
             />
-            <MButton buttonName="Có" @click="$emit('save-now')" />
+            <MButton
+              :buttonName="this.MISAResource.ButtonText.YesBtn[getLanguage]"
+              @click="$emit('save-now')"
+            />
           </div>
         </div>
       </div>
@@ -73,7 +76,10 @@
           </div>
         </div>
         <div class="popup__action">
-          <MButton buttonName="Đóng" @click="$emit('hide-popup')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.CloseBtn[getLanguage]"
+            @click="$emit('hide-popup')"
+          />
         </div>
       </div>
     </div>
@@ -85,7 +91,10 @@
           <div class="popup__text">{{ WarningMess }}</div>
         </div>
         <div class="popup__action">
-          <MButton buttonName="Đồng ý" @click="$emit('hide-popup')" />
+          <MButton
+            :buttonName="this.MISAResource.ButtonText.OkBtn[getLanguage]"
+            @click="$emit('hide-popup')"
+          />
         </div>
       </div>
     </div>
@@ -126,7 +135,13 @@ export default {
       AlertMessFormatted: "",
       AskWarningFormatName: "",
       timeOut: null,
+      language: "",
     };
+  },
+  computed: {
+    getLanguage() {
+      return this.$store.state.language;
+    },
   },
   //phân ra alert string thành array
   beforeUpdate() {

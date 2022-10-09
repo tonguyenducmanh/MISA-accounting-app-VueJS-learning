@@ -85,7 +85,7 @@
             />
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.ChangeLanguage[language]"
-              buttonOne="Ctrl"
+              buttonOne="Alt"
               buttonTwo="L"
             />
             <MKeyMapItem

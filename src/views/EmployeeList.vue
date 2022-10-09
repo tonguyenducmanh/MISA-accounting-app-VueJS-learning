@@ -747,47 +747,38 @@ export default {
       try {
         // nếu là ấn phím ctrl và phím gạch chéo
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.SLASH) {
-          event.preventDefault();
           this.toggleKeyMapPopup();
         }
-        // nếu là ấn phím ctrl + phím L thì đổi ngôn ngữ
-        if (event.ctrlKey && event.which === this.MISAEnum.keycode.L) {
-          event.preventDefault();
+        // nếu là ấn phím alt + phím L thì đổi ngôn ngữ
+        if (event.altKey && event.which === this.MISAEnum.keycode.L) {
           this.changeLanguage();
         }
         // nếu là ấn ESC thì đóng các loại popup
         if (event.which === this.MISAEnum.keycode.ESC) {
-          event.preventDefault();
           this.isKeyMapShow = false;
         }
         // nếu là ấn ctrl và F3 thì sẽ focus vào ô tìm kiếm
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.F3) {
-          event.preventDefault();
           this.$refs.inputSearch.$el.children[0].children[0].focus();
         }
         // nếu là ấn alt + R thì sẽ load lại danh sách
         if (event.altKey && event.which === this.MISAEnum.keycode.R) {
-          event.preventDefault();
           this.reloadData();
         }
         // nếu là ấn alt + E thì sẽ xuất khẩu ra file excel
         if (event.altKey && event.which === this.MISAEnum.keycode.E) {
-          event.preventDefault();
           this.exportToExcel();
         }
         // nếu là ấn ctrl + left thì sẽ chuyển qua trang danh sách trước
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.LEFT) {
-          event.preventDefault();
           this.$store.dispatch("movePrevPage");
         }
         // nếu là ấn ctrl + right thì sẽ chuyển qua trang tiếp theo
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.RIGHT) {
-          event.preventDefault();
           this.$store.dispatch("moveNextPage");
         }
         // nếu là ấn phím insert thì hiện form thêm mới
         if (event.which === this.MISAEnum.keycode.INSERT) {
-          event.preventDefault();
           this.showForm();
         }
       } catch (error) {
