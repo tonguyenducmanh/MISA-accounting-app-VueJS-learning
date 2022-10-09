@@ -54,7 +54,7 @@
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
                 @click-check-box="toggleSelectedID(employee['employeeID'])"
-                :checkboxStatus="forceCheckAll"
+                :checkboxStatus="checkToggleCheck(employee['employeeID'])"
               />
             </td>
             <!-- dùng vòng lặp v-for tương tự như th nhưng ở đây là render ra nội dung
@@ -345,6 +345,31 @@ export default {
         this.timeOut = setTimeout(check(event), 500);
       } catch (error) {
         console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra xem có id này trong selected id không ?, nếu không
+     * thì return về false, có thì true
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkToggleCheck(value) {
+      try {
+        let currentSelectedArr = this.$store.state.selectedIDs;
+        // kiểm tra xem trong mảng đã có chưa, chưa có thì mới thêm
+        // có rồi thì xóa khỏi mảng
+        let check = currentSelectedArr.includes(value);
+        if (currentSelectedArr.length > 0) {
+          if (check === false) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+        return false;
       }
     },
   },

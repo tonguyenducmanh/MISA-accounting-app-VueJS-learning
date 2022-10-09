@@ -5,12 +5,14 @@
       class="checkbox__button"
       :id="checkboxId"
       :checked="checkboxStatus"
+      @click="$emit('click-check-box')"
     />
     <label
+      v-if="labelText"
       tabindex="0"
       class="checkbox__label"
       :for="checkboxId"
-      @click="$emit('click-check-box')"
+      @click="$emit('click-label-box')"
       >{{ labelText }}</label
     >
   </div>
@@ -18,7 +20,7 @@
 <script>
 export default {
   name: "MCheckbox",
-  emits: ["click-check-box"],
+  emits: ["click-check-box", "click-label-box"],
   props: {
     labelText: String,
     checkboxId: String,
