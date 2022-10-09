@@ -318,8 +318,10 @@ export default {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
           this.formObject = res;
-          // tăng 1 đơn vị mã nhân viên nếu là nhân bản
-          this.getNewEmpCode();
+          // nếu là nhân bản thì lấy mã nhân viên mới
+          if (this.$store.state.isClone) {
+            this.getNewEmpCode();
+          }
         })
         .catch((res) => {
           console.log(res);
