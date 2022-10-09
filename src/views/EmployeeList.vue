@@ -58,7 +58,6 @@
       <EmployeeTable
         @delete-employee="toggleAskWarningPopUp"
         @show-form="showForm"
-        @get-new-code="getNewEmpCode"
         class="table__container"
         :employeeList="employeeList"
         :toggleShowLoading="isShowLoading"
