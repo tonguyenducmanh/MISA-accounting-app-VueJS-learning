@@ -1,11 +1,11 @@
 <template lang="">
-  <div ref="popupContainer">
+  <div>
     <!-- phần popup xóa -->
     <div
       v-if="isAskWarning"
+      ref="popupAskWarning"
       class="popup__wrap"
-      id="popupAskWarning"
-      tabindex=""
+      tabindex="0"
     >
       <div class="popup popup--askwarning">
         <div class="popup__content">
@@ -28,7 +28,7 @@
     </div>
     <!-- phần popup hỏi muốn lưu không -->
 
-    <div v-if="isAsk" class="popup__wrap" id="popupAsk" tabindex="">
+    <div v-if="isAsk" ref="popupAsk" class="popup__wrap" tabindex="0">
       <div class="popup popup--ask">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- phần popup nhập lỗi -->
-    <div v-if="isAlert" class="popup__wrap" id="popupAlert" tabindex="">
+    <div v-if="isAlert" ref="popupAlert" class="popup__wrap" tabindex="0">
       <div class="popup popup--alert">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -78,7 +78,7 @@
       </div>
     </div>
     <!-- phần popup trùng id -->
-    <div v-if="isWarning" class="popup__wrap" id="popupWarning" tabindex="">
+    <div v-if="isWarning" ref="popupWarning" class="popup__wrap" tabindex="0">
       <div class="popup popup--warning">
         <div class="popup__content">
           <div class="icon popup__icon"></div>
@@ -140,7 +140,23 @@ export default {
       this.AlertMessFormatted = this.AlertMess.split("#");
     }
   },
-  mounted() {},
+  updated() {
+    // dùng nextick để đợi DOM render đã, sau đó focus vào cái popup để có thể dùng tabindex
+    this.$nextTick(() => {
+      if (this.$refs.popupAskWarning) {
+        this.$refs.popupAskWarning.focus();
+      }
+      if (this.$refs.popupAsk) {
+        this.$refs.popupAsk.focus();
+      }
+      if (this.$refs.popupAlert) {
+        this.$refs.popupAlert.focus();
+      }
+      if (this.$refs.popupWarning) {
+        this.$refs.popupWarning.focus();
+      }
+    });
+  },
   methods: {
     /**
      * Hiển thị thông báo đã hủy hành động hiện tại
