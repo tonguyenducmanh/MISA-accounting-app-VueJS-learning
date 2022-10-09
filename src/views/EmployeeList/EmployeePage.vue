@@ -23,6 +23,7 @@
         <div
           tabindex="0"
           class="page__prev"
+          :class="pageNumber === 1 ? 'page__number--disable' : ''"
           @click="movePrevPage"
           @keydown.enter="movePrevPage"
         >
@@ -92,6 +93,7 @@
         <div
           tabindex="0"
           class="page__next"
+          :class="pageNumber === totalPage ? 'page__number--disable' : ''"
           @click="moveNextPage"
           @keydown.enter="moveNextPage"
         >
