@@ -1,19 +1,21 @@
 <template lang="">
   <div class="page__navi">
     <div class="page__total">
-      <span>Tổng số: </span>
+      <span> {{ this.MISAResource.LabelText.PageNaviTotal[language] }} </span>
       <span class="page__records">{{ totalRecords }}</span>
-      <span>bản ghi</span>
+      <span>
+        {{ this.MISAResource.LabelText.PageNaviRecord[language] }}
+      </span>
     </div>
     <div class="page__categories">
       <LibCombobox
         id="page_ranges"
         classInput="input__field"
         propName="PageNavigation"
-        :data="MISAEnum.combobox.data"
-        placeHolder="Hãy chọn số trang"
-        :defaultValue="MISAEnum.combobox.defautValue"
-        :unique="MISAEnum.combobox.unique"
+        :data="MISAResource.Combobox.Data[language]"
+        :placeHolder="MISAResource.PlaceHolder.PageSizeChange[language]"
+        :defaultValue="MISAResource.Combobox.DefautValue[language]"
+        :unique="MISAResource.Combobox.Unique[language]"
         :isUp="true"
         @change-size="changeSize"
       />
@@ -24,7 +26,7 @@
           @click="movePrevPage"
           @keydown.enter="movePrevPage"
         >
-          Trước
+          {{ this.MISAResource.ButtonText.PrevPageBtn[language] }}
         </div>
         <!-- render ra danh sách trang nhưng giới hạn số trang có thể click -->
         <!-- trang đầu tiên -->
@@ -93,7 +95,7 @@
           @click="moveNextPage"
           @keydown.enter="moveNextPage"
         >
-          Sau
+          {{ this.MISAResource.ButtonText.NextPageBtn[language] }}
         </div>
       </div>
     </div>
@@ -101,6 +103,7 @@
 </template>
 <script>
 import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
 export default {
   name: "EmployeePage",
@@ -110,11 +113,27 @@ export default {
   props: ["totalRecords", "currentPage"],
   data() {
     return {
+      MISAResource,
       pageSize: 10,
       MISAEnum,
+      language: "",
     };
   },
+  beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    this.language = this.$store.state.language;
+  },
   computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
     totalPage() {
       return this.$store.state.totalPage;
     },
@@ -122,18 +141,25 @@ export default {
       return this.$store.state.pageNumber;
     },
   },
-  /**
-   * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
-   * hiểu rằng component này chỉ là hành động trung gian thôi
-   * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
-   */
   watch: {
+    /**
+     * Bất cứ khi nào pageSize thay đổi thì gọi $emits 1 hành động nào đó từ bậc cao hơn
+     * hiểu rằng component này chỉ là hành động trung gian thôi
+     * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
+     */
     pageSize() {
       try {
         this.$emit("change-size", this.pageSize);
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
     },
   },
   emits: ["change-size"],

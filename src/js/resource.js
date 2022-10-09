@@ -46,6 +46,14 @@ var MISAResource = {
       VI: "Đã xóa nhân viên khỏi bảng.",
       EN: "The employee is deleted from table.",
     },
+    DeleteManyNoti: {
+      VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
+      EN: "The employees are deleted from table.",
+    },
+    DeleteManyNotiError: {
+      VI: "Thao tác xóa nhiều thất bại.",
+      EN: "Delete many action is failure.",
+    },
     AddedNoti: {
       VI: "Đã thêm nhân viên mới vào bảng.",
       EN: "The employee is added to table.",
@@ -65,6 +73,530 @@ var MISAResource = {
     CanceledNoti: {
       VI: "Thao tác đã bị hủy.",
       EN: "This action is canceled.",
+    },
+    ExportExcelNoti: {
+      VI: "Xuất khẩu danh sách nhân viên thành công.",
+      EN: "The employeelist is succesfully exported.",
+    },
+    CancelExportExcelNoti: {
+      VI: "Đã hủy thao tác xuất khẩu danh sách nhân viên.",
+      EN: "Export employee list action was canceled.",
+    },
+    ErrorExportExcelNoti: {
+      VI: "Thao tác xuất khẩu bị lỗi, vui lòng kiểm tra lại.",
+      EN: "Export action was failed, please check again.",
+    },
+  },
+  PopupMessage: {
+    AskChange: {
+      VI: "Dữ liệu đã được thay đổi, bạn có muốn cất không ?",
+      EN: "Data is changed, do you want to save this ?",
+    },
+    AskDeleteOne: {
+      VI: "Bạn có thực sự muốn xóa nhân viên {0} không?",
+      EN: "Do you really want to delete {0} employee?",
+    },
+    AskDeleteMany: {
+      VI: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
+      EN: "Do you really want to delete all selected employees?",
+    },
+  },
+  ExportExcel: {
+    FileExportName: {
+      VI: "Danh_sach_nhan_vien.xlsx",
+      EN: "Employee_list.xlsx",
+    },
+  },
+  DataTile: {
+    HeaderName: {
+      VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
+      EN: "Qui Phuc Production - Commercial - Service Company",
+    },
+    HeaderNotiIcon: {
+      VI: "Thông báo",
+      EN: "Notification",
+    },
+    HeaderMenuBtn: {
+      VI: "Ẩn hiện menu",
+      EN: "Toggle menu",
+    },
+    GoHome: {
+      VI: "Về trang chủ",
+      EN: "Home",
+    },
+    ReloadBtn: {
+      VI: "Lấy lại dữ liệu.",
+      EN: "Reload data.",
+    },
+    ExcelBtn: {
+      VI: "Xuất ra file Excel.",
+      EN: "Export to excel.",
+    },
+    InputSearch: {
+      VI: "Ấn  CTRL + F3 để nhập.",
+      EN: "Press  CTRL + F3 to typing.",
+    },
+    FormFullName: {
+      VI: "Tên không được để trống.",
+      EN: "Name is not empty.",
+    },
+    FormDepartmentName: {
+      VI: "Đơn vị không được để trống.",
+      EN: "Departmentname is not empty.",
+    },
+    FormDate: {
+      VI: "Ngày không được phép lớn hơn ngày hiện tại.",
+      EN: "Date must smaller than today.",
+    },
+    FormNumber: {
+      VI: "Chỉ đường điền các số từ 0-9.",
+      EN: "Just typing number 0-9.",
+    },
+    FormEmail: {
+      VI: "Email chưa đúng định dạng.",
+      EN: "Email is not correct format.",
+    },
+    FormCloseBtn: {
+      VI: "Đóng (ESC).",
+      EN: "Exit (ESC).",
+    },
+    FormSaveBtn: {
+      VI: "Cất (CTRL + F8).",
+      EN: "Save (CTRL + F8).",
+    },
+    FormSaveAndAddBtn: {
+      VI: "Cất và thêm (ctrl + shift + S).",
+      EN: "Save and add (ctrl + shift + S).",
+    },
+    FormHelp: {
+      VI: "Form thêm mới nhân viên, vui lòng điền đầy đủ các mục có dấu *.",
+      EN: "Form add new employee, please insert all * element.",
+    },
+    AddNewBtn: {
+      VI: "Nhấn Insert để thêm nhanh.",
+      EN: "Press Insert to add employee.",
+    },
+    ChangeLanguage: {
+      VI: "Đổi ngôn ngữ",
+      EN: "Change language",
+    },
+  },
+  RouterName: {
+    Accounting: {
+      VI: "Kế toán",
+      EN: "AMIS",
+    },
+    Demo: {
+      VI: "Tổng quan",
+      EN: "Summary",
+    },
+    Money: {
+      VI: "Tiền mặt",
+      EN: "Money",
+    },
+    MoneySend: {
+      VI: "Tiền gửi",
+      EN: "Money send",
+    },
+    Buy: {
+      VI: "Mua hàng",
+      EN: "Buy",
+    },
+    Sell: {
+      VI: "Bán hàng",
+      EN: "Sell",
+    },
+    InvoiceManagement: {
+      VI: "Quản lý hóa đơn",
+      EN: "Invoice",
+    },
+    Directory: {
+      VI: "Kho",
+      EN: "Directory",
+    },
+    Tool: {
+      VI: "Công cụ dụng cụ",
+      EN: "Tool",
+    },
+    FixedAsset: {
+      VI: "Tài sản cố định",
+      EN: "Fixed Asset",
+    },
+    Tax: {
+      VI: "Thuế",
+      EN: "Tax",
+    },
+    Price: {
+      VI: "Giá thành",
+      EN: "Price",
+    },
+    Generic: {
+      VI: "Tổng hợp",
+      EN: "Generic",
+    },
+    Budget: {
+      VI: "Ngân sách",
+      EN: "Budget",
+    },
+    Report: {
+      VI: "Báo cáo",
+      EN: "Report",
+    },
+    FinancialAnalysis: {
+      VI: "Phân tích tài chính",
+      EN: "Financial Analysis",
+    },
+  },
+  LabelText: {
+    IsCustomer: {
+      VI: "Là khách hàng",
+      EN: "Is customer",
+    },
+    IsProvider: {
+      VI: "Là nhà cung cấp",
+      EN: "Is provider",
+    },
+    FormCode: {
+      VI: "Mã",
+      EN: "Code",
+    },
+    FormName: {
+      VI: "Tên",
+      EN: "Name",
+    },
+    FormDepartment: {
+      VI: "Đơn vị",
+      EN: "Department",
+    },
+    FormPosition: {
+      VI: "Chức danh",
+      EN: "Position",
+    },
+    FormDateOfBirth: {
+      VI: "Ngày sinh",
+      EN: "Date of birth",
+    },
+    FormGender: {
+      VI: "Giới tính",
+      EN: "Gender",
+    },
+    FormIdentityCard: {
+      VI: "Số CMND",
+      EN: "Indentity card number",
+    },
+    FormIdentityDate: {
+      VI: "Ngày cấp",
+      EN: "Identity date",
+    },
+    FormIdentityPlace: {
+      VI: "Nơi cấp",
+      EN: "Identity place",
+    },
+    FormAddress: {
+      VI: "Địa chỉ",
+      EN: "Address",
+    },
+    FormTelephoneNumber: {
+      VI: "ĐT di động",
+      EN: "Telephone number",
+    },
+    FormPhoneNumber: {
+      VI: "ĐT cố định",
+      EN: "Phone number",
+    },
+    FormEmail: {
+      VI: "Email",
+      EN: "Email",
+    },
+    FormBankAccount: {
+      VI: "Tài khoản ngân hàng",
+      EN: "Bank account",
+    },
+    FormBankName: {
+      VI: "Tên ngân hàng",
+      EN: "Bank name",
+    },
+    FormBankBranch: {
+      VI: "Chi nhánh",
+      EN: "Bank Branch",
+    },
+    PageNaviTotal: {
+      VI: "Tổng số: ",
+      EN: "Total: ",
+    },
+    PageNaviRecord: {
+      VI: "bản ghi",
+      EN: "records",
+    },
+    TableFuctionColumn: {
+      VI: "Chức năng",
+      EN: "Function",
+    },
+  },
+  ButtonText: {
+    AddNewEmployee: {
+      VI: "Thêm mới nhân viên",
+      EN: "Add new employee",
+    },
+    CancelBtn: {
+      VI: "Hủy",
+      EN: "Cancel",
+    },
+    SaveBtn: {
+      VI: "Cất",
+      EN: "Save",
+    },
+    SaveAndAddBtn: {
+      VI: "Cất và thêm",
+      EN: "Save and add",
+    },
+    EditBtn: {
+      VI: "Sửa",
+      EN: "Edit",
+    },
+    DuplicateBtn: {
+      VI: "Nhân bản",
+      EN: "Duplicate",
+    },
+    DeleteBtn: {
+      VI: "Xóa",
+      EN: "Delete",
+    },
+    StopUsingBtn: {
+      VI: "Ngưng sử dụng",
+      EN: "Stop using",
+    },
+    PrevPageBtn: {
+      VI: "Trước",
+      EN: "Prev",
+    },
+    NextPageBtn: {
+      VI: "Sau",
+      EN: "Next",
+    },
+    MultiActionBtn: {
+      VI: "Thực hiện hàng loạt",
+      EN: "Multiple Actions",
+    },
+  },
+  TableColumn: {
+    EmployeeCode: {
+      VI: "Mã nhân viên",
+      EN: "Employee code",
+    },
+    FullName: {
+      VI: "Tên nhân viên",
+      EN: "Fullname",
+    },
+    Gender: {
+      VI: "Giới tính",
+      EN: "Gender",
+    },
+    DateOfBirth: {
+      VI: "Ngày sinh",
+      EN: "Date of birth",
+    },
+    IdentityCardNumber: {
+      VI: "Số CMND",
+      EN: "Identity card number",
+    },
+    PositionName: {
+      VI: "Chức danh",
+      EN: "Position name",
+    },
+    DepartmentName: {
+      VI: "Tên đơn vị",
+      EN: "Department name",
+    },
+    BankAccount: {
+      VI: "Số tài khoản",
+      EN: "Bank account",
+    },
+    BankName: {
+      VI: "Tên ngân hàng",
+      EN: "Bank name",
+    },
+    BankBranch: {
+      VI: "Chi nhánh TK ngân hàng",
+      EN: "Bank branch name",
+    },
+  },
+  TitleName: {
+    FormTitle: {
+      VI: "Thông tin nhân viên",
+      EN: "Employee info",
+    },
+    EmployeeHeader: {
+      VI: "Nhân viên",
+      EN: "Employee",
+    },
+    CompanyName: {
+      VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
+      EN: "Qui Phuc Production - Commercial - Service Company",
+    },
+    ShowKeyMap: {
+      VI: "Hiện phím tắt ctrl + /",
+      EN: "Show keymap ctrl + /",
+    },
+  },
+  PlaceHolder: {
+    Search: {
+      VI: "Tìm theo mã, tên nhân viên",
+      EN: "Search by name, code",
+    },
+    FormEmployeeCode: {
+      VI: "Nhập mã nhân viên",
+      EN: "Insert employee code",
+    },
+    FormFullName: {
+      VI: "Nhập họ và tên",
+      EN: "Insert fullname",
+    },
+    FormDepartment: {
+      VI: "Nhập đơn vị",
+      EN: "Insert department",
+    },
+    FormPosition: {
+      VI: "Nhập chức danh",
+      EN: "Insert position",
+    },
+    FormIdentityCard: {
+      VI: "Nhập số CMND",
+      EN: "Insert identity card",
+    },
+    FormIdentityPlace: {
+      VI: "Nhập nơi cấp",
+      EN: "Insert identity place",
+    },
+    FormAddress: {
+      VI: "Nhập địa chỉ",
+      EN: "Insert address",
+    },
+    FormTelephoneNumber: {
+      VI: "Nhập số điện thoại di động",
+      EN: "Insert telephone number",
+    },
+    FormPhoneNumber: {
+      VI: "Nhập số điện thoại cố định",
+      EN: "Insert phone number",
+    },
+    FormEmail: {
+      VI: "Nhập Email",
+      EN: "Insert Email",
+    },
+    FormBankAccount: {
+      VI: "Nhập tài khoản ngân hàng",
+      EN: "Insert bank account",
+    },
+    FormBankName: {
+      VI: "Nhập tên ngân hàng",
+      EN: "Insert bank name",
+    },
+    FormBankBranch: {
+      VI: "Nhập tên chi nhánh",
+      EN: "Insert bank branch",
+    },
+    PageSizeChange: {
+      VI: "Hãy chọn số trang",
+      EN: "Select page size",
+    },
+  },
+  Gender: {
+    Male: {
+      VI: "Nam",
+      EN: "Male",
+    },
+    Female: {
+      VI: "Nữ",
+      EN: "Female",
+    },
+    Other: {
+      VI: "Khác",
+      EN: "Other",
+    },
+  },
+  Combobox: {
+    Data: {
+      VI: "10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100",
+      EN: "10 records per page:10;20 records per page:20;50 records per page: 50;100 records per page:100",
+    },
+    DefautValue: {
+      VI: "10 bản ghi trên trang",
+      EN: "10 records per page",
+    },
+    Unique: {
+      VI: "10",
+      EN: "10",
+    },
+  },
+  KeyMap: {
+    KeyMapPopup: {
+      VI: "Tất cả phím tắt trên trang quản lý nhân viên",
+      EN: "All keyboard shortcut on employee list page",
+    },
+    NavigationName: {
+      VI: "Điều hướng",
+      EN: "Navigation",
+    },
+    Typing: {
+      VI: "Nhập liệu",
+      EN: "Typing",
+    },
+    Other: {
+      VI: "Khác",
+      EN: "Other",
+    },
+    QuickSearch: {
+      VI: "Tìm kiếm nhanh",
+      EN: "Quick search",
+    },
+    PreviousListPage: {
+      VI: "Trang danh sách trước",
+      EN: "Previous list page",
+    },
+    NextListPage: {
+      VI: "Trang danh sách sau",
+      EN: "Next list page",
+    },
+    ClosePopup: {
+      VI: "Đóng popup",
+      EN: "Close Popup",
+    },
+    Reload: {
+      VI: "Load lại danh sách",
+      EN: "Reload list",
+    },
+    Export: {
+      VI: "Xuất khẩu ra file excel",
+      EN: "Export to excel",
+    },
+    Insert: {
+      VI: "Thêm mới 1 nhân viên",
+      EN: "Add new employee",
+    },
+    Edit: {
+      VI: "Sửa 1 nhân viên",
+      EN: "Edit one employee",
+    },
+    Delete: {
+      VI: "Xóa 1 nhân viên",
+      EN: "Delete one employee",
+    },
+    Save: {
+      VI: "Lưu 1 nhân viên",
+      EN: "Save one employee",
+    },
+    Cancel: {
+      VI: "Hủy thêm hoặc sửa 1 nhân viên",
+      EN: "Cancel add or edit one employee",
+    },
+    ChangeLanguage: {
+      VI: "Thay đổi ngôn ngữ",
+      EN: "Change language",
+    },
+    ToggleKeyMap: {
+      VI: "Ẩn hiện danh sách phím tắt",
+      EN: "Toggle keyboard shortcut list",
     },
   },
 };

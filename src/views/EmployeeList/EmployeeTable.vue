@@ -1,11 +1,10 @@
 <template lang="">
-  <div class="table__wrap" ref="table">
-    <div
-      class="table__wrap--loading"
-      :class="isShowLoading === false ? 'table__wrap--hide' : ''"
-    >
-      <MLoading />
-    </div>
+  <div
+    class="table__wrap"
+    ref="table"
+    :class="isShowLoading ? MISAEnum.table.OVERFLOW : ''"
+  >
+    <MLoading v-if="isShowLoading" />
     <table class="table" id="table__employee">
       <thead>
         <tr>
@@ -28,7 +27,9 @@
             </th>
           </template>
           <!-- render ra th chức năng, tách riêng với các cột propname -->
-          <th class="text__align--center" style="width: 100px">Chức năng</th>
+          <th class="text__align--center" style="width: 100px">
+            {{ this.MISAResource.LabelText.TableFuctionColumn[language] }}
+          </th>
         </tr>
       </thead>
       <!-- render ra tr dựa vào data employeeList -->
@@ -86,6 +87,10 @@
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
               <MConntextMenu
+                :btnName="MISAResource.ButtonText.EditBtn[language]"
+                :btnOne="MISAResource.ButtonText.DuplicateBtn[language]"
+                :btnTwo="MISAResource.ButtonText.DeleteBtn[language]"
+                :btnThree="MISAResource.ButtonText.StopUsingBtn[language]"
                 @edit-click="
                   $emit('show-form');
                   putMethod(employee['employeeID'], employee['employeeCode']);
@@ -115,6 +120,8 @@ import common from "../../js/common.js";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MConntextMenu from "../../components/base/MContextMenu.vue";
 import MLoading from "../../components/base/MLoading.vue";
+import MISAEnum from "../../js/enum.js";
+import MISAResource from "../../js/resource.js";
 
 export default {
   name: "EmployeeTable",
@@ -130,18 +137,42 @@ export default {
   },
   data() {
     return {
+      MISAResource,
+      MISAEnum,
       hasUp: false,
       isShowLoading: false,
       forceCheckAll: false,
       checkAllEnable: false,
+      language: "",
     };
   },
+  beforeMount() {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    this.language = this.$store.state.language;
+  },
   computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
     totalSelected() {
       return this.$store.state.selectedIDs.length;
     },
   },
   watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
     toggleShowLoading() {
       if (this.toggleShowLoading === true) {
         this.isShowLoading = true;
@@ -210,7 +241,7 @@ export default {
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
     putMethod(currentId, currentCode) {
-      this.$store.dispatch("changeMethod", "PUT");
+      this.$store.dispatch("changeMethod", MISAEnum.method.PUT);
       this.$store.dispatch("changeEditID", currentId);
       this.$store.dispatch("changeEditCode", currentCode);
     },
@@ -224,13 +255,10 @@ export default {
       this.$store.dispatch("changeEditID", currentId);
       this.$store.dispatch("changeEditCode", currentCode);
 
-      this.$store.dispatch("changeMethod", "PUT");
+      this.$store.dispatch("changeMethod", MISAEnum.method.PUT);
       // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
       setTimeout(() => {
-        this.$store.dispatch("changeMethod", "POST");
-        // xóa cả currentID đi
-        this.$store.dispatch("changeEditID", "");
-        this.$store.dispatch("changeEditCode", "");
+        this.$store.dispatch("changeMethod", MISAEnum.method.POST);
       }, 1000);
       // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },

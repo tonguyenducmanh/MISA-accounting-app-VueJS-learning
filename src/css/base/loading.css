@@ -1,0 +1,41 @@
+.loading__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background-color: var(--PopUpContainer);
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.loading::before {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  content: "";
+  background-image: url("@/assets/loading.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

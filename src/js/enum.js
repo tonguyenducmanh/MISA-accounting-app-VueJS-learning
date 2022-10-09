@@ -16,6 +16,12 @@ var MISAEnum = {
     LabelAlert: "input__label--alert",
     InputAlert: "input__field--alert",
   },
+  // các class được binding vào date picker
+  datepicker: {
+    DatePickerAlert: "datepicker--alert",
+    InputAlert: "inputdate--alert",
+    DatePickerNAN: "NaN-NaN-NaN",
+  },
   // các class được binding vào toastmessage
   toastmessage: {
     SUCCESS: "toastmessage__content--success",
@@ -38,6 +44,11 @@ var MISAEnum = {
     DOWN: 40,
     ENTER: 13,
     ESC: 27,
+    SLASH: 191,
+    L: 76,
+    FThree: 114,
+    R: 82,
+    E: 69,
   },
   // các tên phím keyboard
   keyname: {
@@ -80,10 +91,19 @@ var MISAEnum = {
       "https://localhost:44313/api/v1/Employees/duplicate-code/?recordCode=",
     GETDEPARTMENTLIST: "https://localhost:44313/api/v1/Departments",
     GETPOSITIONLIST: "https://localhost:44313/api/v1/Positions",
+    DELETEMANYEMPLOYEES: "https://localhost:44313/api/v1/Employees/delete-many",
+    EXPORTEMPLOYEES: "https://localhost:44313/api/v1/Employees/export-all",
+  },
+  // header API
+  APIHEADER: {
+    APPJSON: "application/json",
+    APPEXCEL:
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   },
   // các từ khóa liên quan tới table
   table: {
     HIDE: "table__wrap--hide",
+    OVERFLOW: "table__wrap--disableflow",
   },
   // ngôn ngữ hiện tại đang dùng là tiếng Việt
   language: "VI",

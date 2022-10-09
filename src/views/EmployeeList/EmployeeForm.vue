@@ -7,9 +7,11 @@
   >
     <div class="form">
       <div class="form__heading">
-        <div class="form__title">Thông tin nhân viên</div>
+        <div class="form__title">
+          {{ this.MISAResource.TitleName.FormTitle[language] }}
+        </div>
         <MCheckbox
-          labelText="Là khách hàng"
+          :labelText="MISAResource.LabelText.IsCustomer[language]"
           checkboxId="checkbox_kh"
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
           :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
@@ -17,7 +19,7 @@
           @click-check-box="changeCheckboxOption(1)"
         />
         <MCheckbox
-          labelText="Là nhà cung cấp"
+          :labelText="MISAResource.LabelText.IsProvider[language]"
           checkboxId="checkbox_ncc"
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
           :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
@@ -32,8 +34,8 @@
             :isFocus="true"
             v-model="formObject['employeeCode']"
             :hasLabel="true"
-            labelText="Mã"
-            placeHolder="Nhập mã nhân viên"
+            :labelText="MISAResource.LabelText.FormCode[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormEmployeeCode[language]"
             :inputAlert="isDuplicateCode"
             @input="disableAlertInput"
             idInput="input__checkId"
@@ -46,27 +48,27 @@
           />
           <MInput
             :hasLabel="true"
-            labelText="Tên"
-            placeHolder="Nhập họ và tên"
+            :labelText="MISAResource.LabelText.FormName[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormFullName[language]"
             idInput="input__checkId"
             :classInput="'form__employeename'"
             :showAlertStar="true"
             class="form__ele"
-            dataTitle="Tên không được để trống."
+            :dataTitle="MISAResource.DataTile.FormFullName[language]"
             :isNotNull="true"
             v-model="formObject['fullName']"
             :setError="setError.fullName"
           />
           <LibCombobox
             :hasLabel="true"
-            labelText="Đơn vị"
+            :labelText="MISAResource.LabelText.FormDepartment[language]"
             :showAlertStar="true"
-            dataTitle="Đơn vị không được để trống."
+            :dataTitle="MISAResource.DataTile.FormDepartmentName[language]"
             :api="MISAEnum.API.GETDEPARTMENTLIST"
             text="departmentName"
             value="departmentID"
             class="form__ele"
-            placeHolder="Nhập đơn vị"
+            :placeHolder="MISAResource.PlaceHolder.FormDepartment[language]"
             classInput="input__musthave"
             buttonClass="combobox__button--white"
             v-model:modelValue="formObject['departmentID']"
@@ -77,8 +79,8 @@
           />
           <MInput
             :hasLabel="true"
-            labelText="Chức danh"
-            placeHolder="Nhập chức danh"
+            :labelText="MISAResource.LabelText.FormPosition[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormPosition[language]"
             :classInput="'form__personaName'"
             class="form__ele"
             v-model="formObject['positionName']"
@@ -87,49 +89,50 @@
         <!-- phần nhập form thứ 2 -->
         <div class="form__part form__two">
           <MDatePicker
-            labelText="Ngày sinh"
+            :labelText="MISAResource.LabelText.FormDateOfBirth[language]"
             class="form__dateofbirth"
+            :dataTitle="MISAResource.DataTile.FormDate[language]"
             v-model="formObject['dateOfBirth']"
           />
           <MRadioButton
-            titleText="Giới tính"
+            :titleText="MISAResource.LabelText.FormGender[language]"
             propNameBox="gender"
             v-model="formObject['gender']"
             :content="[
               {
-                name: 'Nam',
+                name: MISAResource.Gender.Male[language],
                 value: 0,
               },
               {
-                name: 'Nữ',
+                name: MISAResource.Gender.Female[language],
                 value: 1,
               },
               {
-                name: 'Khác',
+                name: MISAResource.Gender.Other[language],
                 value: 2,
               },
             ]"
           />
           <MInput
             :hasLabel="true"
-            labelText="Số CMND"
-            placeHolder="Nhập số CMND"
+            :labelText="MISAResource.LabelText.FormIdentityCard[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormIdentityCard[language]"
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
-            dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
+            :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['identityCard']"
           />
           <MDatePicker
-            labelText="Ngày cấp"
+            :labelText="MISAResource.LabelText.FormIdentityDate[language]"
+            :dataTitle="MISAResource.DataTile.FormDate[language]"
             class="form__identityDate"
             v-model="formObject['identityDate']"
           />
           <MInput
             :hasLabel="true"
-            labelText="Nơi cấp"
-            placeHolder="Nhập nơi cấp"
+            :labelText="MISAResource.LabelText.FormIdentityPlace[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormIdentityPlace[language]"
             :classInput="'form__createdwhere'"
             class="form__ele"
             v-model="formObject['identityPlace']"
@@ -139,66 +142,65 @@
         <div class="form__part form__three">
           <MInput
             :hasLabel="true"
-            labelText="Địa chỉ"
-            placeHolder="Nhập địa chỉ"
+            :labelText="MISAResource.LabelText.FormAddress[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormAddress[language]"
             :classInput="'form__address'"
             class="form__ele"
             v-model="formObject['address']"
           />
           <MInput
             :hasLabel="true"
-            labelText="ĐT di động"
+            :labelText="MISAResource.LabelText.FormTelephoneNumber[language]"
+            :placeHolder="
+              MISAResource.PlaceHolder.FormTelephoneNumber[language]
+            "
             :justNumber="true"
-            placeHolder="Nhập số điện thoại di động"
             :classInput="'form__phonenum'"
             class="form__ele"
-            dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
+            :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['mobilePhone']"
           />
           <MInput
             :hasLabel="true"
-            labelText="ĐT cố định"
+            :labelText="MISAResource.LabelText.FormPhoneNumber[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[language]"
             :justNumber="true"
-            placeHolder="Nhập số điện thoại cố định"
             class="form__ele"
-            dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
+            :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['telephone']"
           />
           <MInput
             :hasLabel="true"
-            labelText="Email"
-            placeHolder="Nhập Email"
+            :labelText="MISAResource.LabelText.FormEmail[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormEmail[language]"
             :classInput="'form__email'"
             class="form__ele"
             :isEmail="true"
-            data-title="Email chưa đúng định dạng."
+            :dataTitle="MISAResource.DataTile.FormEmail[language]"
             v-model="formObject['email']"
           />
           <MInput
             :hasLabel="true"
-            labelText="Tài khoản ngân hàng"
+            :labelText="MISAResource.LabelText.FormBankAccount[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankAccount[language]"
             :justNumber="true"
-            placeHolder="Nhập tài khoản ngân hàng"
             :classInput="'form__banknum'"
             class="form__ele"
-            dataTitle="Chỉ đường điền các số từ 0-9"
-            :isNumber="true"
+            :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['bankAccount']"
           />
           <MInput
             :hasLabel="true"
-            labelText="Tên ngân hàng"
-            placeHolder="Nhập tên ngân hàng"
+            :labelText="MISAResource.LabelText.FormBankName[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankName[language]"
             :classInput="'form__bankname'"
             class="form__ele"
             v-model="formObject['bankName']"
           />
           <MInput
             :hasLabel="true"
-            labelText="Chi nhánh"
-            placeHolder="Nhập chi nhánh"
+            :labelText="MISAResource.LabelText.FormBankBranch[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankBranch[language]"
             :classInput="'form__bankaddr'"
             class="form__ele"
             v-model="formObject['bankBranch']"
@@ -207,35 +209,35 @@
       </div>
       <div class="form__action">
         <MButton
-          dataTitle="Đóng (ESC)"
+          :data-title="MISAResource.DataTile.FormCloseBtn[language]"
           class="form__cancel"
-          buttonName="Hủy"
+          :buttonName="MISAResource.ButtonText.CancelBtn[language]"
           :buttonTwo="true"
           @click="$emit('hide-all')"
         />
         <div class="form__action--right">
           <MButton
-            dataTitle="cất (ctrl + S)"
+            :data-title="MISAResource.DataTile.FormSaveBtn[language]"
             class="form__save--close"
-            buttonName="Cất"
+            :buttonName="MISAResource.ButtonText.SaveBtn[language]"
             :buttonTwo="true"
             @click="saveNew"
           />
           <MButton
-            dataTitle="cất và thêm (ctrl + shift + S)"
+            :data-title="MISAResource.DataTile.FormSaveAndAddBtn[language]"
+            :buttonName="MISAResource.ButtonText.SaveAndAddBtn[language]"
             class="form__save--readd"
-            buttonName="Cất và thêm"
             @click="saveNewAndAdd"
           />
         </div>
       </div>
       <div
         class="icon form__help"
-        data-title="Form thêm mới nhân viên, vui lòng điền đầy đủ các mục có dấu *"
+        :data-title="MISAResource.DataTile.FormHelp[language]"
       ></div>
       <div
         class="icon form__closebtn form__cancel"
-        data-title="Đóng (ESC)"
+        :data-title="MISAResource.DataTile.FormCloseBtn[language]"
         @click="$emit('hide-form')"
       ></div>
     </div>
@@ -261,6 +263,7 @@ export default {
     "warning-duplicate",
     "alert-popup",
     "update-table",
+    "show-toast-message",
   ],
   components: {
     MButton,
@@ -288,6 +291,7 @@ export default {
         departmentName: false,
       },
       employeeCodeDataTitle: "Mã nhân viên không được phép để trống.",
+      language: "",
     };
   },
   /**
@@ -297,6 +301,7 @@ export default {
    * Author: Tô Nguyễn Đức Manh (14/09/2022)
    */
   beforeMount() {
+    this.language = this.$store.state.language;
     // lấy mã nhân mới nếu là thêm mới
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
@@ -327,6 +332,24 @@ export default {
           console.log(res);
         });
     }
+  },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
   },
   methods: {
     /**
@@ -451,7 +474,7 @@ export default {
         fetch(api, {
           method: currentMethod,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": this.MISAEnum.APIHEADER.APPJSON,
           },
           body: JSON.stringify(me.formObject),
         })
@@ -554,7 +577,10 @@ export default {
                     } else {
                       // nếu là nhân bản thì hiện là nhân bản
                       this.showDupplicatedNoti();
-                      this.$store.state.currentEditID = "";
+                      // nếu là nhân bản thì hiện là nhân bản
+                      this.showDupplicatedNoti();
+                      this.$store.dispatch("changeEditID", "");
+                      this.$store.dispatch("changeEditCode", "");
                     }
                   }
                 }
@@ -642,7 +668,8 @@ export default {
                     } else {
                       // nếu là nhân bản thì hiện là nhân bản
                       this.showDupplicatedNoti();
-                      this.$store.state.currentEditID = "";
+                      this.$store.dispatch("changeEditID", "");
+                      this.$store.dispatch("changeEditCode", "");
                     }
                   }
                 }
@@ -677,16 +704,11 @@ export default {
     showAddedNoti() {
       try {
         // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.AddedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.AddedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -697,17 +719,12 @@ export default {
      */
     showEditedNoti() {
       try {
-        // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        // hiện toast message sửa người dùng thành công
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.EditedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.EditedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -718,17 +735,12 @@ export default {
      */
     showDupplicatedNoti() {
       try {
-        // hiện toast message thêm người dùng thành công
-        let lang = this.$store.state.language;
-        this.$store.dispatch(
-          "changeToastType",
-          this.MISAEnum.toasttype.SUCCESS
+        // hiện toast message nhân bản người dùng thành công
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.SUCCESS,
+          this.MISAResource.ToastMessage.DuplicatedNoti
         );
-        this.$store.dispatch(
-          "changeToastText",
-          this.MISAResource.ToastMessage.DuplicatedNoti[lang]
-        );
-        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }

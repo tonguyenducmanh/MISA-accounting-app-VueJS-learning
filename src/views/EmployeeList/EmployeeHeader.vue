@@ -1,16 +1,18 @@
 <template lang="">
   <div class="employee__top">
-    <div class="employee__label">Nhân viên</div>
+    <div class="employee__label">
+      {{ this.MISAResource.TitleName.EmployeeHeader[language] }}
+    </div>
     <MButton
       v-if="showTest"
       buttonName="Test state management"
       @click="testStore"
     />
     <MButton
-      buttonName="Thêm mới nhân viên"
+      :buttonName="MISAResource.ButtonText.AddNewEmployee[language]"
       class="employee__addbtn"
       id="employee__addbtn"
-      dataTitle="Nhấn Ctrl + Shift + A để thêm nhanh"
+      :dataTitle="MISAResource.DataTile.AddNewBtn[language]"
       @click="
         postMethod();
         $emit('show-form');
@@ -20,6 +22,8 @@
 </template>
 <script>
 import MButton from "../../components/base/MButton.vue";
+import MISAResource from "../../js/resource.js";
+
 export default {
   name: "EmployeeHeader",
   components: {
@@ -28,8 +32,31 @@ export default {
   emits: ["show-form"],
   data() {
     return {
+      MISAResource,
       showTest: false,
+      language: "",
     };
+  },
+  beforeMount() {
+    this.language = this.$store.state.language;
+  },
+  computed: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      return this.$store.state.language;
+    },
+  },
+  watch: {
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+    },
   },
   methods: {
     /**

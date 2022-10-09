@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="employee">
+  <div class="employee" @keydown="checkKeyDown">
     <!-- Employee header gồm ô nhập liệu, nút tìm kiếm và nút reload -->
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
@@ -7,7 +7,7 @@
         <div v-if="isAutoActionBoxShow" class="employee__container--left">
           <MButton
             class="employee__menuleft"
-            buttonName="Thực hiện hàng loạt"
+            :buttonName="MISAResource.ButtonText.MultiActionBtn[language]"
             :buttonTwo="true"
             @click="toggleMoreActionMenu"
             v-click-out="hideMoreActionMenu"
@@ -15,9 +15,9 @@
           <div
             v-if="isAutoActionShow"
             class="employee__deletecontext"
-            @click="toggleMoreActionMenu"
+            @click="toggleAskWarningPopUp"
           >
-            Xóa
+            {{ this.MISAResource.ButtonText.DeleteBtn[language] }}
           </div>
         </div>
         <!-- element dưới dùng v-else để thay thế element employee__menu--left trên
@@ -30,24 +30,27 @@
             :hasItalic="true"
             :hasIcon="true"
             idInput="input__search"
-            dataTitle="Ấn ctrl + K để nhập"
-            placeHolder="Tìm theo mã, tên nhân viên"
+            :iconTitle="MISAResource.DataTile.InputSearch[language]"
+            :showTitle="true"
+            :placeHolder="MISAResource.PlaceHolder.Search[language]"
             @change-filter="changeFilter"
             ref="inputSearch"
             v-model="searchValue"
-            :timeDelay="1500"
+            :timeDelay="500"
           />
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
-            data-title="Lấy lại dữ liệu"
+            :data-title="MISAResource.DataTile.ReloadBtn[language]"
             @click="reloadData"
             @keydown.enter="reloadData"
           ></div>
           <div
             tabindex="0"
             class="icon employee__exportbtn"
-            data-title="Xuất ra file Excell"
+            :data-title="MISAResource.DataTile.ExcelBtn[language]"
+            @click="exportToExcel"
+            @keydown.enter="exportToExcel"
           ></div>
         </div>
       </div>
@@ -63,65 +66,65 @@
             align: 'left',
             propName: 'employeeCode',
             width: '150',
-            name: 'Mã nhân viên',
+            name: MISAResource.TableColumn.EmployeeCode[language],
           },
           {
             align: 'left',
             propName: 'fullName',
             width: '200',
-            name: 'Tên nhân viên',
+            name: MISAResource.TableColumn.FullName[language],
           },
           {
             align: 'left',
             propName: 'gender',
             width: '110',
-            name: 'Giới tính',
+            name: MISAResource.TableColumn.Gender[language],
             formatGender: true,
           },
           {
             align: 'center',
             propName: 'dateOfBirth',
             width: '130',
-            name: 'Ngày sinh',
+            name: MISAResource.TableColumn.DateOfBirth[language],
             formatDate: true,
           },
           {
             align: 'right',
             propName: 'identityCard',
             width: '200',
-            name: 'Số CMND',
+            name: MISAResource.TableColumn.IdentityCardNumber[language],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'positionName',
             width: '200',
-            name: 'Chức danh',
+            name: MISAResource.TableColumn.PositionName[language],
           },
           {
             align: 'left',
             propName: 'departmentName',
             width: '250',
-            name: 'Tên đơn vị',
+            name: MISAResource.TableColumn.DepartmentName[language],
           },
           {
             align: 'right',
             propName: 'bankAccount',
             width: '200',
-            name: 'Số tài khoản',
+            name: MISAResource.TableColumn.BankAccount[language],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'bankName',
             width: '250',
-            name: 'Tên ngân hàng',
+            name: MISAResource.TableColumn.BankName[language],
           },
           {
             align: 'left',
             propName: 'bankBranch',
             width: '250',
-            name: 'Chi nhánh TK ngân hàng',
+            name: MISAResource.TableColumn.BankBranch[language],
           },
         ]"
       />
@@ -140,10 +143,8 @@
       @hide-all="hideFormAndAsk"
       @warning-duplicate="toggleWarningPopup"
       @alert-popup="toggleAlertPopUp"
-      @update-table="
-        testMethod();
-        loadData();
-      "
+      @update-table="loadData()"
+      @show-toast-message="createToastMessage"
       ref="employeeForm"
     />
     <!-- popup hiện lên khi đóng form, hỏi có muốn lưu không -->
@@ -151,19 +152,29 @@
       :isAsk="isAskShow"
       @hide-popup="toggleAskPopUp"
       @hide-all="hideFormAndAsk"
+      @show-toast-message="createToastMessage"
       @save-now="
         toggleAskPopUp();
         saveNow();
       "
-      AskMess="Dữ liệu đã được thay đổi, bạn có muốn cất không ?"
+      :AskMess="askChangeText"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
     <MPopup
       :isAskWarning="isAskWarningShow"
-      @hide-popup="toggleAskWarningPopUp"
+      @hide-popup="
+        toggleAskWarningPopUp();
+        clearDeleteInfo();
+      "
       @re-load="loadData"
-      :AskWarningMess="`Bạn có thực sự muốn xóa nhân viên ${deleteName} không?`"
-      :deleteId="deleteId"
+      @show-toast-message="createToastMessage"
+      :AskWarningMess="
+        deleteName !== undefined ? askDeleteOneText : askDeleteManyText
+      "
+      :AskWarningName="deleteName"
+      @delete-now="
+        deleteName !== undefined ? deleteOneAction() : deleteManyAction()
+      "
     />
     <!-- popup hiện lên khi trùng Id nhân viên -->
     <MPopup
@@ -177,14 +188,16 @@
       @hide-popup="toggleAlertPopUp"
       :AlertMess="AlertMess"
     />
-    <!-- toast message thông báo thành công -->
+    <!-- toast message thông báo -->
     <MToastMessage
       v-if="toggleToast"
       :language="language"
       :toastType="toastType"
       :toastText="toastText"
     />
-    <!-- toast message thông báo thất bại -->
+
+    <!-- Hiện bảng toàn bộ phím tắt dùng trong trang web -->
+    <EmployeeKeyMap v-if="isKeyMapShow" />
   </div>
 </template>
 <script>
@@ -201,6 +214,8 @@ import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
 import EmployeeTable from "./EmployeeList/EmployeeTable.vue";
 import EmployeePage from "./EmployeeList/EmployeePage.vue";
 import EmployeeForm from "./EmployeeList/EmployeeForm.vue";
+import EmployeeKeyMap from "./EmployeeList/EmployeeKeyMap.vue";
+
 export default {
   name: "TheEmployee",
   components: {
@@ -212,6 +227,7 @@ export default {
     EmployeeTable,
     EmployeePage,
     EmployeeForm,
+    EmployeeKeyMap,
   },
   data() {
     return {
@@ -226,15 +242,28 @@ export default {
       isShowLoading: false,
       isAutoActionBoxShow: false,
       isAutoActionShow: false,
+      isKeyMapShow: false,
       apiTable: "",
+      askChangeText: "",
+      askDeleteOneText: "",
+      askDeleteManyText: "",
       WarningMess: "",
       AlertMess: "",
       searchValue: "",
+      language: "",
     };
   },
   beforeMount() {
-    // chèn api từ enum vào
+    // chèn thông tin từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
+    this.language = this.$store.state.language;
+    this.askChangeText =
+      this.MISAResource.PopupMessage.AskChange[this.language];
+    this.askDeleteOneText =
+      this.MISAResource.PopupMessage.AskDeleteOne[this.language];
+    this.askDeleteManyText =
+      this.MISAResource.PopupMessage.AskDeleteMany[this.language];
+    // tải table data
     this.loadData();
   },
   /**
@@ -283,7 +312,7 @@ export default {
     toastText() {
       return this.$store.state.toastText;
     },
-    language() {
+    getLanguage() {
       return this.$store.state.language;
     },
     countSelectedIDs() {
@@ -306,6 +335,19 @@ export default {
         this.isAutoActionBoxShow = false;
       }
     },
+    /**
+     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    getLanguage() {
+      this.language = this.$store.state.language;
+      this.askChangeText =
+        this.MISAResource.PopupMessage.AskChange[this.language];
+      this.askDeleteOneText =
+        this.MISAResource.PopupMessage.AskDeleteOne[this.language];
+      this.askDeleteManyText =
+        this.MISAResource.PopupMessage.AskDeleteMany[this.language];
+    },
   },
   /**
    * khi mà component bị unmount thì phải trả về giá trị gốc của data
@@ -322,12 +364,17 @@ export default {
   },
   methods: {
     /**
-     * Test method
-     * Author : Tô Nguyễn Đức Manh (17/09/2022)
+     * Tạo ra 1 toastmessage
+     * @param toastType: loại toast message
+     * @param toastText: đoạn văn bản muốn hiển thị
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
      */
-    testMethod() {
+    createToastMessage(toastType, toastText) {
       try {
-        console.log("đã thực thi test method");
+        let language = this.$store.state.language;
+        this.$store.dispatch("changeToastType", toastType);
+        this.$store.dispatch("changeToastText", toastText[language]);
+        this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
       }
@@ -379,7 +426,10 @@ export default {
             }
           })
           .then(() => {
-            this.isShowLoading = false;
+            // tạm ngừng khoảng 0.2 giây để nhìn thấy loading rõ hơn
+            setTimeout(() => {
+              this.isShowLoading = false;
+            }, 200);
           })
           .catch((res) => {
             console.log(res);
@@ -396,11 +446,10 @@ export default {
       try {
         this.loadData();
         // hiện toast mesage lên
-        let language = this.$store.state.language;
-        let message = this.MISAResource.ToastMessage.ReloadedNoti[language];
-        this.$store.dispatch("changeToastType", this.MISAEnum.toasttype.NOTI);
-        this.$store.dispatch("changeToastText", message);
-        this.$store.dispatch("toggleToast", true);
+        this.createToastMessage(
+          this.MISAEnum.toasttype.NOTI,
+          this.MISAResource.ToastMessage.ReloadedNoti
+        );
       } catch (error) {
         console.log(error);
       }
@@ -500,10 +549,11 @@ export default {
      */
     toggleWarningPopup(value) {
       try {
-        let language = this.MISAEnum.language;
         // gọi ra văn bản validate
-        let textAlert = this.MISAResource.ErrorValidate.EmployeeCode[language];
-        let textAlertTwo = this.MISAResource.ErrorValidate.IsExisted[language];
+        let textAlert =
+          this.MISAResource.ErrorValidate.EmployeeCode[this.language];
+        let textAlertTwo =
+          this.MISAResource.ErrorValidate.IsExisted[this.language];
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
         this.isWarningShow = !this.isWarningShow;
       } catch (error) {
@@ -528,6 +578,202 @@ export default {
     hideMoreActionMenu() {
       try {
         this.isAutoActionShow = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Xóa 1 người nhân viên trong bảng
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    deleteOneAction() {
+      try {
+        // gọi api xóa đi
+        let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
+        fetch(apiDelete, { method: "DELETE" })
+          .then((res) => res.json())
+          .then(() => {
+            // ẩn popup xóa đi
+            this.toggleAskWarningPopUp();
+            this.loadData();
+            // hiện toast mesage lên
+            this.createToastMessage(
+              this.MISAEnum.toasttype.SUCCESS,
+              this.MISAResource.ToastMessage.DeleteNoti
+            );
+            // ẩn đi sau 3 giây
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Method xóa nhiều nhân viên trong 1 bảng
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    deleteManyAction() {
+      try {
+        let apiFetch = this.MISAEnum.API.DELETEMANYEMPLOYEES;
+        let deleteList = this.$store.state.selectedIDs;
+        // ẩn popup xóa đi
+        this.toggleAskWarningPopUp();
+
+        // gọi tới be để xóa danh sách nhân viên
+        fetch(apiFetch, {
+          method: this.MISAEnum.method.POST,
+          headers: {
+            "Content-Type": this.MISAEnum.APIHEADER.APPJSON,
+          },
+          body: JSON.stringify(deleteList),
+        })
+          .then((res) => {
+            // nếu xóa thành công thì xóa IDs cần xóa đi, load lại table
+            if (res.status === 200) {
+              // xóa danh sách cần xóa đi
+              this.$store.dispatch("changeSelectedIDs", []);
+
+              // hiện thông báo xóa nhiều thành công
+              this.createToastMessage(
+                this.MISAEnum.toasttype.SUCCESS,
+                this.MISAResource.ToastMessage.DeleteManyNoti
+              );
+              // load lại danh sách
+              this.loadData();
+            } else {
+              console.log(res);
+
+              // hiện thông báo xóa nhiều thất bại
+              this.createToastMessage(
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.DeleteManyNotiError
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Xóa các giá trị cần xóa trong store đi sau khi hủy
+     * Author: Tô Nguyễn Đức Mạnh (06/10/2022)
+     */
+    clearDeleteInfo() {
+      try {
+        this.$store.dispatch("changeSelectedIDs", []);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Xuất toàn bộ danh sách ra file excell
+     * Author: Tô Nguyễn Đức Mạnh (07/10/2022)
+     */
+    exportToExcel() {
+      try {
+        let apiExport = this.MISAEnum.API.EXPORTEMPLOYEES;
+        fetch(apiExport, {
+          method: this.MISAEnum.method.GET,
+          headers: {
+            "Content-Type": this.MISAEnum.APIHEADER.APPEXCEL,
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              return res.blob();
+            }
+          })
+          .then((blob) => {
+            if (blob) {
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement("a");
+              a.href = url;
+              let language = this.$store.state.language;
+              a.download =
+                this.MISAResource.ExportExcel.FileExportName[language];
+              document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+              a.click();
+              a.remove(); //afterwards we remove the element again
+            }
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Ẩn hiện popup danh sách phím tắt
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    toggleKeyMapPopup() {
+      try {
+        this.isKeyMapShow = !this.isKeyMapShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thay đổi ngôn ngữ
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    changeLanguage() {
+      try {
+        let currentLang = this.$store.state.language;
+        if (currentLang == "VI") {
+          this.$store.dispatch("changeLanguage", "EN");
+        } else {
+          this.$store.dispatch("changeLanguage", "VI");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra các phím được nhấn
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyDown() {
+      try {
+        event.preventDefault();
+        // nếu là ấn phím ctrl và phím gạch chéo
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.SLASH) {
+          this.toggleKeyMapPopup();
+        }
+        // nếu là ấn phím ctrl + phím L thì đổi ngôn ngữ
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.L) {
+          this.changeLanguage();
+        }
+        // nếu là ấn ESC thì đóng các loại popup
+        if (event.which === this.MISAEnum.keycode.ESC) {
+          this.isKeyMapShow = false;
+        }
+        // nếu là ấn ctrl và F3 thì sẽ focus vào ô tìm kiếm
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.FThree) {
+          this.$refs.inputSearch.$el.children[0].children[0].focus();
+        }
+        // nếu là ấn alt + R thì sẽ load lại danh sách
+        if (event.altKey && event.which === this.MISAEnum.keycode.R) {
+          this.reloadData();
+        }
+        // nếu là ấn alt + E thì sẽ xuất khẩu ra file excel
+        if (event.altKey && event.which === this.MISAEnum.keycode.E) {
+          this.exportToExcel();
+        }
+        // nếu là ấn ctrl + left thì sẽ chuyển qua trang danh sách trước
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.LEFT) {
+          this.$store.dispatch("movePrevPage");
+        }
+        // nếu là ấn ctrl + right thì sẽ chuyển qua trang tiếp theo
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.RIGHT) {
+          this.$store.dispatch("moveNextPage");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -573,7 +819,7 @@ export default {
   padding-right: 40px;
   box-sizing: border-box;
   position: relative;
-  z-index: 10;
+  z-index: 4;
 }
 .employee .employee__bottom .employee__menu .employee__menuleft:hover {
 }
