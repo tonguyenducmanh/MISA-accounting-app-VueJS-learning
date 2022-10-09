@@ -50,11 +50,13 @@ var MISAEnum = {
     R: 82,
     E: 69,
     F8: 119,
+    F2: 113,
     F9: 120,
     INSERT: 45,
     CTRL: 17,
     ALT: 18,
     SHIFT: 16,
+    DELETE: 46,
   },
   // các tên phím keyboard
   keyname: {
