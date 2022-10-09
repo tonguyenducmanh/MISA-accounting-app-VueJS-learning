@@ -102,7 +102,16 @@
         tabindex="0"
       />
     </div>
-    <div class="navbar__changelanguage" @click="changeLanguage">VI / EN</div>
+    <div
+      class="navbar__changelanguage"
+      @click="changeLanguage"
+      :data-title="MISAResource.DataTile.ChangeLanguage[language]"
+    >
+      VI / EN
+    </div>
+    <div class="navbar__keymap">
+      {{ this.MISAResource.TitleName.ShowKeyMap[language] }}
+    </div>
   </div>
 </template>
 <script>
@@ -114,7 +123,6 @@ export default {
   components: {
     MRouterLink,
   },
-
   data() {
     return {
       MISAResource,

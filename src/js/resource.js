@@ -133,8 +133,8 @@ var MISAResource = {
       EN: "Export to excel.",
     },
     InputSearch: {
-      VI: "Ấn ctrl + K để nhập.",
-      EN: "Press ctrl + K to typing.",
+      VI: "Ấn  CTRL + F3 để nhập.",
+      EN: "Press  CTRL + F3 to typing.",
     },
     FormFullName: {
       VI: "Tên không được để trống.",
@@ -161,8 +161,8 @@ var MISAResource = {
       EN: "Exit (ESC).",
     },
     FormSaveBtn: {
-      VI: "Cất (ctrl + S).",
-      EN: "Save (ctrl + S).",
+      VI: "Cất (CTRL + F8).",
+      EN: "Save (CTRL + F8).",
     },
     FormSaveAndAddBtn: {
       VI: "Cất và thêm (ctrl + shift + S).",
@@ -173,8 +173,12 @@ var MISAResource = {
       EN: "Form add new employee, please insert all * element.",
     },
     AddNewBtn: {
-      VI: "Nhấn Ctrl + Shift + A để thêm nhanh.",
-      EN: "Press Ctrl + Shift + A to add employee.",
+      VI: "Nhấn Insert để thêm nhanh.",
+      EN: "Press Insert to add employee.",
+    },
+    ChangeLanguage: {
+      VI: "Đổi ngôn ngữ",
+      EN: "Change language",
     },
   },
   RouterName: {
@@ -430,11 +434,15 @@ var MISAResource = {
       VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
       EN: "Qui Phuc Production - Commercial - Service Company",
     },
+    ShowKeyMap: {
+      VI: "Hiện phím tắt ctrl + /",
+      EN: "Show keymap ctrl + /",
+    },
   },
   PlaceHolder: {
     Search: {
       VI: "Tìm theo mã, tên nhân viên",
-      EN: "Search by name, code employee",
+      EN: "Search by name, code",
     },
     FormEmployeeCode: {
       VI: "Nhập mã nhân viên",
@@ -519,6 +527,76 @@ var MISAResource = {
     Unique: {
       VI: "10",
       EN: "10",
+    },
+  },
+  KeyMap: {
+    KeyMapPopup: {
+      VI: "Tất cả phím tắt trên trang quản lý nhân viên",
+      EN: "All keyboard shortcut on employee list page",
+    },
+    NavigationName: {
+      VI: "Điều hướng",
+      EN: "Navigation",
+    },
+    Typing: {
+      VI: "Nhập liệu",
+      EN: "Typing",
+    },
+    Other: {
+      VI: "Khác",
+      EN: "Other",
+    },
+    QuickSearch: {
+      VI: "Tìm kiếm nhanh",
+      EN: "Quick search",
+    },
+    PreviousListPage: {
+      VI: "Trang danh sách trước",
+      EN: "Previous list page",
+    },
+    NextListPage: {
+      VI: "Trang danh sách sau",
+      EN: "Next list page",
+    },
+    ClosePopup: {
+      VI: "Đóng popup",
+      EN: "Close Popup",
+    },
+    Reload: {
+      VI: "Load lại danh sách",
+      EN: "Reload list",
+    },
+    Export: {
+      VI: "Xuất khẩu ra file excel",
+      EN: "Export to excel",
+    },
+    Insert: {
+      VI: "Thêm mới 1 nhân viên",
+      EN: "Add new employee",
+    },
+    Edit: {
+      VI: "Sửa 1 nhân viên",
+      EN: "Edit one employee",
+    },
+    Delete: {
+      VI: "Xóa 1 nhân viên",
+      EN: "Delete one employee",
+    },
+    Save: {
+      VI: "Lưu 1 nhân viên",
+      EN: "Save one employee",
+    },
+    Cancel: {
+      VI: "Hủy thêm hoặc sửa 1 nhân viên",
+      EN: "Cancel add or edit one employee",
+    },
+    ChangeLanguage: {
+      VI: "Thay đổi ngôn ngữ",
+      EN: "Change language",
+    },
+    ToggleKeyMap: {
+      VI: "Ẩn hiện danh sách phím tắt",
+      EN: "Toggle keyboard shortcut list",
     },
   },
 };

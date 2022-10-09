@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="employee">
+  <div class="employee" @keydown="checkKeyDown">
     <!-- Employee header gồm ô nhập liệu, nút tìm kiếm và nút reload -->
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
@@ -188,14 +188,16 @@
       @hide-popup="toggleAlertPopUp"
       :AlertMess="AlertMess"
     />
-    <!-- toast message thông báo thành công -->
+    <!-- toast message thông báo -->
     <MToastMessage
       v-if="toggleToast"
       :language="language"
       :toastType="toastType"
       :toastText="toastText"
     />
-    <!-- toast message thông báo thất bại -->
+
+    <!-- Hiện bảng toàn bộ phím tắt dùng trong trang web -->
+    <EmployeeKeyMap v-if="isKeyMapShow" />
   </div>
 </template>
 <script>
@@ -212,6 +214,8 @@ import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
 import EmployeeTable from "./EmployeeList/EmployeeTable.vue";
 import EmployeePage from "./EmployeeList/EmployeePage.vue";
 import EmployeeForm from "./EmployeeList/EmployeeForm.vue";
+import EmployeeKeyMap from "./EmployeeList/EmployeeKeyMap.vue";
+
 export default {
   name: "TheEmployee",
   components: {
@@ -223,6 +227,7 @@ export default {
     EmployeeTable,
     EmployeePage,
     EmployeeForm,
+    EmployeeKeyMap,
   },
   data() {
     return {
@@ -237,6 +242,7 @@ export default {
       isShowLoading: false,
       isAutoActionBoxShow: false,
       isAutoActionShow: false,
+      isKeyMapShow: false,
       apiTable: "",
       askChangeText: "",
       askDeleteOneText: "",
@@ -695,6 +701,56 @@ export default {
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Ẩn hiện popup danh sách phím tắt
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    toggleKeyMapPopup() {
+      try {
+        this.isKeyMapShow = !this.isKeyMapShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thay đổi ngôn ngữ
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
+    changeLanguage() {
+      try {
+        let currentLang = this.$store.state.language;
+        if (currentLang == "VI") {
+          this.$store.dispatch("changeLanguage", "EN");
+        } else {
+          this.$store.dispatch("changeLanguage", "VI");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra các phím được nhấn
+     * Author: Tô Nguyễn Đức Mạnh (09/10/2022)
+     */
+    checkKeyDown() {
+      try {
+        // nếu là ấn phím ctrl và phím gạch chéo
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.SLASH) {
+          this.toggleKeyMapPopup();
+        }
+        // nếu là ấn phím ctrl + phím L thì đổi ngôn ngữ
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.L) {
+          event.preventDefault();
+          this.changeLanguage();
+        }
+        // nếu là ấn ESC thì đóng các loại popup
+        if (event.which === this.MISAEnum.keycode.ESC) {
+          this.isKeyMapShow = false;
+        }
       } catch (error) {
         console.log(error);
       }
