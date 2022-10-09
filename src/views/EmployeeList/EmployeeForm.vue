@@ -323,10 +323,7 @@ export default {
           // set value Minput component structure
           this.formObject = res;
           // tăng 1 đơn vị mã nhân viên nếu là nhân bản
-          let isClone = this.$store.state.isClone;
-          if (isClone) {
-            this.increamentOne(this.formObject["employeeCode"]);
-          }
+          this.getNewEmpCode();
         })
         .catch((res) => {
           console.log(res);
