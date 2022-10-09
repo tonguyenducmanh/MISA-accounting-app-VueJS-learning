@@ -426,7 +426,10 @@ export default {
             }
           })
           .then(() => {
-            this.isShowLoading = false;
+            // tạm ngừng khoảng 0.2 giây để nhìn thấy loading rõ hơn
+            setTimeout(() => {
+              this.isShowLoading = false;
+            }, 200);
           })
           .catch((res) => {
             console.log(res);
@@ -738,18 +741,38 @@ export default {
      */
     checkKeyDown() {
       try {
+        event.preventDefault();
         // nếu là ấn phím ctrl và phím gạch chéo
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.SLASH) {
           this.toggleKeyMapPopup();
         }
         // nếu là ấn phím ctrl + phím L thì đổi ngôn ngữ
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.L) {
-          event.preventDefault();
           this.changeLanguage();
         }
         // nếu là ấn ESC thì đóng các loại popup
         if (event.which === this.MISAEnum.keycode.ESC) {
           this.isKeyMapShow = false;
+        }
+        // nếu là ấn ctrl và F3 thì sẽ focus vào ô tìm kiếm
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.FThree) {
+          this.$refs.inputSearch.$el.children[0].children[0].focus();
+        }
+        // nếu là ấn alt + R thì sẽ load lại danh sách
+        if (event.altKey && event.which === this.MISAEnum.keycode.R) {
+          this.reloadData();
+        }
+        // nếu là ấn alt + E thì sẽ xuất khẩu ra file excel
+        if (event.altKey && event.which === this.MISAEnum.keycode.E) {
+          this.exportToExcel();
+        }
+        // nếu là ấn ctrl + left thì sẽ chuyển qua trang danh sách trước
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.LEFT) {
+          this.$store.dispatch("movePrevPage");
+        }
+        // nếu là ấn ctrl + right thì sẽ chuyển qua trang tiếp theo
+        if (event.ctrlKey && event.which === this.MISAEnum.keycode.RIGHT) {
+          this.$store.dispatch("moveNextPage");
         }
       } catch (error) {
         console.log(error);

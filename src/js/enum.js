@@ -46,6 +46,9 @@ var MISAEnum = {
     ESC: 27,
     SLASH: 191,
     L: 76,
+    FThree: 114,
+    R: 82,
+    E: 69,
   },
   // các tên phím keyboard
   keyname: {

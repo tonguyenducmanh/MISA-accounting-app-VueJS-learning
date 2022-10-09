@@ -75,12 +75,12 @@
           <div class="keymap__list">
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.Reload[language]"
-              buttonOne="Shift"
+              buttonOne="Alt"
               buttonTwo="R"
             />
             <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.Export[language]"
-              buttonOne="Shift"
+              buttonOne="Alt"
               buttonTwo="E"
             />
             <MKeyMapItem
