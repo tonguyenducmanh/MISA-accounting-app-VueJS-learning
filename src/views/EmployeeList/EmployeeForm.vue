@@ -343,7 +343,7 @@ export default {
           if (res.status == 200) {
             return res.json();
           } else {
-            // hiện toast message load data thất bại
+            // hiện toast message load data thất bại hoặc data rỗng
             this.$emit(
               "show-toast-message",
               this.MISAEnum.toasttype.ERROR,
@@ -354,7 +354,13 @@ export default {
         .then((res) => {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
-          this.formObject = res;
+          if (res) {
+            this.formObject = res;
+          } else {
+            // nếu đang ở trang thái nhân bản hoặc sửa dữ liệu mà không có dữ liệu truyền vào
+            // thì ẩn form đi
+            this.$emit("hide-all");
+          }
           // nếu là nhân bản thì lấy mã nhân viên mới
           if (this.$store.state.isClone) {
             this.getNewEmpCode();
@@ -409,7 +415,13 @@ export default {
           })
           .then((res) => {
             // gán giá trị tăng 1 đơn vị cần truyền vào trong input
-            this.increamentOne(res);
+            if (res) {
+              this.increamentOne(res);
+            } else {
+              // không có giá trị trả về thì hide form
+              // thì ẩn form đi
+              this.$emit("hide-all");
+            }
           })
           .catch((res) => {
             console.log(res);
