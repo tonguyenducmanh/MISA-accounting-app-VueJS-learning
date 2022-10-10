@@ -165,6 +165,10 @@ export default {
      */
     this.language = this.$store.state.language;
   },
+  // trước khi unmount cần xóa danh sách các ID đã chọn đi
+  beforeUnmount() {
+    this.$store.dispatch("changeSelectedIDs", []);
+  },
   computed: {
     /**
      * Lấy ra giá trị của ngôn ngữ hiện tại
