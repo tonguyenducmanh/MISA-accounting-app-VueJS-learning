@@ -119,6 +119,7 @@
 <script>
 import MRouterLink from "../base/MRouterLink.vue";
 import MISAResource from "../../js/resource.js";
+import MISAEnum from "../../js/enum.js";
 
 export default {
   name: "TheNavbar",
@@ -128,6 +129,7 @@ export default {
   data() {
     return {
       MISAResource,
+      MISAEnum,
       language: "",
     };
   },
@@ -155,10 +157,10 @@ export default {
     changeLanguage() {
       try {
         let currentLang = this.$store.state.language;
-        if (currentLang == "VI") {
-          this.$store.dispatch("changeLanguage", "EN");
+        if (currentLang == this.MISAEnum.languageList.VI) {
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.EN);
         } else {
-          this.$store.dispatch("changeLanguage", "VI");
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.VI);
         }
       } catch (error) {
         console.log(error);
