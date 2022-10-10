@@ -4,7 +4,9 @@
     <EmployeeHeader @show-form="showForm" />
     <div class="employee__bottom">
       <div class="employee__menu">
+        <!-- menu thao tác hàng loạt -->
         <div v-if="isAutoActionBoxShow" class="employee__container--left">
+          <!-- nút thao tác hàng loạt -->
           <MButton
             class="employee__menuleft"
             :buttonName="MISAResource.ButtonText.MultiActionBtn[language]"
@@ -12,6 +14,7 @@
             @click="toggleMoreActionMenu"
             v-click-out="hideMoreActionMenu"
           />
+          <!-- nút xóa nhiều tùy chỉnh (không theo component MButton do có style riêng và logic riêng) -->
           <div
             v-if="isAutoActionShow"
             class="employee__deletecontext"
@@ -25,7 +28,9 @@
         thì mới có thể làm employee__menuright nằm về bên phải của trang web được
          -->
         <div v-else></div>
+        <!-- phần menu bên phải -->
         <div class="employee__menuright">
+          <!-- ô nhập liệu tìm kiếm kèm theo nút tìm kiếm -->
           <MInput
             :hasItalic="true"
             :hasIcon="true"
@@ -38,6 +43,7 @@
             v-model="searchValue"
             :timeDelay="500"
           />
+          <!-- nút load lại trang tùy chỉnh không theo MButton -->
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
@@ -45,6 +51,7 @@
             @click="reloadData"
             @keydown.enter="reloadData"
           ></div>
+          <!-- nút xuất khẩu toàn bộ danh sách tùy chỉnh không theo MButton -->
           <div
             tabindex="0"
             class="icon employee__exportbtn"
@@ -54,7 +61,7 @@
           ></div>
         </div>
       </div>
-      <!-- employee table gồm bảng danh sách nhân viên -->
+      <!-- employee table gồm bảng danh sách nhân viên, các cột được liệt kê luôn ở đây -->
       <EmployeeTable
         @delete-employee="toggleAskWarningPopUp"
         @show-form="showForm"
@@ -201,15 +208,17 @@
   </div>
 </template>
 <script>
+// các file js thuần chứa dữ liệu cần thiết
 import MISAEnum from "../js/enum.js";
 import MISAResource from "../js/resource.js";
-// import componnent base
+
+// các component base
 import MInput from "../components/base/MInput.vue";
 import MPopup from "../components/base/MPopup.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
 import MButton from "../components/base/MButton.vue";
 
-// import component fragment
+// các component đơn lẻ dùng để tạo nên bố cục của component employeelist này
 import EmployeeHeader from "./EmployeeList/EmployeeHeader.vue";
 import EmployeeTable from "./EmployeeList/EmployeeTable.vue";
 import EmployeePage from "./EmployeeList/EmployeePage.vue";
@@ -267,11 +276,12 @@ export default {
     this.loadData();
   },
   /**
-   * mặc định lúc mounted sẽ focus vào ô tìm kiếm
+   * mặc định lúc mounted sẽ focus luôn vào ô tìm kiếm
    */
   mounted() {
     this.$refs.inputSearch.$el.children[0].children[0].focus();
-    // thêm global keydown
+
+    // thêm global keyup, dùng để lắng nghe các sự kiện phím tắt hàng loạt ở mọi component trong trang web
     window.addEventListener("keyup", this.checkKeyUp);
   },
   /**
@@ -279,6 +289,10 @@ export default {
    * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
    */
   computed: {
+    /**
+     * Hàng loạt các hàm bên dưới dùng để lấy ra giá trị hiện tại của từng data có lưu trong state management
+     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     */
     tableInfo() {
       return [
         this.$store.state.pageSize,
@@ -301,10 +315,6 @@ export default {
     getCurrentpage() {
       return this.$store.state.currentPage;
     },
-    /**
-     * Lấy state ẩn hiện thông báo
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
-     */
     toggleToast() {
       return this.$store.state.toggleToast;
     },
@@ -322,13 +332,23 @@ export default {
     },
   },
   /**
-   * Bất cứ khi nào pageSize, searchFilter thay đổi thì load lại trang
+   * Lắng nghe các data thay đổi, computed thì chạy vào trong watch
    * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
    */
   watch: {
+    /**
+     * Bất cứ khi nào các data ở trong computed trả về như số trang, số bản ghi 1 trang
+     * hay từ khóa tìm kiếm thay đổi thì tiến hành load lại data
+     * Author: Tô Nguyễn Đức Mạnh (10/10/2022)
+     */
     tableInfo() {
       this.loadData();
     },
+    /**
+     * Lắng nghe xem data trong state management có chứa 1 cái ID nào không,
+     * bất kỳ lúc nào có ID thì cần hiện nút thao tác hàng loạt lên, không có thì ẩn đi
+     * Author: Tô Nguyễn Đức Mạnh (10/10/2022)
+     */
     countSelectedIDs() {
       let selectLength = this.$store.state.selectedIDs.length;
       if (selectLength > 0) {
@@ -357,6 +377,7 @@ export default {
    */
   unmounted() {
     try {
+      // đặt số bản ghi trên trang về mặc định là 10, đứng ở trang thứ 1 và từ khóa tìm kiếm là rỗng
       this.$store.dispatch("changeCurrentPage", 1);
       this.$store.dispatch("changeFilter", "");
       this.$store.dispatch("changeSize", 10);
@@ -376,6 +397,8 @@ export default {
     createToastMessage(toastType, toastText) {
       try {
         let language = this.$store.state.language;
+
+        // đẩy các giá trị như loại thông báo, văn bản thông báo, trạng thái thông báo lên trên store của state management
         this.$store.dispatch("changeToastType", toastType);
         this.$store.dispatch("changeToastText", toastText[language]);
         this.$store.dispatch("toggleToast", true);
@@ -384,14 +407,17 @@ export default {
       }
     },
     /**
-     * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
+     * Hàm có tác dụng lấy dữ liệu của bảng table
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
     loadData() {
       try {
+        // lấy ra các dữ liệu có trong store về từ khóa tìm kiếm, số trang, số bản ghi 1 trang để tiến hành load data
         let searchFilter = this.$store.state.searchFilter;
         let pageSize = this.$store.state.pageSize;
         let pageNumber = this.$store.state.pageNumber;
+
+        // tạo ra 1 mảng các FromQuery cần truyền vào trong api
         let arrFilter = [];
         if (searchFilter != null && searchFilter != "") {
           arrFilter.push(`keyword=${searchFilter}`);
@@ -402,21 +428,36 @@ export default {
         if (pageNumber != null && pageNumber != "") {
           arrFilter.push(`pageNumber=${pageNumber}`);
         }
+
         // api mặc định
         let apiFetch = this.apiTable;
+
         // tạo ra api mới dựa trên các giá trị filter
         if (arrFilter.length != 0) {
           apiFetch = `${apiFetch}?${arrFilter.join("&")}`;
         }
+
         // hiện loading
         this.isShowLoading = true;
+
+        // tiến hành lấy dữ liệu từ trên server về
         fetch(apiFetch, { method: this.MISAEnum.method.GET })
           .then((res) => {
+            // nếu giá trị trả về là 200 thì tiến hành chuyển dữ liệu về dạng json để đọc,
+            // nếu không thì hiện cảnh báo lỗi server dạng toastmessage
             if (res.status == 200) {
               return res.json();
+            } else {
+              // hiện toast mesage báo lỗi lên
+              this.createToastMessage(
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.LoadDataFail
+              );
             }
           })
           .then((res) => {
+            // tiến hành lấy ra data từ res và thêm các giá trị như tổng số bản ghi
+            // tổng số trang, số trang hiện tại vào trong store state management
             if (res !== undefined && res !== "") {
               this.employeeList = res["data"];
               this.$store.dispatch("changeTotalRecords", res["totalRecord"]);
@@ -433,9 +474,14 @@ export default {
             // tạm ngừng khoảng 0.2 giây để nhìn thấy loading rõ hơn
             setTimeout(() => {
               this.isShowLoading = false;
-            }, 200);
+            }, 300);
           })
           .catch((res) => {
+            // hiện toast mesage báo lỗi lên
+            this.createToastMessage(
+              this.MISAEnum.toasttype.ERROR,
+              this.MISAResource.ToastMessage.LoadDataFail
+            );
             console.log(res);
           });
       } catch (error) {
@@ -527,8 +573,11 @@ export default {
      */
     toggleAskWarningPopUp(deleteId, deleteName) {
       try {
+        // chèn các dữ liệu như ID và tên của trường định xóa lên trên store
         this.$store.dispatch("changeDeleteId", deleteId);
         this.$store.dispatch("changeDeleteName", deleteName);
+
+        // hiển thị popup xóa
         this.isAskWarningShow = !this.isAskWarningShow;
       } catch (error) {
         console.log(error);
@@ -540,8 +589,10 @@ export default {
      */
     toggleAlertPopUp(value) {
       try {
+        // hiển thị popup
         this.isAlertShow = !this.isAlertShow;
 
+        // chèn văn bản vào popup xóa
         this.AlertMess = value;
       } catch (error) {
         console.log(error);
@@ -553,11 +604,15 @@ export default {
      */
     toggleWarningPopup(value) {
       try {
-        // gọi ra văn bản validate
+        // gọi ra đoạn resource thông báo trùng mã trước employee code
         let textAlert =
           this.MISAResource.ErrorValidate.EmployeeCode[this.language];
+
+        // gọi ra đoạn resource thông báo trùng mã sau employee code
         let textAlertTwo =
           this.MISAResource.ErrorValidate.IsExisted[this.language];
+
+        // tạo ra đoạn chuỗi văn bản thông báo lỗi
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
         this.isWarningShow = !this.isWarningShow;
       } catch (error) {
@@ -608,6 +663,11 @@ export default {
             // ẩn đi sau 3 giây
           })
           .catch((res) => {
+            // hiện thông báo xóa 1 record thất bại
+            this.createToastMessage(
+              this.MISAEnum.toasttype.ERROR,
+              this.MISAResource.ToastMessage.DeleteOneNotiError
+            );
             console.log(res);
           });
       } catch (error) {
@@ -690,19 +750,31 @@ export default {
           .then((res) => {
             if (res.status === 200) {
               return res.blob();
+            } else {
+              // hiện thông báo xuất khẩu thất bại
+              this.createToastMessage(
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.ErrorExportExcelNoti
+              );
             }
           })
           .then((blob) => {
             if (blob) {
+              // tạo ra 1 popup hỏi lưu file tải về
               var url = window.URL.createObjectURL(blob);
               var a = document.createElement("a");
               a.href = url;
               let language = this.$store.state.language;
+
+              // đặt tên cho file excel tải về
               a.download =
                 this.MISAResource.ExportExcel.FileExportName[language];
-              document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+
+              // tạo ra 1 element trong dom để có thể thực hiện thao tác tải về
+              // trên trình duyệt firefox
+              document.body.appendChild(a);
               a.click();
-              a.remove(); //afterwards we remove the element again
+              a.remove();
             }
           })
           .catch((res) => {
@@ -730,10 +802,13 @@ export default {
     changeLanguage() {
       try {
         let currentLang = this.$store.state.language;
-        if (currentLang == "VI") {
-          this.$store.dispatch("changeLanguage", "EN");
+
+        // kiểm tra xem ngôn ngữ hiện tại có phải tiếng việt không
+        // nếu không phải tiếng việt thì chuyển về tiếng việt và ngược lại
+        if (currentLang == this.MISAEnum.languageList.VI) {
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.EN);
         } else {
-          this.$store.dispatch("changeLanguage", "VI");
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.VI);
         }
       } catch (error) {
         console.log(error);

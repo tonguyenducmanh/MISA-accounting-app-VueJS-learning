@@ -4,7 +4,6 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      count: 0,
       deleteId: "",
       deleteName: "",
       language: "VI",
@@ -23,10 +22,8 @@ const store = createStore({
       isClone: false,
     };
   },
+  // Các method trong mutations sẽ không gọi trực tiếp mà gọi ở phần action có cùng tên
   mutations: {
-    increment(state) {
-      state.count++;
-    },
     changeSize(state, value) {
       state.pageSize = value;
       // số trang mà nhân với số records > tổng record thì quay về trang 1
@@ -90,10 +87,8 @@ const store = createStore({
       state.language = value;
     },
   },
+  // các action để thay đổi dữ liệu
   actions: {
-    increment(context) {
-      context.commit("increment");
-    },
     /**
      * Thay đổi phân trang theo số bản ghi
      * @param {*} value - giá trị của pageSize
@@ -174,6 +169,7 @@ const store = createStore({
     },
     /**
      * Thay đổi loại toast
+     * @param {*} value - giá trị miêu tả loại toastmessage
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     changeToastType(context, value) {
@@ -181,6 +177,7 @@ const store = createStore({
     },
     /**
      * Thay đổi văn bản toast
+     * @param {*} value - giá trị văn bản trong toastmessage
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     changeToastText(context, value) {
@@ -188,6 +185,7 @@ const store = createStore({
     },
     /**
      * Thay đổi method của api
+     * @param {*} value - giá trị method muốn để (GET, POST, PUT)
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
     changeMethod(context, value) {
@@ -195,6 +193,7 @@ const store = createStore({
     },
     /**
      * Thay đổi ID của nhân viên đang edit hiện tại
+     * @param {*} value - giá trị văn bản trong toastmessage
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
      */
     changeEditID(context, value) {
@@ -202,6 +201,7 @@ const store = createStore({
     },
     /**
      * Thay đổi edit code của nhân viên đang edit hiện tại
+     * @param {*} value - giá trị edit code muốn truyền
      * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
      */
     changeEditCode(context, value) {
@@ -209,6 +209,7 @@ const store = createStore({
     },
     /**
      * Thay đổi array selected ID hiện tại
+     * @param {*} value - giá trị selectedIDs dạng mảng
      * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
      */
     changeSelectedIDs(context, value) {
@@ -216,6 +217,7 @@ const store = createStore({
     },
     /**
      * Thay đổi trạng thái xem có đang ở trạng thái nhân bản không
+     * @param {*} value - giá trị trạng thái nhân bản (true hoặc false)
      * Author: Tô Nguyễn Đức Mạnh (04/10/2022)
      */
     changeStatusClone(context, value) {
@@ -223,6 +225,7 @@ const store = createStore({
     },
     /**
      * Thay đổi ngôn ngữ
+     * @param {*} value - ngôn ngữ muốn thay đổi
      * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
      */
     changeLanguage(context, value) {

@@ -12,10 +12,14 @@ export default {
 </script>
 
 <template>
+  <!-- container chứa toàn bộ các component -->
   <div class="container">
+    <!-- thanh điều hướng -->
     <the-navbar></the-navbar>
     <div class="main">
+      <!-- phần header của main -->
       <the-header></the-header>
+      <!-- phần nội dung sẽ được render tùy chỉnh dựa vào các element trong navbar -->
       <the-content>
         <router-view></router-view>
       </the-content>

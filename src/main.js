@@ -16,14 +16,18 @@ const app = createApp(App);
  */
 const clickOutside = {
   beforeMount: (el, binding) => {
+    // hàm nhận diện khi click ra bên ngoài
     el.clickOutsideEvent = (event) => {
       if (!(el == event.target || el.contains(event.target))) {
         binding.value();
       }
     };
+
+    // gắn sự kiện vào trong document trước khi mount
     document.addEventListener("click", el.clickOutsideEvent);
   },
   unmounted: (el) => {
+    // xóa sự kiện khỏi document sau khi mount
     document.removeEventListener("click", el.clickOutsideEvent);
   },
 };

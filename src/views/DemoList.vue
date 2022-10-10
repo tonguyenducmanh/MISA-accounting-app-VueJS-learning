@@ -1,4 +1,5 @@
 <template lang="">
+  <!-- trang demo chứa toàn bộ các component có trong ứng dụng web -->
   <div class="demo">
     <div>1.1 Button primary</div>
 

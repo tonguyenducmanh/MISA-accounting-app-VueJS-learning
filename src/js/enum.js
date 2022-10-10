@@ -116,6 +116,12 @@ var MISAEnum = {
   },
   // ngôn ngữ hiện tại đang dùng là tiếng Việt
   language: "VI",
+
+  // danh sách các ngôn ngữ
+  languageList: {
+    VI: "VI",
+    EN: "EN",
+  },
   // kiểu lưu là cất hay cất và thêm
   method: {
     PUT: "PUT",

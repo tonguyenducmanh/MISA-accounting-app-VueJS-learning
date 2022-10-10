@@ -44,6 +44,10 @@ var MISAResource = {
       VI: "Thông tin!",
       EN: "Information!",
     },
+    LoadDataFail: {
+      VI: "Có lỗi khi hiển thị dữ liệu từ server.",
+      EN: "Has Error when try to display data from table.",
+    },
     DeleteNoti: {
       VI: "Đã xóa nhân viên khỏi bảng.",
       EN: "The employee is deleted from table.",
@@ -51,6 +55,10 @@ var MISAResource = {
     DeleteManyNoti: {
       VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
       EN: "The employees are deleted from table.",
+    },
+    DeleteOneNotiError: {
+      VI: "Thao tác xóa 1 bản ghi thất bại.",
+      EN: "Delete one record action is failure.",
     },
     DeleteManyNotiError: {
       VI: "Thao tác xóa nhiều thất bại.",
@@ -85,8 +93,8 @@ var MISAResource = {
       EN: "Export employee list action was canceled.",
     },
     ErrorExportExcelNoti: {
-      VI: "Thao tác xuất khẩu bị lỗi, vui lòng kiểm tra lại.",
-      EN: "Export action was failed, please check again.",
+      VI: "Thao tác xuất khẩu bị lỗi, vui lòng liên hệ quản trị viên.",
+      EN: "Export action was failed, please contact administrator.",
     },
   },
   // Các đoạn văn bản thông báo dạng popup hiển thị ở trung tâm màn hình
