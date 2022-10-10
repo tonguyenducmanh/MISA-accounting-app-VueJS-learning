@@ -1,10 +1,14 @@
 <template lang="">
+  <!-- form nhập liệu thông tin nhân viên -->
   <div class="form__wrap" form-type="POST" employee-id="" @keyup="checkKeyUp">
     <div class="form">
+      <!-- phần đầu của form form -->
       <div class="form__heading">
+        <!-- phần tiêu đề của form -->
         <div class="form__title">
           {{ this.MISAResource.TitleName.FormTitle[language] }}
         </div>
+        <!-- 2 check box bên dưới dùng để tích chọn là khách hàng và là nhà cung cấp -->
         <MCheckbox
           :labelText="MISAResource.LabelText.IsCustomer[language]"
           checkboxId="checkbox_kh"
@@ -22,9 +26,11 @@
           @click-label-box="changeCheckboxOption(2)"
         />
       </div>
+      <!-- phần body của form -->
       <div class="form__body">
         <!-- phần nhập form thứ nhất -->
         <div class="form__part form__one">
+          <!-- phần nhập mã nhân viên -->
           <MInput
             :isFocus="true"
             v-model="formObject['employeeCode']"
@@ -41,6 +47,7 @@
             :isNotNull="true"
             :setError="setError.employeeCode"
           />
+          <!-- phần nhập tên nhân viên -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormName[language]"
@@ -54,6 +61,7 @@
             v-model="formObject['fullName']"
             :setError="setError.fullName"
           />
+          <!-- combobox nhập văn phòng làm việc -->
           <LibCombobox
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormDepartment[language]"
@@ -72,6 +80,7 @@
             :isNotNull="true"
             :setError="setError.departmentName"
           />
+          <!-- phần nhập chức vụ -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormPosition[language]"
@@ -83,12 +92,14 @@
         </div>
         <!-- phần nhập form thứ 2 -->
         <div class="form__part form__two">
+          <!-- phần chọn ngày sinh -->
           <MDatePicker
             :labelText="MISAResource.LabelText.FormDateOfBirth[language]"
             class="form__dateofbirth"
             :dataTitle="MISAResource.DataTile.FormDate[language]"
             v-model="formObject['dateOfBirth']"
           />
+          <!-- phần nhập giới tính -->
           <MRadioButton
             :titleText="MISAResource.LabelText.FormGender[language]"
             propNameBox="gender"
@@ -108,6 +119,7 @@
               },
             ]"
           />
+          <!-- phần nhập số chứng minh thư -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormIdentityCard[language]"
@@ -118,12 +130,14 @@
             :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['identityCard']"
           />
+          <!-- phân nhập ngày cấp chứng minh thư -->
           <MDatePicker
             :labelText="MISAResource.LabelText.FormIdentityDate[language]"
             :dataTitle="MISAResource.DataTile.FormDate[language]"
             class="form__identityDate"
             v-model="formObject['identityDate']"
           />
+          <!-- phần nhập nơi cấp chứng minh thư -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormIdentityPlace[language]"
@@ -135,6 +149,7 @@
         </div>
         <!-- phần nhập form thứ 3 -->
         <div class="form__part form__three">
+          <!-- phần nhập địa chỉ -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormAddress[language]"
@@ -143,6 +158,7 @@
             class="form__ele"
             v-model="formObject['address']"
           />
+          <!-- phần nhập số điện thoại cố định -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormTelephoneNumber[language]"
@@ -155,6 +171,7 @@
             :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['mobilePhone']"
           />
+          <!-- phần nhập số điện thoại di động -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormPhoneNumber[language]"
@@ -164,6 +181,7 @@
             :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['telephone']"
           />
+          <!-- phần nhập email -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormEmail[language]"
@@ -174,6 +192,7 @@
             :dataTitle="MISAResource.DataTile.FormEmail[language]"
             v-model="formObject['email']"
           />
+          <!-- phần nhập số tài khoản ngân hàng -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormBankAccount[language]"
@@ -184,6 +203,7 @@
             :dataTitle="MISAResource.DataTile.FormNumber[language]"
             v-model="formObject['bankAccount']"
           />
+          <!-- phần nhập tên ngân hàng -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormBankName[language]"
@@ -192,6 +212,7 @@
             class="form__ele"
             v-model="formObject['bankName']"
           />
+          <!-- phần nhập chi nhánh ngân hàng -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormBankBranch[language]"
@@ -202,7 +223,9 @@
           />
         </div>
       </div>
+      <!-- các nút xử lý form -->
       <div class="form__action">
+        <!-- nút hủy -->
         <MButton
           :data-title="MISAResource.DataTile.FormCloseBtn[language]"
           class="form__cancel"
@@ -211,6 +234,7 @@
           @click="$emit('hide-all')"
         />
         <div class="form__action--right">
+          <!-- nút cất -->
           <MButton
             :data-title="MISAResource.DataTile.FormSaveBtn[language]"
             class="form__save--close"
@@ -218,6 +242,7 @@
             :buttonTwo="true"
             @click="saveNew"
           />
+          <!-- nút cất và thêm -->
           <MButton
             :data-title="MISAResource.DataTile.FormSaveAndAddBtn[language]"
             :buttonName="MISAResource.ButtonText.SaveAndAddBtn[language]"
@@ -226,10 +251,12 @@
           />
         </div>
       </div>
+      <!-- icon có dấu hỏi chấm mô tả nội dung của form -->
       <div
         class="icon form__help"
         :data-title="MISAResource.DataTile.FormHelp[language]"
       ></div>
+      <!-- icon có chức năng như 1 button dùng để đóng form -->
       <div
         class="icon form__closebtn form__cancel"
         :data-title="MISAResource.DataTile.FormCloseBtn[language]"
@@ -239,17 +266,19 @@
   </div>
 </template>
 <script>
+// nhập các file js thuần vào để xử lý
 import MISAEnum from "../../js/enum.js";
 import MISAResource from "../../js/resource.js";
 import common from "../../js/common.js";
 
+// nhập các component cơ bản
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
 import MDatePicker from "../../components/base/MDatePicker.vue";
 import MInput from "../../components/base/MInput.vue";
 import MRadioButton from "../../components/base/MRadioButton.vue";
-
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
+
 export default {
   name: "EmployeeForm",
   emits: [
@@ -310,8 +339,16 @@ export default {
       // lấy dữ liệu người dùng hiện tại
       fetch(apiTest, { method: this.MISAEnum.method.GET })
         .then((res) => {
+          // convert to json để đọc được data nếu status code là 200 ok
           if (res.status == 200) {
             return res.json();
+          } else {
+            // hiện toast message load data thất bại
+            this.$emit(
+              "show-toast-message",
+              this.MISAEnum.toasttype.ERROR,
+              this.MISAResource.ToastMessage.LoadDataFail
+            );
           }
         })
         .then((res) => {
@@ -357,7 +394,19 @@ export default {
         // lấy ra api
         let api = this.MISAEnum.API.NEWEMPLOYEECODE;
         fetch(api, { method: this.MISAEnum.method.GET })
-          .then((res) => res.text())
+          .then((res) => {
+            // nếu status code là 200 thì trả về đoạn text mã nhân viên lớn nhất
+            if (res.status === 200) {
+              return res.text();
+            } else {
+              // hiện toast message load data thất bại
+              this.$emit(
+                "show-toast-message",
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.LoadDataFail
+              );
+            }
+          })
           .then((res) => {
             // gán giá trị tăng 1 đơn vị cần truyền vào trong input
             this.increamentOne(res);
@@ -376,12 +425,18 @@ export default {
     increamentOne(value) {
       try {
         let lastIDArray;
+        // lấy ra giá trị mã nhân viên max, nếu không có thì để vào
+        // giá trị mặc định là từ 1
         value !== "" ? (lastIDArray = value) : (lastIDArray = "NV00001");
+
+        // tiến hành cắt chuỗi và chèn thêm 1 đơn vị
         const lastIDNumber =
           parseInt(lastIDArray.split("").slice(2, value.length).join("")) + 1;
         const zeroPad = (num, places) => String(num).padStart(places, "0");
         const newIDCout = zeroPad(lastIDNumber, value.length - 2);
         const newNVCount = `NV${newIDCout}`;
+
+        // chèn giá trị mã nhân viên mới vào form
         this.formObject["employeeCode"] = newNVCount;
       } catch (error) {
         console.log(error);
@@ -416,6 +471,8 @@ export default {
       // tạo ra mảng thông báo các ô nhập liệu không được để trống
       let messArr = [];
       let language = this.$store.state.language;
+
+      // thêm đoạn validate ô mã nhân viên
       if (!this.formObject["employeeCode"]) {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
@@ -426,6 +483,8 @@ export default {
       } else {
         this.setError.employeeCode = false;
       }
+
+      // thêm đoạn validate ô tên nhân viên
       if (!this.formObject["fullName"]) {
         messArr.push(
           this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
@@ -434,6 +493,8 @@ export default {
       } else {
         this.setError.fullName = false;
       }
+
+      // thêm đoạn validate ô phòng ban
       if (
         !this.formObject["departmentName"] ||
         !this.formObject["departmentID"]
@@ -443,6 +504,8 @@ export default {
       } else {
         this.setError.departmentName = false;
       }
+
+      // hiển thị popup cảnh báo khi mảng có số lượng lớn hơn 0
       if (messArr.length > 0) {
         this.$emit("alert-popup", messArr.join("#"));
         return false;
@@ -464,7 +527,6 @@ export default {
         if (currentMethod === this.MISAEnum.method.PUT) {
           api += `/${this.$store.state.currentEditID}`;
         }
-        // debugger
         fetch(api, {
           method: currentMethod,
           headers: {
@@ -472,11 +534,21 @@ export default {
           },
           body: JSON.stringify(me.formObject),
         })
-          .then(() => {
-            // clear form đi
-            this.clearForm();
-            // lấy lại dữ liệu mới
-            this.getNewEmpCode();
+          .then((res) => {
+            // kiểm tra giá trị status code là 200 hoặc 201
+            if (res.status === 200 || res.status === 201) {
+              // clear form đi
+              this.clearForm();
+              // lấy lại dữ liệu mới
+              this.getNewEmpCode();
+            } else {
+              // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+              this.$emit(
+                "show-toast-message",
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.ErrorCommon
+              );
+            }
           })
           .then(() => {
             if (isReload === true) {

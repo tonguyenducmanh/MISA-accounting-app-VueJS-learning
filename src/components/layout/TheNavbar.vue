@@ -1,5 +1,6 @@
 <template lang="">
   <div class="navbar">
+    <!-- phần tên ứng dụng -->
     <div class="navbar__top">
       <div tabindex="0" class="icon navbar__button"></div>
       <div class="navbar__logo"></div>
@@ -11,6 +12,7 @@
         {{ this.MISAResource.RouterName.Accounting[language] }}
       </div>
     </div>
+    <!-- danh sách các đường link trong navbar -->
     <div class="navbar__list">
       <MRouterLink
         :name="MISAResource.RouterName.Demo[language]"

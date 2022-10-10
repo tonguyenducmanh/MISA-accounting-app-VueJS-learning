@@ -1,11 +1,14 @@
 <template lang="">
+  <!-- phần đầu của trang web -->
   <div class="header">
     <div class="header__left">
+      <!-- icon menu -->
       <div
         tabindex="0"
         class="icon header__menubtn"
         :data-title="MISAResource.DataTile.HeaderMenuBtn[language]"
       ></div>
+      <!-- tên công ty -->
       <div
         class="header__name"
         :data-title="MISAResource.DataTile.HeaderName[language]"
@@ -19,11 +22,13 @@
       ></div>
     </div>
     <div class="header__right">
+      <!-- nút thông báo -->
       <div
         tabindex="0"
         class="icon header__noti"
         :data-title="MISAResource.DataTile.HeaderNotiIcon[language]"
       ></div>
+      <!-- tên tài khoản -->
       <div class="header__account">
         <div tabindex="0" class="header__avatar"></div>
         <div class="header__name">Tô Nguyễn Đức Mạnh</div>

@@ -1,4 +1,5 @@
 <template lang="">
+  <!-- phần chứa nội dung thay đổi khi click vào navbar -->
   <div class="content"><slot /></div>
 </template>
 <script>
