@@ -44,9 +44,13 @@ var MISAResource = {
       VI: "Thông tin!",
       EN: "Information!",
     },
+    ErrorCommon: {
+      VI: "Có lỗi xảy ra, vui lòng kiểm tra lại,",
+      EN: "Has error when do this action.",
+    },
     LoadDataFail: {
       VI: "Có lỗi khi hiển thị dữ liệu từ server.",
-      EN: "Has Error when try to display data from table.",
+      EN: "Has error when try to display data from table.",
     },
     DeleteNoti: {
       VI: "Đã xóa nhân viên khỏi bảng.",
