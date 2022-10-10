@@ -1,5 +1,6 @@
 <template lang="">
   <div class="page__navi">
+    <!-- phần hiển thị tổng số bản ghi bên trái -->
     <div class="page__total">
       <span> {{ this.MISAResource.LabelText.PageNaviTotal[language] }} </span>
       <span class="page__records">{{ totalRecords }}</span>
@@ -8,6 +9,7 @@
       </span>
     </div>
     <div class="page__categories">
+      <!-- phần chọn số bản ghi muốn hiển thị trên 1 trang -->
       <LibCombobox
         id="page_ranges"
         classInput="input__field"
@@ -19,6 +21,7 @@
         :isUp="true"
         @change-size="changeSize"
       />
+      <!-- phần chọn trang muốn hiển thị -->
       <div class="page__number">
         <div
           tabindex="0"
@@ -82,7 +85,7 @@
         <!-- trang cuối -->
         <div
           tabindex="0"
-          v-if="totalPage !== 1 && pageNumber !== 0"
+          v-if="totalPage !== 1 && pageNumber !== 0 && totalPage !== 0"
           class="page__count"
           :class="totalPage === pageNumber ? 'page__count--selected' : ''"
           @click="selectThisPage(totalPage)"

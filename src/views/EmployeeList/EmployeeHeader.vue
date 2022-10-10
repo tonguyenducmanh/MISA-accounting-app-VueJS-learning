@@ -1,13 +1,10 @@
 <template lang="">
+  <!-- phần header của employeeList -->
   <div class="employee__top">
     <div class="employee__label">
       {{ this.MISAResource.TitleName.EmployeeHeader[language] }}
     </div>
-    <MButton
-      v-if="showTest"
-      buttonName="Test state management"
-      @click="testStore"
-    />
+    <!-- nút thêm mới nhân viên -->
     <MButton
       :buttonName="MISAResource.ButtonText.AddNewEmployee[language]"
       class="employee__addbtn"
@@ -33,7 +30,6 @@ export default {
   data() {
     return {
       MISAResource,
-      showTest: false,
       language: "",
     };
   },
@@ -59,14 +55,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * Phương thức được dùng để test State Management
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
-     */
-    testStore() {
-      console.log(this.$store.state.count);
-      this.$store.dispatch("increment");
-    },
     /**
      * Thay đổi method sang POST
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)

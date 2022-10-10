@@ -1,11 +1,14 @@
 <template lang="">
+  <!-- component keymap để hiển thị danh sách phím tắt -->
   <div class="keymap__container">
     <div class="keymap">
+      <!-- nút x có tác dụng đóng component -->
       <div
         class="icon keymap__closebtn keymap__cancel"
         :data-title="MISAResource.DataTile.FormCloseBtn[language]"
         @click="$emit('hide-key-map')"
       ></div>
+      <!-- tiêu đề của component -->
       <div class="keymap__title">
         {{ this.MISAResource.KeyMap.KeyMapPopup[language] }}
       </div>

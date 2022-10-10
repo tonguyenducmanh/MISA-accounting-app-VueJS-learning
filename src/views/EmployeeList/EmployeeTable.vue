@@ -1,9 +1,11 @@
 <template lang="">
+  <!-- phần table -->
   <div
     class="table__wrap"
     ref="table"
     :class="isShowLoading ? MISAEnum.table.OVERFLOW : ''"
   >
+    <!-- phần loading khi chưa tải xong -->
     <MLoading v-if="isShowLoading" />
     <table class="table" id="table__employee">
       <thead>
