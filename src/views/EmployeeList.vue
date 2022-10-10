@@ -89,7 +89,7 @@
             formatDate: true,
           },
           {
-            align: 'right',
+            align: 'left',
             propName: 'identityCard',
             width: '200',
             name: MISAResource.TableColumn.IdentityCardNumber[language],
@@ -108,7 +108,7 @@
             name: MISAResource.TableColumn.DepartmentName[language],
           },
           {
-            align: 'right',
+            align: 'left',
             propName: 'bankAccount',
             width: '200',
             name: MISAResource.TableColumn.BankAccount[language],

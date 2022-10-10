@@ -1,4 +1,5 @@
 var MISAResource = {
+  // Các đoạn văn bản liên quan tới báo lỗi xác thực dữ liệu
   ErrorValidate: {
     EmployeeCodeNotEmpty: {
       VI: "Mã nhân viên không được phép để trống.",
@@ -25,6 +26,7 @@ var MISAResource = {
       EN: "is existed in system, please try to insert another Id.",
     },
   },
+  // Các đoạn văn bản liên quan tới thông báo ở góc dưới màn hình
   ToastMessage: {
     Success: {
       VI: "Thành công!",
@@ -87,6 +89,7 @@ var MISAResource = {
       EN: "Export action was failed, please check again.",
     },
   },
+  // Các đoạn văn bản thông báo dạng popup hiển thị ở trung tâm màn hình
   PopupMessage: {
     AskChange: {
       VI: "Dữ liệu đã được thay đổi, bạn có muốn cất không ?",
@@ -101,12 +104,14 @@ var MISAResource = {
       EN: "Do you really want to delete all selected employees?",
     },
   },
+  // Các đoạn văn bản liên quan tới việc export excell
   ExportExcel: {
     FileExportName: {
       VI: "Danh_sach_nhan_vien.xlsx",
       EN: "Employee_list.xlsx",
     },
   },
+  // Các đoan tooltip hiển thị khi di chuột vào 1 thành phần nào đó trong trang web
   DataTile: {
     HeaderName: {
       VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
@@ -181,6 +186,7 @@ var MISAResource = {
       EN: "Change language",
     },
   },
+  // Các đoạn văn bản hiển thị ở menu điều hướng trang web tới các trang khác nhau
   RouterName: {
     Accounting: {
       VI: "Kế toán",
@@ -247,6 +253,7 @@ var MISAResource = {
       EN: "Financial Analysis",
     },
   },
+  // Các đoạn nhãn văn bản hiển thị nội dung của thành phần
   LabelText: {
     IsCustomer: {
       VI: "Là khách hàng",
@@ -333,6 +340,7 @@ var MISAResource = {
       EN: "Function",
     },
   },
+  // Các đoạn văn bản miêu tả tên của các nút thành phần
   ButtonText: {
     OkBtn: {
       VI: "Đồng ý",
@@ -395,6 +403,7 @@ var MISAResource = {
       EN: "Multiple Actions",
     },
   },
+  // Các đoạn văn bản liên quan tới tên các cột trong bảng dữ liệu
   TableColumn: {
     EmployeeCode: {
       VI: "Mã nhân viên",
@@ -437,6 +446,7 @@ var MISAResource = {
       EN: "Bank branch name",
     },
   },
+  // Các đạon văn bản tiêu đề
   TitleName: {
     FormTitle: {
       VI: "Thông tin nhân viên",
@@ -455,6 +465,7 @@ var MISAResource = {
       EN: "Show keymap ctrl + /",
     },
   },
+  // Các đoạn văn bản tạm trong phần nhập liệu mô tả cách nhập cho đúng
   PlaceHolder: {
     Search: {
       VI: "Tìm theo mã, tên nhân viên",
@@ -517,6 +528,7 @@ var MISAResource = {
       EN: "Select page size",
     },
   },
+  // Các đoạn văn bản liên quan tới giới tính của mọi người
   Gender: {
     Male: {
       VI: "Nam",
@@ -531,6 +543,7 @@ var MISAResource = {
       EN: "Other",
     },
   },
+  // Các đoạn văn bản trong phần nhập liệu dạng combo
   Combobox: {
     Data: {
       VI: "10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100",
@@ -545,6 +558,7 @@ var MISAResource = {
       EN: "10",
     },
   },
+  // Các đoạn văn bản mô tả về thành phần phím tắt
   KeyMap: {
     KeyMapPopup: {
       VI: "Tất cả phím tắt trên trang quản lý nhân viên",

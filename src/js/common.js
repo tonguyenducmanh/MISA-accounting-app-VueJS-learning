@@ -8,12 +8,15 @@ var common = {
     try {
       if (date) {
         date = new Date(date);
-        // Lấy ra ngày:
+
+        // Lấy ra ngày tháng năm:
         let day = date.getDate();
         day = day < 10 ? `0${day}` : day;
         let month = date.getMonth() + 1;
         month = month < 10 ? `0${month}` : month;
         let year = date.getFullYear();
+
+        // trả về định dạng phù hợp nếu có vd : 14/03/2000 14-03-2000
         if (characterConnect === "/") {
           return `${day}/${month}/${year}`;
         } else {
@@ -35,6 +38,7 @@ var common = {
    */
   formatMoneyVND(money) {
     try {
+      // formart theo định dạng cung cấp sẵn của Intl
       money = new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "VND",
