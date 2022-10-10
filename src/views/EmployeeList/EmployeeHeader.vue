@@ -2,14 +2,14 @@
   <!-- phần header của employeeList -->
   <div class="employee__top">
     <div class="employee__label">
-      {{ this.MISAResource.TitleName.EmployeeHeader[language] }}
+      {{ this.MISAResource.TitleName.EmployeeHeader[getLanguage] }}
     </div>
     <!-- nút thêm mới nhân viên -->
     <MButton
-      :buttonName="MISAResource.ButtonText.AddNewEmployee[language]"
+      :buttonName="MISAResource.ButtonText.AddNewEmployee[getLanguage]"
       class="employee__addbtn"
       id="employee__addbtn"
-      :dataTitle="MISAResource.DataTile.AddNewBtn[language]"
+      :dataTitle="MISAResource.DataTile.AddNewBtn[getLanguage]"
       @click="
         postMethod();
         $emit('show-form');
@@ -33,6 +33,10 @@ export default {
       language: "",
     };
   },
+  /**
+   * Lấy ra giá trị của ngôn ngữ hiện tại
+   * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+   */
   beforeMount() {
     this.language = this.$store.state.language;
   },
@@ -43,15 +47,6 @@ export default {
      */
     getLanguage() {
       return this.$store.state.language;
-    },
-  },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
     },
   },
   methods: {

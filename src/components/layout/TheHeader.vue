@@ -6,19 +6,19 @@
       <div
         tabindex="0"
         class="icon header__menubtn"
-        :data-title="MISAResource.DataTile.HeaderMenuBtn[language]"
+        :data-title="MISAResource.DataTile.HeaderMenuBtn[getLanguage]"
       ></div>
       <!-- tên công ty -->
       <div
         class="header__name"
-        :data-title="MISAResource.DataTile.HeaderName[language]"
+        :data-title="MISAResource.DataTile.HeaderName[getLanguage]"
       >
-        {{ this.MISAResource.TitleName.CompanyName[language] }}
+        {{ this.MISAResource.TitleName.CompanyName[getLanguage] }}
       </div>
       <div
         tabindex="0"
         class="icon header__dropicon"
-        :data-title="MISAResource.DataTile.HeaderName[language]"
+        :data-title="MISAResource.DataTile.HeaderName[getLanguage]"
       ></div>
     </div>
     <div class="header__right">
@@ -26,12 +26,14 @@
       <div
         tabindex="0"
         class="icon header__noti"
-        :data-title="MISAResource.DataTile.HeaderNotiIcon[language]"
+        :data-title="MISAResource.DataTile.HeaderNotiIcon[getLanguage]"
       ></div>
       <!-- tên tài khoản -->
       <div class="header__account">
         <div tabindex="0" class="header__avatar"></div>
-        <div class="header__name">Tô Nguyễn Đức Mạnh</div>
+        <div class="header__name">
+          {{ this.MISAResource.AccountName[getLanguage] }}
+        </div>
         <div tabindex="0" class="icon header__drop"></div>
       </div>
     </div>
@@ -61,15 +63,6 @@ export default {
      */
     getLanguage() {
       return this.$store.state.language;
-    },
-  },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
     },
   },
 };

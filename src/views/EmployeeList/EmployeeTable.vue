@@ -30,7 +30,7 @@
           </template>
           <!-- render ra th chức năng, tách riêng với các cột propname -->
           <th class="text__align--center" style="width: 100px">
-            {{ this.MISAResource.LabelText.TableFuctionColumn[language] }}
+            {{ this.MISAResource.LabelText.TableFuctionColumn[getLanguage] }}
           </th>
         </tr>
       </thead>
@@ -99,10 +99,10 @@
             <!-- chèn component conext menu vào td -->
             <td class="text__align--center">
               <MConntextMenu
-                :btnName="MISAResource.ButtonText.EditBtn[language]"
-                :btnOne="MISAResource.ButtonText.DuplicateBtn[language]"
-                :btnTwo="MISAResource.ButtonText.DeleteBtn[language]"
-                :btnThree="MISAResource.ButtonText.StopUsingBtn[language]"
+                :btnName="MISAResource.ButtonText.EditBtn[getLanguage]"
+                :btnOne="MISAResource.ButtonText.DuplicateBtn[getLanguage]"
+                :btnTwo="MISAResource.ButtonText.DeleteBtn[getLanguage]"
+                :btnThree="MISAResource.ButtonText.StopUsingBtn[getLanguage]"
                 @edit-click="
                   $emit('show-form');
                   putMethod(employee['employeeID'], employee['employeeCode']);
@@ -177,18 +177,19 @@ export default {
     getLanguage() {
       return this.$store.state.language;
     },
+    /**
+     * Lấy ra giá trị tổng số bản ghi đã chọn
+     * Author: Tô Nguyễn Đức Mạnh (10/10/2022)
+     */
     totalSelected() {
       return this.$store.state.selectedIDs.length;
     },
   },
   watch: {
     /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
+     * ẩn hiện loading
      * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
      */
-    getLanguage() {
-      this.language = this.$store.state.language;
-    },
     toggleShowLoading() {
       if (this.toggleShowLoading === true) {
         this.isShowLoading = true;

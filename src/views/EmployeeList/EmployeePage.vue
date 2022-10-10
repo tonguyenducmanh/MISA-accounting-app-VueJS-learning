@@ -2,10 +2,12 @@
   <div class="page__navi">
     <!-- phần hiển thị tổng số bản ghi bên trái -->
     <div class="page__total">
-      <span> {{ this.MISAResource.LabelText.PageNaviTotal[language] }} </span>
+      <span>
+        {{ this.MISAResource.LabelText.PageNaviTotal[getLanguage] }}
+      </span>
       <span class="page__records">{{ totalRecords }}</span>
       <span>
-        {{ this.MISAResource.LabelText.PageNaviRecord[language] }}
+        {{ this.MISAResource.LabelText.PageNaviRecord[getLanguage] }}
       </span>
     </div>
     <div class="page__categories">
@@ -14,10 +16,10 @@
         id="page_ranges"
         classInput="input__field"
         propName="PageNavigation"
-        :data="MISAResource.Combobox.Data[language]"
-        :placeHolder="MISAResource.PlaceHolder.PageSizeChange[language]"
-        :defaultValue="MISAResource.Combobox.DefautValue[language]"
-        :unique="MISAResource.Combobox.Unique[language]"
+        :data="MISAResource.Combobox.Data[getLanguage]"
+        :placeHolder="MISAResource.PlaceHolder.PageSizeChange[getLanguage]"
+        :defaultValue="MISAResource.Combobox.DefautValue[getLanguage]"
+        :unique="MISAResource.Combobox.Unique[getLanguage]"
         :isUp="true"
         @change-size="changeSize"
       />
@@ -30,7 +32,7 @@
           @click="movePrevPage"
           @keydown.enter="movePrevPage"
         >
-          {{ this.MISAResource.ButtonText.PrevPageBtn[language] }}
+          {{ this.MISAResource.ButtonText.PrevPageBtn[getLanguage] }}
         </div>
         <!-- render ra danh sách trang nhưng giới hạn số trang có thể click -->
         <!-- trang đầu tiên -->
@@ -100,7 +102,7 @@
           @click="moveNextPage"
           @keydown.enter="moveNextPage"
         >
-          {{ this.MISAResource.ButtonText.NextPageBtn[language] }}
+          {{ this.MISAResource.ButtonText.NextPageBtn[getLanguage] }}
         </div>
       </div>
     </div>
@@ -139,9 +141,17 @@ export default {
     getLanguage() {
       return this.$store.state.language;
     },
+    /**
+     * Lấy ra giá trị tổng số trang
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     totalPage() {
       return this.$store.state.totalPage;
     },
+    /**
+     * Lấy ra giá trị của số thứ tự trang hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
+     */
     pageNumber() {
       return this.$store.state.pageNumber;
     },
@@ -158,13 +168,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
     },
   },
   emits: ["change-size"],

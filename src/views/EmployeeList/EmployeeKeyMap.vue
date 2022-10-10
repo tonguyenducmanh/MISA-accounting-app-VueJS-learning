@@ -5,37 +5,37 @@
       <!-- nút x có tác dụng đóng component -->
       <div
         class="icon keymap__closebtn keymap__cancel"
-        :data-title="MISAResource.DataTile.FormCloseBtn[language]"
+        :data-title="MISAResource.DataTile.FormCloseBtn[getLanguage]"
         @click="$emit('hide-key-map')"
       ></div>
       <!-- tiêu đề của component -->
       <div class="keymap__title">
-        {{ this.MISAResource.KeyMap.KeyMapPopup[language] }}
+        {{ this.MISAResource.KeyMap.KeyMapPopup[getLanguage] }}
       </div>
       <div class="keymap__body">
         <!-- cột điều hướng -->
         <div class="keymap__column">
           <div class="keymap__name">
-            {{ this.MISAResource.KeyMap.NavigationName[language] }}
+            {{ this.MISAResource.KeyMap.NavigationName[getLanguage] }}
           </div>
           <div class="keymap__list">
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.QuickSearch[language]"
+              :keyMapName="MISAResource.KeyMap.QuickSearch[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="F3"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.PreviousListPage[language]"
+              :keyMapName="MISAResource.KeyMap.PreviousListPage[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="←"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.NextListPage[language]"
+              :keyMapName="MISAResource.KeyMap.NextListPage[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="→"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.ClosePopup[language]"
+              :keyMapName="MISAResource.KeyMap.ClosePopup[getLanguage]"
               buttonOne="ESC"
             />
           </div>
@@ -43,28 +43,28 @@
         <!-- cột nhập liệu -->
         <div class="keymap__column">
           <div class="keymap__name">
-            {{ this.MISAResource.KeyMap.Typing[language] }}
+            {{ this.MISAResource.KeyMap.Typing[getLanguage] }}
           </div>
           <div class="keymap__list">
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Insert[language]"
+              :keyMapName="MISAResource.KeyMap.Insert[getLanguage]"
               buttonOne="Insert"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Edit[language]"
+              :keyMapName="MISAResource.KeyMap.Edit[getLanguage]"
               buttonOne="F2"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Delete[language]"
+              :keyMapName="MISAResource.KeyMap.Delete[getLanguage]"
               buttonOne="Delete"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Save[language]"
+              :keyMapName="MISAResource.KeyMap.Save[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="F8"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Cancel[language]"
+              :keyMapName="MISAResource.KeyMap.Cancel[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="F9"
             />
@@ -73,26 +73,26 @@
         <!-- cột tìm kiếm -->
         <div class="keymap__column">
           <div class="keymap__name">
-            {{ this.MISAResource.KeyMap.Other[language] }}
+            {{ this.MISAResource.KeyMap.Other[getLanguage] }}
           </div>
           <div class="keymap__list">
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Reload[language]"
+              :keyMapName="MISAResource.KeyMap.Reload[getLanguage]"
               buttonOne="Alt"
               buttonTwo="R"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.Export[language]"
+              :keyMapName="MISAResource.KeyMap.Export[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="Q"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.ChangeLanguage[language]"
+              :keyMapName="MISAResource.KeyMap.ChangeLanguage[getLanguage]"
               buttonOne="Alt"
               buttonTwo="L"
             />
             <MKeyMapItem
-              :keyMapName="MISAResource.KeyMap.ToggleKeyMap[language]"
+              :keyMapName="MISAResource.KeyMap.ToggleKeyMap[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="/"
             />
@@ -128,15 +128,6 @@ export default {
      */
     getLanguage() {
       return this.$store.state.language;
-    },
-  },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
     },
   },
 };
