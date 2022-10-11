@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="datepicker__container">
+  <div class="datepicker__container" v-click-out="hideSelect">
     <!-- phần nhãn văn bản -->
     <div v-if="hasLabel" class="input__label">
       {{ labelText }}
@@ -20,6 +20,7 @@
             ? defaultValue
             : placeHolder
         "
+        v-model="modelvalue"
       />
       <!-- phần nút mở menu -->
       <button tabindex="0" :class="buttonClass" class="datepicker__button">
@@ -96,7 +97,13 @@
         </div>
 
         <!-- phần chọn ngày hôm nay -->
-        <div class="datepicker__selecttoday" @click="showSelect">
+        <div
+          class="datepicker__selecttoday"
+          @click="
+            showSelect();
+            getTodayValue();
+          "
+        >
           <div class="datepicker__today">Hôm nay</div>
         </div>
       </div>
@@ -118,6 +125,7 @@ export default {
   },
   data() {
     return {
+      modelvalue: "",
       DatepickerEnum,
       isErrorTying: false,
       isSelectShow: false,
@@ -137,6 +145,17 @@ export default {
     showSelect() {
       try {
         this.isSelectShow = !this.isSelectShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * trường hợp chỉ có ẩn select đi thôi
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    hideSelect() {
+      try {
+        this.isSelectShow = false;
       } catch (error) {
         console.log(error);
       }
@@ -176,6 +195,18 @@ export default {
         this.isDaySelectShow = false;
         this.isMonthSelectShow = false;
         this.isYearSelectShow = !this.isYearSelectShow;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Lấy ngày hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    getTodayValue() {
+      try {
+        let today = new Date();
+        this.modelvalue = today;
       } catch (error) {
         console.log(error);
       }
