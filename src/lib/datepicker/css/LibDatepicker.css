@@ -100,7 +100,7 @@
   top: 100%;
   left: 0;
   width: 320px;
-  height: 362px;
+  min-height: 351px;
   z-index: 2;
   background-color: white;
   border-radius: 4px;
@@ -249,9 +249,8 @@
   row-gap: 8px;
 }
 
-.datepicker .datepicker__weekitem {
-  color: #9a9a9a;
-  font-weight: 600;
+.datepicker .datepicker__dayemptyitem {
+  pointer-events: none;
 }
 
 .datepicker .datepicker__dayitem {
@@ -278,6 +277,12 @@
 .datepicker .datepicker__dayitem--selected:hover {
   background-color: #50b83c;
   cursor: auto;
+}
+
+.datepicker .datepicker__weekitem {
+  color: #9a9a9a;
+  font-weight: 600;
+  pointer-events: none;
 }
 
 .datepicker .datepicker__monthcontent {

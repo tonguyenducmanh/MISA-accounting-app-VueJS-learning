@@ -34,10 +34,12 @@
           <div class="datepicker__navigation">
             <div class="datepicker__monthyear">
               <div class="datepicker__month" @click="showMonthSelect">
-                Tháng 9
+                {{ this.currentMonth }}
               </div>
               ,
-              <div class="datepicker__year" @click="showYearSelect">2019</div>
+              <div class="datepicker__year" @click="showYearSelect">
+                {{ this.currentYear }}
+              </div>
               <div
                 class="datepicker__icon datepicker__monthyearicon"
                 @click="showDateSelect"
@@ -45,8 +47,14 @@
             </div>
             <!-- chọn tháng trước tháng sau -->
             <div class="datepicker__monthnav">
-              <div class="datepicker__icon datepicker__prevmonth"></div>
-              <div class="datepicker__icon datepicker__nextmonth"></div>
+              <div
+                class="datepicker__icon datepicker__prevmonth"
+                @click="goPrevMonth"
+              ></div>
+              <div
+                class="datepicker__icon datepicker__nextmonth"
+                @click="goNextMonth"
+              ></div>
             </div>
           </div>
         </div>
@@ -63,12 +71,20 @@
           <div class="datepicker__dayitem datepicker__weekitem">T6</div>
           <div class="datepicker__dayitem datepicker__weekitem">T7</div>
           <div class="datepicker__dayitem datepicker__weekitem">CN</div>
+          <template v-for="(grid, index) in emptyList" :key="index">
+            <div class="datepicker__dayemptyitem"></div>
+          </template>
           <template v-for="(grid, index) in gridList" :key="index">
             <div
               class="datepicker__dayitem"
-              :class="index === 15 ? this.DatepickerEnum.selected.Date : ''"
+              :class="
+                index + 1 === this.currentDay
+                  ? this.DatepickerEnum.selected.Date
+                  : ''
+              "
+              @click="changeDate(index + 1)"
             >
-              <span>{{ index }}</span>
+              <span>{{ index + 1 }}</span>
             </div>
           </template>
         </div>
@@ -81,7 +97,12 @@
           <template v-for="(month, index) in monthList" :key="index">
             <div
               class="datepicker__monthitem"
-              :class="index === 8 ? this.DatepickerEnum.selected.Month : ''"
+              :class="
+                index === this.currentMonthNth
+                  ? this.DatepickerEnum.selected.Month
+                  : ''
+              "
+              @click="changeMonth(index)"
             >
               <span> Tháng {{ index + 1 }}</span>
             </div>
@@ -97,13 +118,7 @@
         </div>
 
         <!-- phần chọn ngày hôm nay -->
-        <div
-          class="datepicker__selecttoday"
-          @click="
-            showSelect();
-            getTodayValue();
-          "
-        >
+        <div class="datepicker__selecttoday" @click="getFullDayValue()">
           <div class="datepicker__today">Hôm nay</div>
         </div>
       </div>
@@ -132,8 +147,16 @@ export default {
       isDaySelectShow: true,
       isMonthSelectShow: false,
       isYearSelectShow: false,
+      firstDayOfWeek: "",
+      currentDay: 1,
+      currentMonth: "",
+      currentMonthNth: 1,
+      currentYear: "",
+      emptyList: new Array(0),
       gridList: new Array(35),
       monthList: new Array(12),
+      monthsSize: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+      numberOfDays: 30,
     };
   },
   emits: [],
@@ -144,6 +167,7 @@ export default {
      */
     showSelect() {
       try {
+        this.getFullDayValue();
         this.isSelectShow = !this.isSelectShow;
       } catch (error) {
         console.log(error);
@@ -179,8 +203,8 @@ export default {
      */
     showMonthSelect() {
       try {
-        this.isDaySelectShow = false;
         this.isMonthSelectShow = !this.isMonthSelectShow;
+        this.isDaySelectShow = !this.isMonthSelectShow;
         this.isYearSelectShow = false;
       } catch (error) {
         console.log(error);
@@ -192,21 +216,118 @@ export default {
      */
     showYearSelect() {
       try {
-        this.isDaySelectShow = false;
         this.isMonthSelectShow = false;
         this.isYearSelectShow = !this.isYearSelectShow;
+        this.isDaySelectShow = !this.isYearSelectShow;
       } catch (error) {
         console.log(error);
       }
     },
     /**
      * Lấy ngày hiện tại
+     * @param year: năm muốn truyền vào
+     * @param month: tháng muốn truyền vào
+     * @param day: ngày muốn truyền vào
      * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
      */
-    getTodayValue() {
+    getFullDayValue(year, month, day) {
       try {
-        let today = new Date();
-        this.modelvalue = today;
+        //tạo ra object năm lưu trữ các thông tin như năm, tháng , ngày, thứ bắt đầu của tháng
+        // thứ bắt đầu của tháng là vd tháng 10 ngày 1 rơi vào thứ 3
+        let date = new Date();
+
+        if (year && month && day) {
+          date = new Date(year, month, day);
+        }
+
+        // lấy ra năm hiện tại
+        this.currentYear = date.getFullYear();
+
+        // lấy ra tháng hiện tại
+        this.currentMonth = date.toLocaleString("default", { month: "long" });
+
+        // lấy ra số thứ tự tháng hiện tại (để tạo list có selected)
+        this.currentMonthNth = date.getMonth();
+
+        console.log(this.firstDayOfWeek);
+
+        // lấy ra số ngày ứng với tháng hiện tại
+        this.numberOfDays = this.monthsSize[this.currentMonthNth];
+
+        // lẩy ra ngày hiện tại
+        this.currentDay = date.getDate();
+
+        // tạo ra 1 array với số ngày hiện tại để dùng v-for render ra ngày trong tháng
+        this.gridList = new Array(this.numberOfDays);
+
+        // kiểm tra xem ngày đầu tiên của tháng là thứ mấy trong tuần
+        this.firstDayOfWeek = new Date(
+          this.currentYear,
+          this.currentMonthNth,
+          1
+        ).getDay();
+
+        console.log(this.firstDayOfWeek, this.currentMonthNth);
+        // tạo ra 1 array rỗng để cho những ngày đầu tiên trong lịch không có số gì cả
+        this.emptyList = new Array(this.firstDayOfWeek - 1);
+        this.modelvalue = `${this.currentDay}/${this.currentMonthNth + 1}/${
+          this.currentYear
+        }`;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Chuyển sang tháng tiếp theo
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    goNextMonth() {
+      try {
+        this.getFullDayValue(
+          this.currentYear,
+          this.currentMonthNth + 1,
+          this.currentDay
+        );
+        console.log("");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Chuyển sang tháng trước đó
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    goPrevMonth() {
+      try {
+        this.getFullDayValue(
+          this.currentYear,
+          this.currentMonthNth - 1,
+          this.currentDay
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thay đổi ngày hiện tại theo giá trị đầu vào
+     * @param day : ngày muốn truyền vào
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    changeDate(day) {
+      try {
+        this.getFullDayValue(this.currentYear, this.currentMonthNth, day);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thay đổi tháng hiện tại theo giá trị đầu vào
+     * @param month : tháng muốn truyền vào
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    changeMonth(month) {
+      try {
+        this.getFullDayValue(this.currentYear, month, this.currentDay);
       } catch (error) {
         console.log(error);
       }
