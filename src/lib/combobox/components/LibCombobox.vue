@@ -149,9 +149,18 @@ export default {
     this.isErrorTying = this.setError;
   },
   watch: {
+    /**
+     * Lắng nghe xem prop setError có chuyển thành true không thì ép cho input phải có màu đỏ
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
     setError() {
       this.isErrorTying = this.setError;
     },
+    /**
+     * Lắng nghe sự thay đổi của v-model
+     * Nếu như giá trị rỗng thì xóa hết selected item và input value, id select đi
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
     modelValue() {
       if (
         this.modelValue === "" ||
