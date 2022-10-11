@@ -134,9 +134,6 @@
       WarningMess="Demo poup message"
     />
 
-    <div>10. Loading</div>
-
-    <MLoading />
 
     <div>11. Form</div>
 
@@ -238,7 +235,6 @@ import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
 import MPopup from "../components/base/MPopup.vue";
-import MLoading from "../components/base/MLoading.vue";
 
 // import library file
 import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
@@ -259,7 +255,6 @@ export default {
     MToastMessage,
     LibCombobox,
     MPopup,
-    MLoading,
     EmployeeForm,
     EmployeeTable,
     EmployeePage,
