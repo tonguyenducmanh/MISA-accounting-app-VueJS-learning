@@ -122,7 +122,8 @@ export default {
         if (
           this.isEmail === true &&
           this.modelValue !== "" &&
-          this.modelValue !== null
+          this.modelValue !== null &&
+          this.modelValue !== undefined
         ) {
           const emailRegex =
             /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).(com|vn|org)/gm;
@@ -161,7 +162,11 @@ export default {
       try {
         // kiểm tra xem nó có phải trường chỉ điền số không
         if (this.justNumber === true) {
-          if (this.modelValue !== "" && this.modelValue !== null) {
+          if (
+            this.modelValue !== "" &&
+            this.modelValue !== null &&
+            this.modelValue !== undefined
+          ) {
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.modelValue);
             if (result === false) {

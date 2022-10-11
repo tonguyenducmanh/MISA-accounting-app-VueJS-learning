@@ -152,6 +152,17 @@ export default {
     setError() {
       this.isErrorTying = this.setError;
     },
+    modelValue() {
+      if (
+        this.modelValue === "" ||
+        this.modelValue === null ||
+        this.modelValue === undefined
+      ) {
+        this.currentInput = "";
+        this.seletedValue = "";
+        this.uniqueSelected = "";
+      }
+    },
   },
   mounted() {
     /**
@@ -218,10 +229,7 @@ export default {
     notNullValidate() {
       try {
         // kiểm tra xem có phải trường not null không
-        if (
-          this.isNotNull === true &&
-          (this.currentInput === "" || this.currentInput === undefined)
-        ) {
+        if (this.isNotNull === true && this.currentInput === "") {
           this.isErrorTying = true;
         } else {
           this.isErrorTying = false;
