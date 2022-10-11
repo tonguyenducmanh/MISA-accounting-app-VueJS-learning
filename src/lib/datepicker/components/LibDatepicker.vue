@@ -96,7 +96,7 @@
         </div>
 
         <!-- phần chọn ngày hôm nay -->
-        <div class="datepicker__selecttoday">
+        <div class="datepicker__selecttoday" @click="showSelect">
           <div class="datepicker__today">Hôm nay</div>
         </div>
       </div>
