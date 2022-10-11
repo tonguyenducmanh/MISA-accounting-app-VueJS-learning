@@ -650,17 +650,24 @@ export default {
         // gọi api xóa đi
         let apiDelete = `${this.MISAEnum.API.GETEMPLOYEELIST}/${this.deleteId}`;
         fetch(apiDelete, { method: "DELETE" })
-          .then((res) => res.json())
-          .then(() => {
-            // ẩn popup xóa đi
-            this.toggleAskWarningPopUp();
-            this.loadData();
-            // hiện toast mesage lên
-            this.createToastMessage(
-              this.MISAEnum.toasttype.SUCCESS,
-              this.MISAResource.ToastMessage.DeleteNoti
-            );
-            // ẩn đi sau 3 giây
+          .then((res) => {
+            if (res.status === 200) {
+              // ẩn popup xóa đi
+              this.toggleAskWarningPopUp();
+              this.loadData();
+              // hiện toast mesage lên
+              this.createToastMessage(
+                this.MISAEnum.toasttype.SUCCESS,
+                this.MISAResource.ToastMessage.DeleteNoti
+              );
+              // ẩn đi sau 3 giây
+            } else {
+              // hiện thông báo xóa 1 record thất bại
+              this.createToastMessage(
+                this.MISAEnum.toasttype.ERROR,
+                this.MISAResource.ToastMessage.DeleteOneNotiError
+              );
+            }
           })
           .catch((res) => {
             // hiện thông báo xóa 1 record thất bại
@@ -718,6 +725,11 @@ export default {
           })
           .catch((error) => {
             console.error("Error:", error);
+            // hiện thông báo xóa nhiều thất bại
+            this.createToastMessage(
+              this.MISAEnum.toasttype.ERROR,
+              this.MISAResource.ToastMessage.DeleteManyNotiError
+            );
           });
       } catch (error) {
         console.log(error);

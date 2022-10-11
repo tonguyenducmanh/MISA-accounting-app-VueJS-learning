@@ -81,6 +81,10 @@ export default {
     this.isErrorTying = this.setError;
   },
   watch: {
+    /**
+     * Lắng nghe xem prop setError có chuyển thành true không thì ép cho input phải có màu đỏ
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
     setError() {
       this.isErrorTying = this.setError;
     },
@@ -122,8 +126,8 @@ export default {
         if (
           this.isEmail === true &&
           this.modelValue !== "" &&
-          this.modelValue !== undefined &&
-          this.modelValue !== null
+          this.modelValue !== null &&
+          this.modelValue !== undefined
         ) {
           const emailRegex =
             /^[a-z][a-z0-9_.]*@([a-z][a-z0-9_.]*).(com|vn|org)/gm;
@@ -145,10 +149,7 @@ export default {
     notNullValidate() {
       try {
         // kiểm tra xem có phải trường not null không
-        if (
-          this.isNotNull === true &&
-          (this.modelValue === "" || this.modelValue === undefined)
-        ) {
+        if (this.isNotNull === true && this.modelValue === "") {
           this.isErrorTying = true;
         } else {
           this.isErrorTying = false;
@@ -167,8 +168,8 @@ export default {
         if (this.justNumber === true) {
           if (
             this.modelValue !== "" &&
-            this.modelValue !== undefined &&
-            this.modelValue !== null
+            this.modelValue !== null &&
+            this.modelValue !== undefined
           ) {
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.modelValue);

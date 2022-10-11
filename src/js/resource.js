@@ -1,4 +1,9 @@
 var MISAResource = {
+  // Tên tài khoản
+  AccountName: {
+    VI: "Tô Nguyễn Đức Mạnh",
+    EN: "To Nguyen Duc Manh",
+  },
   // Các đoạn văn bản liên quan tới báo lỗi xác thực dữ liệu
   ErrorValidate: {
     EmployeeCodeNotEmpty: {
@@ -126,7 +131,7 @@ var MISAResource = {
   // Các đoan tooltip hiển thị khi di chuột vào 1 thành phần nào đó trong trang web
   DataTile: {
     HeaderName: {
-      VI: "Công ty tnhh sản xuất - thương mại - dịch vụ qui phúc",
+      VI: "Công ty TNHH Sản xuất - Thương mại - Dịch vụ qui phúc",
       EN: "Qui Phuc Production - Commercial - Service Company",
     },
     HeaderNotiIcon: {

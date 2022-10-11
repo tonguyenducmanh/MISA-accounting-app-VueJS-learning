@@ -7,98 +7,98 @@
       <div
         tabindex="0"
         class="navbar__title"
-        :data-title="MISAResource.DataTile.GoHome[language]"
+        :data-title="MISAResource.DataTile.GoHome[getLanguage]"
       >
-        {{ this.MISAResource.RouterName.Accounting[language] }}
+        {{ this.MISAResource.RouterName.Accounting[getLanguage] }}
       </div>
     </div>
     <!-- danh sách các đường link trong navbar -->
     <div class="navbar__list">
       <MRouterLink
-        :name="MISAResource.RouterName.Demo[language]"
+        :name="MISAResource.RouterName.Demo[getLanguage]"
         link="/demo"
         className="navbar__tq"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Money[language]"
+        :name="MISAResource.RouterName.Money[getLanguage]"
         link="/"
         className="navbar__tm"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.MoneySend[language]"
+        :name="MISAResource.RouterName.MoneySend[getLanguage]"
         link="/tiengui"
         className="navbar__tg"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Buy[language]"
+        :name="MISAResource.RouterName.Buy[getLanguage]"
         link="/muahang"
         className="navbar__mh"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Sell[language]"
+        :name="MISAResource.RouterName.Sell[getLanguage]"
         link="/banhang"
         className="navbar__bh"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.InvoiceManagement[language]"
+        :name="MISAResource.RouterName.InvoiceManagement[getLanguage]"
         link="/hoadon"
         className="navbar__qlhd"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Directory[language]"
+        :name="MISAResource.RouterName.Directory[getLanguage]"
         link="/kho"
         className="navbar__k"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Tool[language]"
+        :name="MISAResource.RouterName.Tool[getLanguage]"
         link="/congcu"
         className="navbar__ccdc"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.FixedAsset[language]"
+        :name="MISAResource.RouterName.FixedAsset[getLanguage]"
         link="/taisancodinh"
         className="navbar__tscd"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Tax[language]"
+        :name="MISAResource.RouterName.Tax[getLanguage]"
         link="/thue"
         className="navbar__thue"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Price[language]"
+        :name="MISAResource.RouterName.Price[getLanguage]"
         link="/giathanh"
         className="navbar__gt"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Generic[language]"
+        :name="MISAResource.RouterName.Generic[getLanguage]"
         link="/tonghop"
         className="navbar__th"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Budget[language]"
+        :name="MISAResource.RouterName.Budget[getLanguage]"
         link="/ngansach"
         className="navbar__ns"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.Report[language]"
+        :name="MISAResource.RouterName.Report[getLanguage]"
         link="/baocao"
         className="navbar__bc"
         tabindex="0"
       />
       <MRouterLink
-        :name="MISAResource.RouterName.FinancialAnalysis[language]"
+        :name="MISAResource.RouterName.FinancialAnalysis[getLanguage]"
         link="/taichinh"
         className="navbar__pttc"
         tabindex="0"
@@ -107,18 +107,19 @@
     <div
       class="navbar__changelanguage"
       @click="changeLanguage"
-      :data-title="MISAResource.DataTile.ChangeLanguage[language]"
+      :data-title="MISAResource.DataTile.ChangeLanguage[getLanguage]"
     >
       VI / EN
     </div>
     <div class="navbar__keymap">
-      {{ this.MISAResource.TitleName.ShowKeyMap[language] }}
+      {{ this.MISAResource.TitleName.ShowKeyMap[getLanguage] }}
     </div>
   </div>
 </template>
 <script>
 import MRouterLink from "../base/MRouterLink.vue";
 import MISAResource from "../../js/resource.js";
+import MISAEnum from "../../js/enum.js";
 
 export default {
   name: "TheNavbar",
@@ -128,6 +129,7 @@ export default {
   data() {
     return {
       MISAResource,
+      MISAEnum,
       language: "",
     };
   },
@@ -147,15 +149,6 @@ export default {
       return this.$store.state.language;
     },
   },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
-    },
-  },
   methods: {
     /**
      * Thay đổi ngôn ngữ
@@ -164,10 +157,10 @@ export default {
     changeLanguage() {
       try {
         let currentLang = this.$store.state.language;
-        if (currentLang == "VI") {
-          this.$store.dispatch("changeLanguage", "EN");
+        if (currentLang == this.MISAEnum.languageList.VI) {
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.EN);
         } else {
-          this.$store.dispatch("changeLanguage", "VI");
+          this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.VI);
         }
       } catch (error) {
         console.log(error);

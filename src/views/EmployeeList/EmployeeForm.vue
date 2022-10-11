@@ -6,11 +6,11 @@
       <div class="form__heading">
         <!-- phần tiêu đề của form -->
         <div class="form__title">
-          {{ this.MISAResource.TitleName.FormTitle[language] }}
+          {{ this.MISAResource.TitleName.FormTitle[getLanguage] }}
         </div>
         <!-- 2 check box bên dưới dùng để tích chọn là khách hàng và là nhà cung cấp -->
         <MCheckbox
-          :labelText="MISAResource.LabelText.IsCustomer[language]"
+          :labelText="MISAResource.LabelText.IsCustomer[getLanguage]"
           checkboxId="checkbox_kh"
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
           :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
@@ -18,7 +18,7 @@
           @click-label-box="changeCheckboxOption(1)"
         />
         <MCheckbox
-          :labelText="MISAResource.LabelText.IsProvider[language]"
+          :labelText="MISAResource.LabelText.IsProvider[getLanguage]"
           checkboxId="checkbox_ncc"
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
           :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
@@ -35,8 +35,10 @@
             :isFocus="true"
             v-model="formObject['employeeCode']"
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormCode[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormEmployeeCode[language]"
+            :labelText="MISAResource.LabelText.FormCode[getLanguage]"
+            :placeHolder="
+              MISAResource.PlaceHolder.FormEmployeeCode[getLanguage]
+            "
             :inputAlert="isDuplicateCode"
             @input="disableAlertInput"
             idInput="input__checkId"
@@ -50,13 +52,13 @@
           <!-- phần nhập tên nhân viên -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormName[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormFullName[language]"
+            :labelText="MISAResource.LabelText.FormName[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormFullName[getLanguage]"
             idInput="input__checkId"
             :classInput="'form__employeename'"
             :showAlertStar="true"
             class="form__ele"
-            :dataTitle="MISAResource.DataTile.FormFullName[language]"
+            :dataTitle="MISAResource.DataTile.FormFullName[getLanguage]"
             :isNotNull="true"
             v-model="formObject['fullName']"
             :setError="setError.fullName"
@@ -64,14 +66,14 @@
           <!-- combobox nhập văn phòng làm việc -->
           <LibCombobox
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormDepartment[language]"
+            :labelText="MISAResource.LabelText.FormDepartment[getLanguage]"
             :showAlertStar="true"
-            :dataTitle="MISAResource.DataTile.FormDepartmentName[language]"
+            :dataTitle="MISAResource.DataTile.FormDepartmentName[getLanguage]"
             :api="MISAEnum.API.GETDEPARTMENTLIST"
             text="departmentName"
             value="departmentID"
             class="form__ele"
-            :placeHolder="MISAResource.PlaceHolder.FormDepartment[language]"
+            :placeHolder="MISAResource.PlaceHolder.FormDepartment[getLanguage]"
             classInput="input__musthave"
             buttonClass="combobox__button--white"
             v-model:modelValue="formObject['departmentID']"
@@ -83,8 +85,8 @@
           <!-- phần nhập chức vụ -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormPosition[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormPosition[language]"
+            :labelText="MISAResource.LabelText.FormPosition[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormPosition[getLanguage]"
             :classInput="'form__personaName'"
             class="form__ele"
             v-model="formObject['positionName']"
@@ -94,27 +96,27 @@
         <div class="form__part form__two">
           <!-- phần chọn ngày sinh -->
           <MDatePicker
-            :labelText="MISAResource.LabelText.FormDateOfBirth[language]"
+            :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
             class="form__dateofbirth"
-            :dataTitle="MISAResource.DataTile.FormDate[language]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             v-model="formObject['dateOfBirth']"
           />
           <!-- phần nhập giới tính -->
           <MRadioButton
-            :titleText="MISAResource.LabelText.FormGender[language]"
+            :titleText="MISAResource.LabelText.FormGender[getLanguage]"
             propNameBox="gender"
             v-model="formObject['gender']"
             :content="[
               {
-                name: MISAResource.Gender.Male[language],
+                name: MISAResource.Gender.Male[getLanguage],
                 value: 0,
               },
               {
-                name: MISAResource.Gender.Female[language],
+                name: MISAResource.Gender.Female[getLanguage],
                 value: 1,
               },
               {
-                name: MISAResource.Gender.Other[language],
+                name: MISAResource.Gender.Other[getLanguage],
                 value: 2,
               },
             ]"
@@ -122,26 +124,30 @@
           <!-- phần nhập số chứng minh thư -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormIdentityCard[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormIdentityCard[language]"
+            :labelText="MISAResource.LabelText.FormIdentityCard[getLanguage]"
+            :placeHolder="
+              MISAResource.PlaceHolder.FormIdentityCard[getLanguage]
+            "
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
-            :dataTitle="MISAResource.DataTile.FormNumber[language]"
+            :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['identityCard']"
           />
           <!-- phân nhập ngày cấp chứng minh thư -->
           <MDatePicker
-            :labelText="MISAResource.LabelText.FormIdentityDate[language]"
-            :dataTitle="MISAResource.DataTile.FormDate[language]"
+            :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             class="form__identityDate"
             v-model="formObject['identityDate']"
           />
           <!-- phần nhập nơi cấp chứng minh thư -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormIdentityPlace[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormIdentityPlace[language]"
+            :labelText="MISAResource.LabelText.FormIdentityPlace[getLanguage]"
+            :placeHolder="
+              MISAResource.PlaceHolder.FormIdentityPlace[getLanguage]
+            "
             :classInput="'form__createdwhere'"
             class="form__ele"
             v-model="formObject['identityPlace']"
@@ -152,8 +158,8 @@
           <!-- phần nhập địa chỉ -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormAddress[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormAddress[language]"
+            :labelText="MISAResource.LabelText.FormAddress[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormAddress[getLanguage]"
             :classInput="'form__address'"
             class="form__ele"
             v-model="formObject['address']"
@@ -161,53 +167,53 @@
           <!-- phần nhập số điện thoại cố định -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormTelephoneNumber[language]"
+            :labelText="MISAResource.LabelText.FormTelephoneNumber[getLanguage]"
             :placeHolder="
-              MISAResource.PlaceHolder.FormTelephoneNumber[language]
+              MISAResource.PlaceHolder.FormTelephoneNumber[getLanguage]
             "
             :justNumber="true"
             :classInput="'form__phonenum'"
             class="form__ele"
-            :dataTitle="MISAResource.DataTile.FormNumber[language]"
+            :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['mobilePhone']"
           />
           <!-- phần nhập số điện thoại di động -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormPhoneNumber[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[language]"
+            :labelText="MISAResource.LabelText.FormPhoneNumber[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[getLanguage]"
             :justNumber="true"
             class="form__ele"
-            :dataTitle="MISAResource.DataTile.FormNumber[language]"
+            :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['telephone']"
           />
           <!-- phần nhập email -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormEmail[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormEmail[language]"
+            :labelText="MISAResource.LabelText.FormEmail[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormEmail[getLanguage]"
             :classInput="'form__email'"
             class="form__ele"
             :isEmail="true"
-            :dataTitle="MISAResource.DataTile.FormEmail[language]"
+            :dataTitle="MISAResource.DataTile.FormEmail[getLanguage]"
             v-model="formObject['email']"
           />
           <!-- phần nhập số tài khoản ngân hàng -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormBankAccount[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormBankAccount[language]"
+            :labelText="MISAResource.LabelText.FormBankAccount[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankAccount[getLanguage]"
             :justNumber="true"
             :classInput="'form__banknum'"
             class="form__ele"
-            :dataTitle="MISAResource.DataTile.FormNumber[language]"
+            :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['bankAccount']"
           />
           <!-- phần nhập tên ngân hàng -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormBankName[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormBankName[language]"
+            :labelText="MISAResource.LabelText.FormBankName[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankName[getLanguage]"
             :classInput="'form__bankname'"
             class="form__ele"
             v-model="formObject['bankName']"
@@ -215,8 +221,8 @@
           <!-- phần nhập chi nhánh ngân hàng -->
           <MInput
             :hasLabel="true"
-            :labelText="MISAResource.LabelText.FormBankBranch[language]"
-            :placeHolder="MISAResource.PlaceHolder.FormBankBranch[language]"
+            :labelText="MISAResource.LabelText.FormBankBranch[getLanguage]"
+            :placeHolder="MISAResource.PlaceHolder.FormBankBranch[getLanguage]"
             :classInput="'form__bankaddr'"
             class="form__ele"
             v-model="formObject['bankBranch']"
@@ -227,25 +233,25 @@
       <div class="form__action">
         <!-- nút hủy -->
         <MButton
-          :data-title="MISAResource.DataTile.FormCloseBtn[language]"
+          :data-title="MISAResource.DataTile.FormCloseBtn[getLanguage]"
           class="form__cancel"
-          :buttonName="MISAResource.ButtonText.CancelBtn[language]"
+          :buttonName="MISAResource.ButtonText.CancelBtn[getLanguage]"
           :buttonTwo="true"
           @click="$emit('hide-all')"
         />
         <div class="form__action--right">
           <!-- nút cất -->
           <MButton
-            :data-title="MISAResource.DataTile.FormSaveBtn[language]"
+            :data-title="MISAResource.DataTile.FormSaveBtn[getLanguage]"
             class="form__save--close"
-            :buttonName="MISAResource.ButtonText.SaveBtn[language]"
+            :buttonName="MISAResource.ButtonText.SaveBtn[getLanguage]"
             :buttonTwo="true"
             @click="saveNew"
           />
           <!-- nút cất và thêm -->
           <MButton
-            :data-title="MISAResource.DataTile.FormSaveAndAddBtn[language]"
-            :buttonName="MISAResource.ButtonText.SaveAndAddBtn[language]"
+            :data-title="MISAResource.DataTile.FormSaveAndAddBtn[getLanguage]"
+            :buttonName="MISAResource.ButtonText.SaveAndAddBtn[getLanguage]"
             class="form__save--readd"
             @click="saveNewAndAdd"
           />
@@ -254,12 +260,12 @@
       <!-- icon có dấu hỏi chấm mô tả nội dung của form -->
       <div
         class="icon form__help"
-        :data-title="MISAResource.DataTile.FormHelp[language]"
+        :data-title="MISAResource.DataTile.FormHelp[getLanguage]"
       ></div>
       <!-- icon có chức năng như 1 button dùng để đóng form -->
       <div
         class="icon form__closebtn form__cancel"
-        :data-title="MISAResource.DataTile.FormCloseBtn[language]"
+        :data-title="MISAResource.DataTile.FormCloseBtn[getLanguage]"
         @click="$emit('hide-form')"
       ></div>
     </div>
@@ -343,7 +349,7 @@ export default {
           if (res.status == 200) {
             return res.json();
           } else {
-            // hiện toast message load data thất bại
+            // hiện toast message load data thất bại hoặc data rỗng
             this.$emit(
               "show-toast-message",
               this.MISAEnum.toasttype.ERROR,
@@ -354,7 +360,13 @@ export default {
         .then((res) => {
           // map dữ liệu vào trong form nhập
           // set value Minput component structure
-          this.formObject = res;
+          if (res) {
+            this.formObject = res;
+          } else {
+            // nếu đang ở trang thái nhân bản hoặc sửa dữ liệu mà không có dữ liệu truyền vào
+            // thì ẩn form đi
+            this.$emit("hide-all");
+          }
           // nếu là nhân bản thì lấy mã nhân viên mới
           if (this.$store.state.isClone) {
             this.getNewEmpCode();
@@ -372,15 +384,6 @@ export default {
      */
     getLanguage() {
       return this.$store.state.language;
-    },
-  },
-  watch: {
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
     },
   },
   methods: {
@@ -409,7 +412,13 @@ export default {
           })
           .then((res) => {
             // gán giá trị tăng 1 đơn vị cần truyền vào trong input
-            this.increamentOne(res);
+            if (res) {
+              this.increamentOne(res);
+            } else {
+              // không có giá trị trả về thì hide form
+              // thì ẩn form đi
+              this.$emit("hide-all");
+            }
           })
           .catch((res) => {
             console.log(res);
@@ -470,15 +479,15 @@ export default {
     checkBeforeSave() {
       // tạo ra mảng thông báo các ô nhập liệu không được để trống
       let messArr = [];
-      let language = this.$store.state.language;
-
       // thêm đoạn validate ô mã nhân viên
       if (!this.formObject["employeeCode"]) {
         messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[this.getLanguage]
         );
         this.employeeCodeDataTitle =
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language];
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
+            this.getLanguage
+          ];
         this.setError.employeeCode = true;
       } else {
         this.setError.employeeCode = false;
@@ -487,7 +496,7 @@ export default {
       // thêm đoạn validate ô tên nhân viên
       if (!this.formObject["fullName"]) {
         messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
+          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[this.getLanguage]
         );
         this.setError.fullName = true;
       } else {
@@ -499,7 +508,9 @@ export default {
         !this.formObject["departmentName"] ||
         !this.formObject["departmentID"]
       ) {
-        messArr.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
+        messArr.push(
+          this.MISAResource.ErrorValidate.DepartmentName[this.getLanguage]
+        );
         this.setError.departmentName = true;
       } else {
         this.setError.departmentName = false;
@@ -613,11 +624,10 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
-                  let language = this.$store.state.language;
                   this.isDuplicateCode = true;
                   this.employeeCodeDataTitle =
                     this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      language
+                      this.getLanguage
                     ];
                   this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
@@ -627,10 +637,9 @@ export default {
                   );
                 } else {
                   {
-                    let language = this.$store.state.language;
                     this.employeeCodeDataTitle =
                       this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        language
+                        this.getLanguage
                       ];
                     this.setError.employeeCode = false;
                     this.isDuplicateCode = false;
@@ -704,11 +713,10 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
-                  let language = this.$store.state.language;
                   this.isDuplicateCode = true;
                   this.employeeCodeDataTitle =
                     this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      language
+                      this.getLanguage
                     ];
                   this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
@@ -718,11 +726,10 @@ export default {
                   );
                 } else {
                   {
-                    let language = this.$store.state.language;
                     this.isDuplicateCode = false;
                     this.employeeCodeDataTitle =
                       this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        language
+                        this.getLanguage
                       ];
                     this.setError.employeeCode = false;
                     // thực hiện lưu vào database
