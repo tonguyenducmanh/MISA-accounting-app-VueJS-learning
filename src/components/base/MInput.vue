@@ -122,7 +122,6 @@ export default {
         if (
           this.isEmail === true &&
           this.modelValue !== "" &&
-          this.modelValue !== undefined &&
           this.modelValue !== null
         ) {
           const emailRegex =
@@ -145,10 +144,7 @@ export default {
     notNullValidate() {
       try {
         // kiểm tra xem có phải trường not null không
-        if (
-          this.isNotNull === true &&
-          (this.modelValue === "" || this.modelValue === undefined)
-        ) {
+        if (this.isNotNull === true && this.modelValue === "") {
           this.isErrorTying = true;
         } else {
           this.isErrorTying = false;
@@ -165,11 +161,7 @@ export default {
       try {
         // kiểm tra xem nó có phải trường chỉ điền số không
         if (this.justNumber === true) {
-          if (
-            this.modelValue !== "" &&
-            this.modelValue !== undefined &&
-            this.modelValue !== null
-          ) {
+          if (this.modelValue !== "" && this.modelValue !== null) {
             const numberRegex = /^\d+$/;
             let result = numberRegex.test(this.modelValue);
             if (result === false) {
