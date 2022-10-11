@@ -325,3 +325,43 @@
   background-color: #50b83c;
   cursor: auto;
 }
+
+.datepicker .datepicker__yearcontent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.datepicker .datepicker__yearitem {
+  box-sizing: border-box;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  padding: 6px 20px;
+  border-radius: 4px;
+}
+
+.datepicker .datepicker__yearitem:hover {
+  background-color: #82d271;
+  color: white;
+}
+
+.datepicker .datepicker__yearitem:active {
+  background-color: #50b83c;
+  color: white;
+}
+
+.datepicker .datepicker__yearitem--selected {
+  background-color: #50b83c;
+  color: white;
+  cursor: auto;
+  pointer-events: none;
+}
+
+.datepicker .datepicker__yearitem--selected:hover {
+  background-color: #50b83c;
+  color: white;
+
+}

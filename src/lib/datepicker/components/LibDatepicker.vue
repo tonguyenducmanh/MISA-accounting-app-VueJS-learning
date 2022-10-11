@@ -80,12 +80,14 @@
           </template>
           <template v-for="(grid, index) in gridList" :key="index">
             <div
+              tabindex="0"
               class="datepicker__dayitem"
               :class="
                 index + 1 === this.currentDay
                   ? this.DatepickerEnum.selected.Date
                   : ''
               "
+              @keydown.enter="changeDate(index + 1)"
               @click="changeDate(index + 1)"
             >
               <span>{{ index + 1 }}</span>
@@ -118,11 +120,53 @@
           v-if="isYearSelectShow"
           class="datepicker__content datepicker__yearcontent"
         >
-          phần chọn năm
+          <div
+            class="datepicker__yeardown"
+            @click="changeYear(currentYear - 1)"
+          ></div>
+          <div
+            class="datepicker__yearitem"
+            @click="changeYear(currentYear - 2)"
+          >
+            {{ currentYear - 2 }}
+          </div>
+          <div
+            class="datepicker__yearitem"
+            @click="changeYear(currentYear - 1)"
+          >
+            {{ currentYear - 1 }}
+          </div>
+          <div
+            class="datepicker__yearitem"
+            :class="this.DatepickerEnum.selected.Year"
+          >
+            {{ currentYear }}
+          </div>
+          <div
+            class="datepicker__yearitem"
+            @click="changeYear(currentYear + 1)"
+          >
+            {{ currentYear + 1 }}
+          </div>
+          <div
+            class="datepicker__yearitem"
+            @click="changeYear(currentYear + 2)"
+          >
+            {{ currentYear + 2 }}
+          </div>
+          <div
+            class="datepicker__yearup"
+            @click="changeYear(currentYear + 1)"
+          ></div>
         </div>
 
         <!-- phần chọn ngày hôm nay -->
-        <div class="datepicker__selecttoday" @click="getFullDayValue()">
+        <div
+          tabindex="0"
+          class="datepicker__selecttoday"
+          @click="getFullDayValue()"
+          @keydown.enter="getFullDayValue()"
+        >
           <div class="datepicker__today">Hôm nay</div>
         </div>
       </div>
@@ -171,7 +215,11 @@ export default {
      */
     showSelect() {
       try {
-        this.getFullDayValue();
+        this.getFullDayValue(
+          this.currentYear,
+          this.currentMonthNth,
+          this.currentDay
+        );
         this.isSelectShow = !this.isSelectShow;
       } catch (error) {
         console.log(error);
@@ -293,7 +341,6 @@ export default {
           this.currentMonthNth + 1,
           this.currentDay
         );
-        console.log(this.currentMonthNth);
       } catch (error) {
         console.log(error);
       }
@@ -304,7 +351,6 @@ export default {
      */
     goPrevMonth() {
       try {
-        console.log(this.currentMonthNth);
         this.getFullDayValue(
           this.currentYear,
           this.currentMonthNth - 1,
@@ -334,6 +380,18 @@ export default {
     changeMonth(month) {
       try {
         this.getFullDayValue(this.currentYear, month, this.currentDay);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thay đổi năm hiện tại theo giá trị đầu vào
+     * @param year : năm muốn truyền vào
+     * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
+     */
+    changeYear(year) {
+      try {
+        this.getFullDayValue(year, this.currentMonthNth, this.currentDay);
       } catch (error) {
         console.log(error);
       }
