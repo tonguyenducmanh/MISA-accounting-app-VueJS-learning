@@ -48,12 +48,16 @@
             <!-- chọn tháng trước tháng sau -->
             <div class="datepicker__monthnav">
               <div
+                tabindex="0"
                 class="datepicker__icon datepicker__prevmonth"
                 @click="goPrevMonth"
+                @keydown.enter="goPrevMonth"
               ></div>
               <div
+                tabindex="0"
                 class="datepicker__icon datepicker__nextmonth"
                 @click="goNextMonth"
+                @keydown.enter="goNextMonth"
               ></div>
             </div>
           </div>
@@ -162,7 +166,7 @@ export default {
   emits: [],
   methods: {
     /**
-     * hiển thị bảng chọn chung
+     * ẩn hiện bảng chọn chung
      * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
      */
     showSelect() {
@@ -174,7 +178,7 @@ export default {
       }
     },
     /**
-     * trường hợp chỉ có ẩn select đi thôi
+     * ẩn bảng chọn chung
      * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
      */
     hideSelect() {
@@ -190,7 +194,7 @@ export default {
      */
     showDateSelect() {
       try {
-        this.isDaySelectShow = !this.isDaySelectShow;
+        this.isDaySelectShow = true;
         this.isMonthSelectShow = false;
         this.isYearSelectShow = false;
       } catch (error) {
@@ -203,8 +207,8 @@ export default {
      */
     showMonthSelect() {
       try {
-        this.isMonthSelectShow = !this.isMonthSelectShow;
-        this.isDaySelectShow = !this.isMonthSelectShow;
+        this.isMonthSelectShow = true;
+        this.isDaySelectShow = false;
         this.isYearSelectShow = false;
       } catch (error) {
         console.log(error);
@@ -217,8 +221,8 @@ export default {
     showYearSelect() {
       try {
         this.isMonthSelectShow = false;
-        this.isYearSelectShow = !this.isYearSelectShow;
-        this.isDaySelectShow = !this.isYearSelectShow;
+        this.isYearSelectShow = true;
+        this.isDaySelectShow = false;
       } catch (error) {
         console.log(error);
       }
@@ -236,7 +240,7 @@ export default {
         // thứ bắt đầu của tháng là vd tháng 10 ngày 1 rơi vào thứ 3
         let date = new Date();
 
-        if (year && month && day) {
+        if (year) {
           date = new Date(year, month, day);
         }
 
@@ -248,8 +252,6 @@ export default {
 
         // lấy ra số thứ tự tháng hiện tại (để tạo list có selected)
         this.currentMonthNth = date.getMonth();
-
-        console.log(this.firstDayOfWeek);
 
         // lấy ra số ngày ứng với tháng hiện tại
         this.numberOfDays = this.monthsSize[this.currentMonthNth];
@@ -267,9 +269,12 @@ export default {
           1
         ).getDay();
 
-        console.log(this.firstDayOfWeek, this.currentMonthNth);
         // tạo ra 1 array rỗng để cho những ngày đầu tiên trong lịch không có số gì cả
-        this.emptyList = new Array(this.firstDayOfWeek - 1);
+        if (this.firstDayOfWeek === 0) {
+          this.emptyList = new Array(0);
+        } else {
+          this.emptyList = new Array(this.firstDayOfWeek - 1);
+        }
         this.modelvalue = `${this.currentDay}/${this.currentMonthNth + 1}/${
           this.currentYear
         }`;
@@ -288,7 +293,7 @@ export default {
           this.currentMonthNth + 1,
           this.currentDay
         );
-        console.log("");
+        console.log(this.currentMonthNth);
       } catch (error) {
         console.log(error);
       }
@@ -299,6 +304,7 @@ export default {
      */
     goPrevMonth() {
       try {
+        console.log(this.currentMonthNth);
         this.getFullDayValue(
           this.currentYear,
           this.currentMonthNth - 1,
