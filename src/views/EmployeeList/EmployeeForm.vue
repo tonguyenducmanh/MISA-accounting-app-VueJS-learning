@@ -479,15 +479,15 @@ export default {
     checkBeforeSave() {
       // tạo ra mảng thông báo các ô nhập liệu không được để trống
       let messArr = [];
-      let language = this.$store.state.language;
-
       // thêm đoạn validate ô mã nhân viên
       if (!this.formObject["employeeCode"]) {
         messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language]
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[this.getLanguage]
         );
         this.employeeCodeDataTitle =
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[language];
+          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
+            this.getLanguage
+          ];
         this.setError.employeeCode = true;
       } else {
         this.setError.employeeCode = false;
@@ -496,7 +496,7 @@ export default {
       // thêm đoạn validate ô tên nhân viên
       if (!this.formObject["fullName"]) {
         messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[language]
+          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[this.getLanguage]
         );
         this.setError.fullName = true;
       } else {
@@ -508,7 +508,9 @@ export default {
         !this.formObject["departmentName"] ||
         !this.formObject["departmentID"]
       ) {
-        messArr.push(this.MISAResource.ErrorValidate.DepartmentName[language]);
+        messArr.push(
+          this.MISAResource.ErrorValidate.DepartmentName[this.getLanguage]
+        );
         this.setError.departmentName = true;
       } else {
         this.setError.departmentName = false;
@@ -622,11 +624,10 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
-                  let language = this.$store.state.language;
                   this.isDuplicateCode = true;
                   this.employeeCodeDataTitle =
                     this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      language
+                      this.getLanguage
                     ];
                   this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
@@ -636,10 +637,9 @@ export default {
                   );
                 } else {
                   {
-                    let language = this.$store.state.language;
                     this.employeeCodeDataTitle =
                       this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        language
+                        this.getLanguage
                       ];
                     this.setError.employeeCode = false;
                     this.isDuplicateCode = false;
@@ -713,11 +713,10 @@ export default {
               })
               .then((res) => {
                 if (res === false) {
-                  let language = this.$store.state.language;
                   this.isDuplicateCode = true;
                   this.employeeCodeDataTitle =
                     this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      language
+                      this.getLanguage
                     ];
                   this.setError.employeeCode = true;
                   // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
@@ -727,11 +726,10 @@ export default {
                   );
                 } else {
                   {
-                    let language = this.$store.state.language;
                     this.isDuplicateCode = false;
                     this.employeeCodeDataTitle =
                       this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        language
+                        this.getLanguage
                       ];
                     this.setError.employeeCode = false;
                     // thực hiện lưu vào database
