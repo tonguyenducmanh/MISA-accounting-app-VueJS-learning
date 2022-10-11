@@ -1,6 +1,14 @@
 <template lang="">
   <!-- trang demo chứa toàn bộ các component có trong ứng dụng web -->
   <div class="demo">
+    <div>10. Datepicker</div>
+    <LibDatepicker
+      :hasLabel="true"
+      labelText="Datepicker"
+      placeHolder="DD/MM/YYYY"
+      buttonClass="datepicker__button--white"
+    />
+
     <div>1.1 Button primary</div>
 
     <MButton buttonName="Cất và thêm" />
@@ -134,7 +142,6 @@
       WarningMess="Demo poup message"
     />
 
-
     <div>11. Form</div>
 
     <MButton @click="showForm" buttonName="hiện Form" />
@@ -238,6 +245,7 @@ import MPopup from "../components/base/MPopup.vue";
 
 // import library file
 import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
+import LibDatepicker from "../lib/datepicker/components/LibDatepicker.vue";
 
 // import employee components
 import EmployeeForm from "../views/EmployeeList/EmployeeForm.vue";
@@ -254,6 +262,7 @@ export default {
     MRadioButton,
     MToastMessage,
     LibCombobox,
+    LibDatepicker,
     MPopup,
     EmployeeForm,
     EmployeeTable,
