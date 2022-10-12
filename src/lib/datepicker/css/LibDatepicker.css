@@ -366,3 +366,14 @@
   color: white;
 
 }
+
+.datepicker:hover::after {
+  display: none;
+}
+
+.datepicker:has(.datepicker__input--alert):hover::after {
+  display: block;
+  top: 0;
+  left: 0;
+  transform: translate(-25%, 140%);
+}

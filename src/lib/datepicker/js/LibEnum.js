@@ -2,7 +2,7 @@ let DatepickerEnum = {
   input: {
     Italic: "input__field--italic",
     LabelAlert: "input__label--alert",
-    InputAlert: "combobox__input--alert",
+    InputAlert: "datepicker__input--alert",
   },
   selected: {
     Date: "datepicker__dayitem--selected",

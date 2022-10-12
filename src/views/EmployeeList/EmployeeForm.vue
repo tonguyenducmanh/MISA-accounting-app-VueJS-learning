@@ -95,6 +95,7 @@
           <LibDatepicker
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             placeHolder="DD/MM/YYYY"
             buttonClass="datepicker__button--white"
             v-model="formObject['dateOfBirth']"
@@ -143,6 +144,7 @@
           <LibDatepicker
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             placeHolder="DD/MM/YYYY"
             buttonClass="datepicker__button--white"
             v-model="formObject['identityDate']"

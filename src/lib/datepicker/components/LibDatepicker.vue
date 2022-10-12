@@ -5,7 +5,7 @@
       {{ labelText }}
     </div>
     <!-- phần datepicer -->
-    <div class="datepicker">
+    <div class="datepicker" :data-title="dataTitle">
       <!-- phần nhập liệu -->
       <input
         tabindex="0"
@@ -13,7 +13,7 @@
         type="text"
         :class="
           ([classInput],
-          isErrorTying === true ? LibDatepicker.input.InputAlert : '')
+          isErrorTying === true ? DatepickerEnum.input.InputAlert : '')
         "
         :placeholder="
           defaultValue !== '' && defaultValue !== undefined
@@ -192,6 +192,7 @@ export default {
     buttonClass: String,
     classInput: String,
     modelValue: String,
+    dataTitle: String,
   },
   data() {
     return {
@@ -224,6 +225,13 @@ export default {
      */
     currentInputValue() {
       this.checkDateFormat(this.currentInputValue);
+    },
+    /**
+     * kiểm tra xem có lớn hơn ngày hiện tại không
+     * Author : Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    modelValue() {
+      this.compareToTodayDate(this.modelValue);
     },
   },
   /**
@@ -450,6 +458,28 @@ export default {
         let inputMonth = month < 10 ? `0${month}` : month;
 
         return `${inputDate}/${inputMonth}/${year}`;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * So sánh ngày vừa nhập với ngày hiện tại xem lớn hơn không, nếu lớn hơn trả về false
+     * @param date : ngày cần so sánh với ngày hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    compareToTodayDate(date) {
+      try {
+        let selectedDate = new Date(date);
+        let todayDate = new Date();
+        if (selectedDate.getTime() > todayDate.getTime()) {
+          console.log(true);
+          this.isErrorTying = true;
+          return true;
+        } else {
+          this.isErrorTying = false;
+          console.log(false);
+          return false;
+        }
       } catch (error) {
         console.log(error);
       }
