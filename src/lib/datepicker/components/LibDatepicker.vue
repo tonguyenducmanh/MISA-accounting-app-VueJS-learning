@@ -349,7 +349,7 @@ export default {
         this.renderEmptyDateList();
 
         // emit value lên theo v-model để bên ngoài component nhận được
-        this.$emit("update:modelValue", date);
+        this.$emit("update:modelValue", date.toJSON());
 
         // thay đổi giá trị mới cho inputvalue
         this.currentInputValue = this.addZeroValue(
