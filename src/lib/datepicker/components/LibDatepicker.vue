@@ -212,6 +212,7 @@ export default {
       monthsSize: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
       numberOfDays: 30,
       currentInputValue: "",
+      updatedOneTime: false,
     };
   },
   emits: ["update:modelValue"],
@@ -226,12 +227,33 @@ export default {
     },
   },
   /**
-   * trước khi mount thực hiện bóc tách modelValue nếu có để
+   * trước khi updated 1 lần duy nhất thực hiện bóc tách modelValue nếu có để
    * gán nó vào trong data
    */
-  mounted() {
+  updated() {
     try {
-      console.log(this.modelValue);
+      if (this.updatedOneTime === false) {
+        //chuyển đổi json date thành object date
+        let date = new Date(this.modelValue);
+
+        // bật cái data đã update 1 lần duy nhất lên
+        this.updatedOneTime = true;
+
+        // bóc tách ngày, tháng, năm, thứ, index của tháng hiện tại từ object date rồi
+        // truyền vào trong data ()
+        this.getInfoFromDate(date);
+
+        //  Kiểm tra ngày đầu tiên của tháng là thứ mấy trong tuần
+        //  sau đó render ra bảng có n ngày trống để hiển thị cho chuẩn
+        this.renderEmptyDateList();
+
+        // thay đổi giá trị mới cho inputvalue
+        this.currentInputValue = this.addZeroValue(
+          this.currentDay,
+          this.currentMonthNth + 1,
+          this.currentYear
+        );
+      }
     } catch (error) {
       console.log(error);
     }
