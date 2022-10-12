@@ -7,6 +7,7 @@
       labelText="Datepicker"
       placeHolder="DD/MM/YYYY"
       buttonClass="datepicker__button--white"
+      v-model="datepickerValue"
     />
 
     <div>1.1 Button primary</div>
@@ -284,7 +285,13 @@ export default {
       pageNumber: 1,
       searchFilter: null,
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
+      datepickerValue: "",
     };
+  },
+  watch: {
+    datepickerValue() {
+      console.log(this.datepickerValue);
+    },
   },
   /**
    * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.

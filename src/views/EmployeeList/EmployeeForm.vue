@@ -92,12 +92,20 @@
         <!-- phần nhập form thứ 2 -->
         <div class="form__part form__two">
           <!-- phần chọn ngày sinh -->
-          <MDatePicker
+          <LibDatepicker
+            :hasLabel="true"
+            :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
+            placeHolder="DD/MM/YYYY"
+            buttonClass="datepicker__button--white"
+            v-model="formObject['dateOfBirth']"
+          />
+
+          <!-- <MDatePicker
             :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
             class="form__dateofbirth"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             v-model="formObject['dateOfBirth']"
-          />
+          /> -->
           <!-- phần nhập giới tính -->
           <MRadioButton
             :titleText="MISAResource.LabelText.FormGender[getLanguage]"
@@ -273,6 +281,7 @@ import MDatePicker from "../../components/base/MDatePicker.vue";
 import MInput from "../../components/base/MInput.vue";
 import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
+import LibDatepicker from "../../lib/datepicker/components/LibDatepicker.vue";
 
 export default {
   name: "EmployeeForm",
@@ -285,6 +294,7 @@ export default {
     "show-toast-message",
   ],
   components: {
+    LibDatepicker,
     MButton,
     MCheckbox,
     MDatePicker,

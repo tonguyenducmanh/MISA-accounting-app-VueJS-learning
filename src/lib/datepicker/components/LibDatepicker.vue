@@ -20,7 +20,7 @@
             ? defaultValue
             : placeHolder
         "
-        v-model="modelvalue"
+        v-model="currentInputValue"
       />
       <!-- phần nút mở menu -->
       <button tabindex="0" :class="buttonClass" class="datepicker__button">
@@ -164,8 +164,14 @@
         <div
           tabindex="0"
           class="datepicker__selecttoday"
-          @click="getFullDayValue()"
-          @keydown.enter="getFullDayValue()"
+          @click="
+            getFullDayValue();
+            hideSelect();
+          "
+          @keydown.enter="
+            getFullDayValue();
+            hideSelect();
+          "
         >
           <div class="datepicker__today">Hôm nay</div>
         </div>
@@ -185,10 +191,10 @@ export default {
     placeHolder: String,
     buttonClass: String,
     classInput: String,
+    modelvalue: String,
   },
   data() {
     return {
-      modelvalue: "",
       DatepickerEnum,
       isErrorTying: false,
       isSelectShow: false,
@@ -205,10 +211,41 @@ export default {
       monthList: new Array(12),
       monthsSize: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
       numberOfDays: 30,
+      currentInputValue: "",
     };
   },
-  emits: [],
+  emits: ["update:modelValue"],
+  watch: {
+    /**
+     * Lắng nghe dữ liệu nhập vào, nếu nó thay đổi và hợp lệ form thì
+     * sẽ truyền vào v-model giá trị ngày tương ứng
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    currentInputValue() {
+      this.checkDateFormat(this.currentInputValue);
+    },
+  },
   methods: {
+    /**
+     * Check dữ liệu nhập vào có phải là DD/MM/YYYY hay không
+     * @param date: Ngày cần check
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    checkDateFormat(date) {
+      try {
+        let regex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+        var test = date.match(regex);
+
+        // nếu phù hợp với kết quả định dạng dd//mm/yyyy thì mình tiến hành
+        // thêm nó vào v-model của component ( this.modelValue )
+        if (test) {
+          let arrDate = date.split("/");
+          this.getFullDayValue(arrDate[2], arrDate[1] - 1, arrDate[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     /**
      * ẩn hiện bảng chọn chung
      * Author: Tô Nguyễn Đức Mạnh (11/10/2022)
@@ -289,7 +326,7 @@ export default {
         let date = new Date();
 
         if (year) {
-          date = new Date(year, month, day);
+          date = new Date(Date.UTC(year, month, day));
         }
 
         // lấy ra năm hiện tại
@@ -323,9 +360,35 @@ export default {
         } else {
           this.emptyList = new Array(this.firstDayOfWeek - 1);
         }
-        this.modelvalue = `${this.currentDay}/${this.currentMonthNth + 1}/${
+        // emit value lên theo v-model để bên ngoài component nhận được
+        this.$emit("update:modelValue", date);
+
+        // thay đổi giá trị mới cho inputvalue
+        this.currentInputValue = this.addZeroValue(
+          this.currentDay,
+          this.currentMonthNth + 1,
           this.currentYear
-        }`;
+        );
+
+        console.log(this.currentInputValue);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * thay đổi giá trị ngày tháng ứng với các trường hợp có ngày tháng < 10
+     * @param date : ngày
+     * @param month : tháng
+     * @param year : năm
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    addZeroValue(date, month, year) {
+      try {
+        let inputDate = date < 10 ? "0" + date : date;
+
+        let inputMonth = month < 10 ? `0${month}` : month;
+
+        return `${inputDate}/${inputMonth}/${year}`;
       } catch (error) {
         console.log(error);
       }
