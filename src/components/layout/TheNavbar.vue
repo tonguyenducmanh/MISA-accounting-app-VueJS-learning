@@ -178,7 +178,6 @@ export default {
 }
 a {
   color: white;
-  text-transform: uppercase;
 }
 
 .router-link-active {

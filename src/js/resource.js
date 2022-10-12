@@ -130,6 +130,18 @@ var MISAResource = {
   },
   // Các đoan tooltip hiển thị khi di chuột vào 1 thành phần nào đó trong trang web
   DataTile: {
+    MobiphoneNumber: {
+      VI: "Điện thoại di động",
+      EN: "Mobiphone",
+    },
+    TelephoneNumber: {
+      VI: "Điện thoại cố dịnh",
+      EN: "Telephone",
+    },
+    IdentityCardNumber: {
+      VI: "Số chứng minh nhân dân",
+      EN: "Identity card number",
+    },
     HeaderName: {
       VI: "Công ty TNHH Sản xuất - Thương mại - Dịch vụ qui phúc",
       EN: "Qui Phuc Production - Commercial - Service Company",

@@ -1,10 +1,10 @@
 <template lang="">
-  <div class="input form__ele" :data-title="dataTitle">
-    <div v-if="hasLabel" class="input__label">
+  <div class="input form__ele">
+    <div v-if="hasLabel" class="input__label" :data-title="labelTitle">
       {{ labelText }}
       <span v-if="showAlertStar" :class="MISAEnum.input.LabelAlert">*</span>
     </div>
-    <div class="input__warp">
+    <div class="input__warp" :data-title="dataTitle">
       <input
         ref="input"
         tabindex="0"
@@ -67,6 +67,7 @@ export default {
     "classInput",
     "idInput",
     "dataTitle",
+    "labelTitle",
     "justNumber",
     "formatDate",
     "modelValue",

@@ -44,7 +44,6 @@
             idInput="input__checkId"
             :classInput="'input__focus form__employeeCode'"
             :showAlertStar="true"
-            class="form__ele"
             :dataTitle="employeeCodeDataTitle"
             :isNotNull="true"
             :setError="setError.employeeCode"
@@ -57,7 +56,6 @@
             idInput="input__checkId"
             :classInput="'form__employeename'"
             :showAlertStar="true"
-            class="form__ele"
             :dataTitle="MISAResource.DataTile.FormFullName[getLanguage]"
             :isNotNull="true"
             v-model="formObject['fullName']"
@@ -88,19 +86,27 @@
             :labelText="MISAResource.LabelText.FormPosition[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormPosition[getLanguage]"
             :classInput="'form__personaName'"
-            class="form__ele"
             v-model="formObject['positionName']"
           />
         </div>
         <!-- phần nhập form thứ 2 -->
         <div class="form__part form__two">
           <!-- phần chọn ngày sinh -->
-          <MDatePicker
+          <LibDatepicker
+            :hasLabel="true"
+            :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
+            placeHolder="DD/MM/YYYY"
+            buttonClass="datepicker__button--white"
+            v-model="formObject['dateOfBirth']"
+          />
+
+          <!-- <MDatePicker
             :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
             class="form__dateofbirth"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             v-model="formObject['dateOfBirth']"
-          />
+          /> -->
           <!-- phần nhập giới tính -->
           <MRadioButton
             :titleText="MISAResource.LabelText.FormGender[getLanguage]"
@@ -130,17 +136,25 @@
             "
             :classInput="'form__personaID'"
             :justNumber="true"
-            class="form__ele"
+            :labelTitle="MISAResource.DataTile.IdentityCardNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['identityCard']"
           />
           <!-- phân nhập ngày cấp chứng minh thư -->
-          <MDatePicker
+          <LibDatepicker
+            :hasLabel="true"
+            :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
+            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
+            placeHolder="DD/MM/YYYY"
+            buttonClass="datepicker__button--white"
+            v-model="formObject['identityDate']"
+          />
+          <!-- <MDatePicker
             :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             class="form__identityDate"
             v-model="formObject['identityDate']"
-          />
+          /> -->
           <!-- phần nhập nơi cấp chứng minh thư -->
           <MInput
             :hasLabel="true"
@@ -149,7 +163,6 @@
               MISAResource.PlaceHolder.FormIdentityPlace[getLanguage]
             "
             :classInput="'form__createdwhere'"
-            class="form__ele"
             v-model="formObject['identityPlace']"
           />
         </div>
@@ -161,29 +174,26 @@
             :labelText="MISAResource.LabelText.FormAddress[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormAddress[getLanguage]"
             :classInput="'form__address'"
-            class="form__ele"
             v-model="formObject['address']"
           />
-          <!-- phần nhập số điện thoại cố định -->
+          <!-- phần nhập số điện thoại di động -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormTelephoneNumber[getLanguage]"
             :placeHolder="
               MISAResource.PlaceHolder.FormTelephoneNumber[getLanguage]
             "
-            :justNumber="true"
             :classInput="'form__phonenum'"
-            class="form__ele"
+            :labelTitle="MISAResource.DataTile.MobiphoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['mobilePhone']"
           />
-          <!-- phần nhập số điện thoại di động -->
+          <!-- phần nhập số điện thoại cố định -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormPhoneNumber[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[getLanguage]"
-            :justNumber="true"
-            class="form__ele"
+            :labelTitle="MISAResource.DataTile.TelephoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['telephone']"
           />
@@ -193,7 +203,6 @@
             :labelText="MISAResource.LabelText.FormEmail[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormEmail[getLanguage]"
             :classInput="'form__email'"
-            class="form__ele"
             :isEmail="true"
             :dataTitle="MISAResource.DataTile.FormEmail[getLanguage]"
             v-model="formObject['email']"
@@ -205,7 +214,6 @@
             :placeHolder="MISAResource.PlaceHolder.FormBankAccount[getLanguage]"
             :justNumber="true"
             :classInput="'form__banknum'"
-            class="form__ele"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['bankAccount']"
           />
@@ -215,7 +223,6 @@
             :labelText="MISAResource.LabelText.FormBankName[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormBankName[getLanguage]"
             :classInput="'form__bankname'"
-            class="form__ele"
             v-model="formObject['bankName']"
           />
           <!-- phần nhập chi nhánh ngân hàng -->
@@ -224,7 +231,6 @@
             :labelText="MISAResource.LabelText.FormBankBranch[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormBankBranch[getLanguage]"
             :classInput="'form__bankaddr'"
-            class="form__ele"
             v-model="formObject['bankBranch']"
           />
         </div>
@@ -280,10 +286,10 @@ import common from "../../js/common.js";
 // nhập các component cơ bản
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
-import MDatePicker from "../../components/base/MDatePicker.vue";
 import MInput from "../../components/base/MInput.vue";
 import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
+import LibDatepicker from "../../lib/datepicker/components/LibDatepicker.vue";
 
 export default {
   name: "EmployeeForm",
@@ -296,9 +302,9 @@ export default {
     "show-toast-message",
   ],
   components: {
+    LibDatepicker,
     MButton,
     MCheckbox,
-    MDatePicker,
     MInput,
     MRadioButton,
     LibCombobox,
@@ -581,6 +587,12 @@ export default {
           });
       } catch (error) {
         console.log(error);
+        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorCommon
+        );
       }
     },
     /**
@@ -662,6 +674,12 @@ export default {
               })
               .catch((res) => {
                 console.log(res);
+                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+                this.$emit(
+                  "show-toast-message",
+                  this.MISAEnum.toasttype.ERROR,
+                  this.MISAResource.ToastMessage.ErrorCommon
+                );
               });
           } else {
             // nếu là sửa thì tiến hành update dữ liệu
@@ -678,6 +696,12 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorCommon
+        );
       }
     },
     /**
@@ -749,6 +773,12 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+                this.$emit(
+                  "show-toast-message",
+                  this.MISAEnum.toasttype.ERROR,
+                  this.MISAResource.ToastMessage.ErrorCommon
+                );
               });
           } else {
             // thực hiện lưu vào database
@@ -768,6 +798,12 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorCommon
+        );
       }
     },
     /**

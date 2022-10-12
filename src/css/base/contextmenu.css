@@ -71,6 +71,7 @@
 .contextmenu .contextmenu__item {
   cursor: pointer;
   padding: 8px 12px;
+  text-align: left;
 }
 
 .contextmenu .contextmenu__item:hover {

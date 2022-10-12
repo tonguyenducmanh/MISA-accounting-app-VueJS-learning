@@ -1,6 +1,15 @@
 <template lang="">
   <!-- trang demo chứa toàn bộ các component có trong ứng dụng web -->
   <div class="demo">
+    <div>10. Datepicker</div>
+    <LibDatepicker
+      :hasLabel="true"
+      labelText="Datepicker"
+      placeHolder="DD/MM/YYYY"
+      buttonClass="datepicker__button--white"
+      v-model="datepickerValue"
+    />
+
     <div>1.1 Button primary</div>
 
     <MButton buttonName="Cất và thêm" />
@@ -134,10 +143,6 @@
       WarningMess="Demo poup message"
     />
 
-    <div>10. Loading</div>
-
-    <MLoading />
-
     <div>11. Form</div>
 
     <MButton @click="showForm" buttonName="hiện Form" />
@@ -238,10 +243,10 @@ import MCheckbox from "../components/base/MCheckbox.vue";
 import MRadioButton from "../components/base/MRadioButton.vue";
 import MToastMessage from "../components/base/MToastMessage.vue";
 import MPopup from "../components/base/MPopup.vue";
-import MLoading from "../components/base/MLoading.vue";
 
 // import library file
 import LibCombobox from "../lib/combobox/components/LibCombobox.vue";
+import LibDatepicker from "../lib/datepicker/components/LibDatepicker.vue";
 
 // import employee components
 import EmployeeForm from "../views/EmployeeList/EmployeeForm.vue";
@@ -258,8 +263,8 @@ export default {
     MRadioButton,
     MToastMessage,
     LibCombobox,
+    LibDatepicker,
     MPopup,
-    MLoading,
     EmployeeForm,
     EmployeeTable,
     EmployeePage,
@@ -280,7 +285,13 @@ export default {
       pageNumber: 1,
       searchFilter: null,
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
+      datepickerValue: "",
     };
+  },
+  watch: {
+    datepickerValue() {
+      console.log(this.datepickerValue);
+    },
   },
   /**
    * Lấy ra các prop tương úng và tiến hành fetch api cho vào trong table.
