@@ -44,7 +44,6 @@
             idInput="input__checkId"
             :classInput="'input__focus form__employeeCode'"
             :showAlertStar="true"
-            class="form__ele"
             :dataTitle="employeeCodeDataTitle"
             :isNotNull="true"
             :setError="setError.employeeCode"
@@ -57,7 +56,6 @@
             idInput="input__checkId"
             :classInput="'form__employeename'"
             :showAlertStar="true"
-            class="form__ele"
             :dataTitle="MISAResource.DataTile.FormFullName[getLanguage]"
             :isNotNull="true"
             v-model="formObject['fullName']"
@@ -88,7 +86,6 @@
             :labelText="MISAResource.LabelText.FormPosition[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormPosition[getLanguage]"
             :classInput="'form__personaName'"
-            class="form__ele"
             v-model="formObject['positionName']"
           />
         </div>
@@ -130,7 +127,6 @@
             "
             :classInput="'form__personaID'"
             :justNumber="true"
-            class="form__ele"
             :labelTitle="MISAResource.DataTile.IdentityCardNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['identityCard']"
@@ -150,7 +146,6 @@
               MISAResource.PlaceHolder.FormIdentityPlace[getLanguage]
             "
             :classInput="'form__createdwhere'"
-            class="form__ele"
             v-model="formObject['identityPlace']"
           />
         </div>
@@ -162,10 +157,9 @@
             :labelText="MISAResource.LabelText.FormAddress[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormAddress[getLanguage]"
             :classInput="'form__address'"
-            class="form__ele"
             v-model="formObject['address']"
           />
-          <!-- phần nhập số điện thoại cố định -->
+          <!-- phần nhập số điện thoại di động -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormTelephoneNumber[getLanguage]"
@@ -174,17 +168,17 @@
             "
             :justNumber="true"
             :classInput="'form__phonenum'"
-            class="form__ele"
+            :labelTitle="MISAResource.DataTile.MobiphoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['mobilePhone']"
           />
-          <!-- phần nhập số điện thoại di động -->
+          <!-- phần nhập số điện thoại cố định -->
           <MInput
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormPhoneNumber[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[getLanguage]"
             :justNumber="true"
-            class="form__ele"
+            :labelTitle="MISAResource.DataTile.TelephoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['telephone']"
           />
@@ -194,7 +188,6 @@
             :labelText="MISAResource.LabelText.FormEmail[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormEmail[getLanguage]"
             :classInput="'form__email'"
-            class="form__ele"
             :isEmail="true"
             :dataTitle="MISAResource.DataTile.FormEmail[getLanguage]"
             v-model="formObject['email']"
@@ -206,7 +199,6 @@
             :placeHolder="MISAResource.PlaceHolder.FormBankAccount[getLanguage]"
             :justNumber="true"
             :classInput="'form__banknum'"
-            class="form__ele"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['bankAccount']"
           />
@@ -216,7 +208,6 @@
             :labelText="MISAResource.LabelText.FormBankName[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormBankName[getLanguage]"
             :classInput="'form__bankname'"
-            class="form__ele"
             v-model="formObject['bankName']"
           />
           <!-- phần nhập chi nhánh ngân hàng -->
@@ -225,7 +216,6 @@
             :labelText="MISAResource.LabelText.FormBankBranch[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormBankBranch[getLanguage]"
             :classInput="'form__bankaddr'"
-            class="form__ele"
             v-model="formObject['bankBranch']"
           />
         </div>
