@@ -581,6 +581,12 @@ export default {
           });
       } catch (error) {
         console.log(error);
+        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorCommon
+        );
       }
     },
     /**
@@ -662,6 +668,12 @@ export default {
               })
               .catch((res) => {
                 console.log(res);
+                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+                this.$emit(
+                  "show-toast-message",
+                  this.MISAEnum.toasttype.ERROR,
+                  this.MISAResource.ToastMessage.ErrorCommon
+                );
               });
           } else {
             // nếu là sửa thì tiến hành update dữ liệu
@@ -755,6 +767,12 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+                this.$emit(
+                  "show-toast-message",
+                  this.MISAEnum.toasttype.ERROR,
+                  this.MISAResource.ToastMessage.ErrorCommon
+                );
               });
           } else {
             // thực hiện lưu vào database
