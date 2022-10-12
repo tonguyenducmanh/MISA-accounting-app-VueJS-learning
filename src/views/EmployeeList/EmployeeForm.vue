@@ -166,7 +166,6 @@
             :placeHolder="
               MISAResource.PlaceHolder.FormTelephoneNumber[getLanguage]
             "
-            :justNumber="true"
             :classInput="'form__phonenum'"
             :labelTitle="MISAResource.DataTile.MobiphoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
@@ -177,7 +176,6 @@
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormPhoneNumber[getLanguage]"
             :placeHolder="MISAResource.PlaceHolder.FormPhoneNumber[getLanguage]"
-            :justNumber="true"
             :labelTitle="MISAResource.DataTile.TelephoneNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['telephone']"
