@@ -678,7 +678,6 @@ export default {
         }
       } catch (error) {
         console.log(error);
-
         // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
         this.$emit(
           "show-toast-message",
@@ -775,7 +774,6 @@ export default {
         }
       } catch (error) {
         console.log(error);
-
         // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
         this.$emit(
           "show-toast-message",
