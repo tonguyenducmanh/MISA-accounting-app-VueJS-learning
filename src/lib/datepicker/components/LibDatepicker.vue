@@ -379,8 +379,6 @@ export default {
           this.currentMonthNth + 1,
           this.currentYear
         );
-
-        console.log(this.currentInputValue);
       } catch (error) {
         console.log(error);
       }
