@@ -191,7 +191,7 @@ export default {
     placeHolder: String,
     buttonClass: String,
     classInput: String,
-    modelvalue: String,
+    modelValue: String,
   },
   data() {
     return {
@@ -224,6 +224,17 @@ export default {
     currentInputValue() {
       this.checkDateFormat(this.currentInputValue);
     },
+  },
+  /**
+   * trước khi mount thực hiện bóc tách modelValue nếu có để
+   * gán nó vào trong data
+   */
+  mounted() {
+    try {
+      console.log(this.modelValue);
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
     /**
@@ -329,6 +340,37 @@ export default {
           date = new Date(Date.UTC(year, month, day));
         }
 
+        // bóc tách ngày, tháng, năm, thứ, index của tháng hiện tại từ object date rồi
+        // truyền vào trong data ()
+        this.getInfoFromDate(date);
+
+        //  Kiểm tra ngày đầu tiên của tháng là thứ mấy trong tuần
+        //  sau đó render ra bảng có n ngày trống để hiển thị cho chuẩn
+        this.renderEmptyDateList();
+
+        // emit value lên theo v-model để bên ngoài component nhận được
+        this.$emit("update:modelValue", date);
+
+        // thay đổi giá trị mới cho inputvalue
+        this.currentInputValue = this.addZeroValue(
+          this.currentDay,
+          this.currentMonthNth + 1,
+          this.currentYear
+        );
+
+        console.log(this.currentInputValue);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * bóc tách từ object date để truyền vào các
+     * trường data như ngày, tháng, năm, số tháng, thứ trong component
+     * @param date : object ngày cần bóc tách dữ liệu
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    getInfoFromDate(date) {
+      try {
         // lấy ra năm hiện tại
         this.currentYear = date.getFullYear();
 
@@ -346,7 +388,17 @@ export default {
 
         // tạo ra 1 array với số ngày hiện tại để dùng v-for render ra ngày trong tháng
         this.gridList = new Array(this.numberOfDays);
-
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Kiểm tra ngày đầu tiên của tháng là thứ mấy trong tuần
+     * sau đó render ra bảng có n ngày trống để hiển thị cho chuẩn
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    renderEmptyDateList() {
+      try {
         // kiểm tra xem ngày đầu tiên của tháng là thứ mấy trong tuần
         this.firstDayOfWeek = new Date(
           this.currentYear,
@@ -360,17 +412,6 @@ export default {
         } else {
           this.emptyList = new Array(this.firstDayOfWeek - 1);
         }
-        // emit value lên theo v-model để bên ngoài component nhận được
-        this.$emit("update:modelValue", date);
-
-        // thay đổi giá trị mới cho inputvalue
-        this.currentInputValue = this.addZeroValue(
-          this.currentDay,
-          this.currentMonthNth + 1,
-          this.currentYear
-        );
-
-        console.log(this.currentInputValue);
       } catch (error) {
         console.log(error);
       }

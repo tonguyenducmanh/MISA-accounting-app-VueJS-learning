@@ -140,12 +140,19 @@
             v-model="formObject['identityCard']"
           />
           <!-- phân nhập ngày cấp chứng minh thư -->
-          <MDatePicker
+          <LibDatepicker
+            :hasLabel="true"
+            :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
+            placeHolder="DD/MM/YYYY"
+            buttonClass="datepicker__button--white"
+            v-model="formObject['identityDate']"
+          />
+          <!-- <MDatePicker
             :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             class="form__identityDate"
             v-model="formObject['identityDate']"
-          />
+          /> -->
           <!-- phần nhập nơi cấp chứng minh thư -->
           <MInput
             :hasLabel="true"
@@ -277,7 +284,6 @@ import common from "../../js/common.js";
 // nhập các component cơ bản
 import MButton from "../../components/base/MButton.vue";
 import MCheckbox from "../../components/base/MCheckbox.vue";
-import MDatePicker from "../../components/base/MDatePicker.vue";
 import MInput from "../../components/base/MInput.vue";
 import MRadioButton from "../../components/base/MRadioButton.vue";
 import LibCombobox from "../../lib/combobox/components/LibCombobox.vue";
@@ -297,7 +303,6 @@ export default {
     LibDatepicker,
     MButton,
     MCheckbox,
-    MDatePicker,
     MInput,
     MRadioButton,
     LibCombobox,
