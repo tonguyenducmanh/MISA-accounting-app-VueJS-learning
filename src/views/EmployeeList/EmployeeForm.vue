@@ -131,6 +131,7 @@
             :classInput="'form__personaID'"
             :justNumber="true"
             class="form__ele"
+            :labelTitle="MISAResource.DataTile.IdentityCardNumber[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormNumber[getLanguage]"
             v-model="formObject['identityCard']"
           />

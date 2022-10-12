@@ -130,6 +130,10 @@ var MISAResource = {
   },
   // Các đoan tooltip hiển thị khi di chuột vào 1 thành phần nào đó trong trang web
   DataTile: {
+    IdentityCardNumber: {
+      VI: "Số chứng minh nhân dân",
+      EN: "Identity card number",
+    },
     HeaderName: {
       VI: "Công ty TNHH Sản xuất - Thương mại - Dịch vụ qui phúc",
       EN: "Qui Phuc Production - Commercial - Service Company",
