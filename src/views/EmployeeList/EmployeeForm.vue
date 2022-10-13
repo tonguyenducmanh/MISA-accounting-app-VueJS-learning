@@ -97,6 +97,7 @@
             :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             placeHolder="DD/MM/YYYY"
+            :compareToNow="true"
             buttonClass="datepicker__button--white"
             v-model="formObject['dateOfBirth']"
           />
@@ -146,6 +147,7 @@
             :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
             :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
             placeHolder="DD/MM/YYYY"
+            :compareToNow="true"
             buttonClass="datepicker__button--white"
             v-model="formObject['identityDate']"
           />

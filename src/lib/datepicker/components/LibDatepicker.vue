@@ -1,5 +1,9 @@
 <template lang="">
-  <div class="datepicker__container" v-click-out="hideSelect">
+  <div
+    class="datepicker__container"
+    v-click-out="hideSelect"
+    @keydown.esc.passive="hideSelect"
+  >
     <!-- phần nhãn văn bản -->
     <div v-if="hasLabel" class="input__label">
       {{ labelText }}
@@ -23,7 +27,12 @@
         v-model="currentInputValue"
       />
       <!-- phần nút mở menu -->
-      <button tabindex="0" :class="buttonClass" class="datepicker__button">
+      <button
+        tabindex="0"
+        :class="buttonClass"
+        class="datepicker__button"
+        @keydown.enter="showSelect"
+      >
         <div class="datepicker__drop" @click="showSelect"></div>
       </button>
       <!-- phần hiển thị ngày để chọn -->
@@ -33,16 +42,28 @@
           <!-- phần tháng năm và chọn tháng trước tháng sau -->
           <div class="datepicker__navigation">
             <div class="datepicker__monthyear">
-              <div class="datepicker__month" @click="showMonthSelect">
+              <div
+                tabindex="0"
+                class="datepicker__month"
+                @click="showMonthSelect"
+                @keydown.enter="showMonthSelect"
+              >
                 {{ this.currentMonth }}
               </div>
               ,
-              <div class="datepicker__year" @click="showYearSelect">
+              <div
+                tabindex="0"
+                class="datepicker__year"
+                @click="showYearSelect"
+                @keydown.enter="showYearSelect"
+              >
                 {{ this.currentYear }}
               </div>
               <div
+                tabindex="0"
                 class="datepicker__icon datepicker__monthyearicon"
                 @click="showDateSelect"
+                @keydown.enter="showDateSelect"
               ></div>
             </div>
             <!-- chọn tháng trước tháng sau -->
@@ -103,11 +124,13 @@
           <template v-for="(month, index) in monthList" :key="index">
             <div
               class="datepicker__monthitem"
+              tabindex="0"
               :class="
                 index === this.currentMonthNth
                   ? this.DatepickerEnum.selected.Month
                   : ''
               "
+              @keydown.enter="changeMonth(index)"
               @click="changeMonth(index)"
             >
               <span> Tháng {{ index + 1 }}</span>
@@ -120,44 +143,22 @@
           v-if="isYearSelectShow"
           class="datepicker__content datepicker__yearcontent"
         >
-          <div
-            class="datepicker__yeardown"
-            @click="changeYear(currentYear - 1)"
-          ></div>
-          <div
-            class="datepicker__yearitem"
-            @click="changeYear(currentYear - 2)"
-          >
-            {{ currentYear - 2 }}
+          <div class="datepicker__scrollyear">
+            <template v-for="(year, index) in yearList" :key="index">
+              <div
+                class="datepicker__yearitem"
+                :ref="year === this.currentYear ? 'scrollToMe' : ''"
+                :class="
+                  year === this.currentYear
+                    ? this.DatepickerEnum.selected.Year
+                    : ''
+                "
+                @click="changeYear(year)"
+              >
+                {{ year }}
+              </div>
+            </template>
           </div>
-          <div
-            class="datepicker__yearitem"
-            @click="changeYear(currentYear - 1)"
-          >
-            {{ currentYear - 1 }}
-          </div>
-          <div
-            class="datepicker__yearitem"
-            :class="this.DatepickerEnum.selected.Year"
-          >
-            {{ currentYear }}
-          </div>
-          <div
-            class="datepicker__yearitem"
-            @click="changeYear(currentYear + 1)"
-          >
-            {{ currentYear + 1 }}
-          </div>
-          <div
-            class="datepicker__yearitem"
-            @click="changeYear(currentYear + 2)"
-          >
-            {{ currentYear + 2 }}
-          </div>
-          <div
-            class="datepicker__yearup"
-            @click="changeYear(currentYear + 1)"
-          ></div>
         </div>
 
         <!-- phần chọn ngày hôm nay -->
@@ -193,6 +194,7 @@ export default {
     classInput: String,
     modelValue: String,
     dataTitle: String,
+    compareToNow: Boolean,
   },
   data() {
     return {
@@ -210,6 +212,7 @@ export default {
       emptyList: new Array(0),
       gridList: new Array(35),
       monthList: new Array(12),
+      yearList: new Array(5),
       monthsSize: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
       numberOfDays: 30,
       currentInputValue: "",
@@ -231,7 +234,20 @@ export default {
      * Author : Tô Nguyễn Đức Mạnh (12/10/2022)
      */
     modelValue() {
-      this.compareToTodayDate(this.modelValue);
+      if (this.compareToNow === true) {
+        this.compareToTodayDate(this.modelValue);
+      }
+    },
+    /**
+     * Tính toán số năm từ năm hiện tại - 50 năm đến 50 năm sau năm hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    currentYear() {
+      this.yearList = Array.from(
+        { length: 100 },
+        (value, index) => this.currentYear - 50 + index
+      );
+      this.scrollToElement();
     },
   },
   /**
@@ -310,6 +326,8 @@ export default {
     hideSelect() {
       try {
         this.isSelectShow = false;
+        // chuyển về chỉ hiện bảng chọn ngày thôi
+        this.showDateSelect();
       } catch (error) {
         console.log(error);
       }
@@ -349,6 +367,8 @@ export default {
         this.isMonthSelectShow = false;
         this.isYearSelectShow = true;
         this.isDaySelectShow = false;
+        // tự động cuộn tới năm hiện tại
+        this.scrollToElement();
       } catch (error) {
         console.log(error);
       }
@@ -472,12 +492,10 @@ export default {
         let selectedDate = new Date(date);
         let todayDate = new Date();
         if (selectedDate.getTime() > todayDate.getTime()) {
-          console.log(true);
           this.isErrorTying = true;
           return true;
         } else {
           this.isErrorTying = false;
-          console.log(false);
           return false;
         }
       } catch (error) {
@@ -546,9 +564,26 @@ export default {
     changeYear(year) {
       try {
         this.getFullDayValue(year, this.currentMonthNth, this.currentDay);
+        this.scrollToElement();
       } catch (error) {
         console.log(error);
       }
+    },
+    /**
+     * Tự động cuộn tới vị trí của năm hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (12/10/2022)
+     */
+    scrollToElement() {
+      this.$nextTick(() => {
+        {
+          if (this.$refs.scrollToMe) {
+            let target = this.$refs.scrollToMe[0];
+            target.scrollIntoView({
+              block: "center",
+            });
+          }
+        }
+      });
     },
   },
 };

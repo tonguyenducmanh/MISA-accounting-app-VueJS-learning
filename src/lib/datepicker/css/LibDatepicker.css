@@ -328,11 +328,17 @@
 }
 
 .datepicker .datepicker__yearcontent {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  overflow-y: scroll;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.datepicker .datepicker__scrollyear{
+  height: 254px;
+  width: 100%;
 }
 
 .datepicker .datepicker__yearitem {
