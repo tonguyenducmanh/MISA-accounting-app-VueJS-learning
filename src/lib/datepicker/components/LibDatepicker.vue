@@ -228,6 +228,7 @@ export default {
      */
     currentInputValue() {
       this.checkDateFormat(this.currentInputValue);
+      this.checkEmptyValue(this.currentInputValue);
     },
     /**
      * kiểm tra xem có lớn hơn ngày hiện tại không
@@ -237,6 +238,7 @@ export default {
       if (this.compareToNow === true) {
         this.compareToTodayDate(this.modelValue);
       }
+      this.checkEmptyModel();
     },
     /**
      * Tính toán số năm từ năm hiện tại - 50 năm đến 50 năm sau năm hiện tại
@@ -256,7 +258,12 @@ export default {
    */
   updated() {
     try {
-      if (this.updatedOneTime === false) {
+      if (
+        this.updatedOneTime === false &&
+        this.modelValue !== null &&
+        this.modelValue !== "" &&
+        this.modelValue !== undefined
+      ) {
         //chuyển đổi json date thành object date
         let date = new Date(this.modelValue);
 
@@ -298,6 +305,39 @@ export default {
         if (test) {
           let arrDate = date.split("/");
           this.getFullDayValue(arrDate[2], arrDate[1] - 1, arrDate[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * kiểm tra xem giá trị nhập ở ô input có bị xóa đi không ?
+     * nếu có thì phải clear hết đi
+     * @param value : giá trị ô nhập input hiện tại
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    checkEmptyValue(value) {
+      try {
+        if (value === "" || value === null || value === undefined) {
+          // emit value lên theo v-model để bên ngoài component nhận được
+          this.$emit("update:modelValue", null);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * kiểm tra xem cố phải modelValue vừa mới rỗng không, nếu rỗng
+     * thì cho input value rỗng theo
+     */
+    checkEmptyModel() {
+      try {
+        if (
+          this.modelValue === "" ||
+          this.modelValue === null ||
+          this.modelValue === undefined
+        ) {
+          this.currentInputValue = "";
         }
       } catch (error) {
         console.log(error);

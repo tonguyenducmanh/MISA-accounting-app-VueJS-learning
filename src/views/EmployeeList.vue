@@ -278,8 +278,8 @@ export default {
    * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
    */
   mounted() {
-    this.$refs.inputSearch.$el.children[0].children[0].focus();
-
+    // focus mặc định vào ô tìm kiếm
+    this.focusInputSearch();
     // thêm global keyup, dùng để lắng nghe các sự kiện phím tắt hàng loạt ở mọi component trong trang web
     window.addEventListener("keyup", this.checkKeyUp);
   },
@@ -508,7 +508,21 @@ export default {
      */
     saveNow() {
       // trigger tới method saveNew nằm trong component EmployeeForm thông qua refs
-      this.$refs.employeeForm.saveNew();
+      this.$refs.employeeForm.handleSave(true);
+    },
+    /**
+     * Focus vào ô nhập đầu tiên trong form nhập liệu nếu đóng popup
+     * @param value: Giá trị nhập vào là false tức là popup đóng r
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    returnToFormInput(value) {
+      try {
+        if (value === false) {
+          this.$refs.employeeForm.focusFirstInput();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
@@ -550,6 +564,8 @@ export default {
     toggleAskPopUp() {
       try {
         this.isAskShow = !this.isAskShow;
+        // focus lại vào ô nhập đầu tiên của form
+        this.returnToFormInput(this.isAskShow);
       } catch (error) {
         console.log(error);
       }
@@ -561,6 +577,8 @@ export default {
       try {
         this.isAskShow = false;
         this.isFormShow = false;
+        // focus mặc định vào ô tìm kiếm
+        this.focusInputSearch();
       } catch (error) {
         console.log(error);
       }
@@ -589,7 +607,8 @@ export default {
       try {
         // hiển thị popup
         this.isAlertShow = !this.isAlertShow;
-
+        // focus lại vào ô nhập đầu tiên của form
+        this.returnToFormInput(this.isAlertShow);
         // chèn văn bản vào popup xóa
         this.AlertMess = value;
       } catch (error) {
@@ -611,6 +630,8 @@ export default {
         // tạo ra đoạn chuỗi văn bản thông báo lỗi
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
         this.isWarningShow = !this.isWarningShow;
+        // focus lại vào ô nhập đầu tiên của form
+        this.returnToFormInput(this.isWarningShow);
       } catch (error) {
         console.log(error);
       }
@@ -794,6 +815,10 @@ export default {
     toggleKeyMapPopup() {
       try {
         this.isKeyMapShow = !this.isKeyMapShow;
+        // ẩn keymap popup thì focus vào lại ô input
+        if (this.isKeyMapShow === false) {
+          this.focusInputSearch();
+        }
       } catch (error) {
         console.log(error);
       }
@@ -813,6 +838,17 @@ export default {
         } else {
           this.$store.dispatch("changeLanguage", this.MISAEnum.languageList.VI);
         }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * focus vào ô tìm kiếm
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    focusInputSearch() {
+      try {
+        this.$refs.inputSearch.$el.children[0].children[0].focus();
       } catch (error) {
         console.log(error);
       }
@@ -851,7 +887,7 @@ export default {
         }
         // nếu là ấn ctrl và F3 thì sẽ focus vào ô tìm kiếm
         if (event.ctrlKey && event.which === this.MISAEnum.keycode.F3) {
-          this.$refs.inputSearch.$el.children[0].children[0].focus();
+          this.focusInputSearch();
         }
         // nếu là ấn alt + R thì sẽ load lại danh sách
         if (event.altKey && event.which === this.MISAEnum.keycode.R) {
