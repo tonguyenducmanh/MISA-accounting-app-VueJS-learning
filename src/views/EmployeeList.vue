@@ -9,7 +9,7 @@
           <!-- nút thao tác hàng loạt -->
           <MButton
             class="employee__menuleft"
-            :buttonName="MISAResource.ButtonText.MultiActionBtn[language]"
+            :buttonName="MISAResource.ButtonText.MultiActionBtn[getLanguage]"
             :buttonTwo="true"
             tabindex="0"
             @click="toggleMoreActionMenu"
@@ -23,7 +23,7 @@
             @keydown.enter="toggleAskWarningPopUp"
             @click="toggleAskWarningPopUp"
           >
-            {{ this.MISAResource.ButtonText.DeleteBtn[language] }}
+            {{ this.MISAResource.ButtonText.DeleteBtn[getLanguage] }}
           </div>
         </div>
         <!-- element dưới dùng v-else để thay thế element employee__menu--left trên
@@ -38,9 +38,9 @@
             :hasItalic="true"
             :hasIcon="true"
             idInput="input__search"
-            :iconTitle="MISAResource.DataTile.InputSearch[language]"
+            :iconTitle="MISAResource.DataTile.InputSearch[getLanguage]"
             :showTitle="true"
-            :placeHolder="MISAResource.PlaceHolder.Search[language]"
+            :placeHolder="MISAResource.PlaceHolder.Search[getLanguage]"
             @change-filter="changeFilter"
             ref="inputSearch"
             v-model="searchValue"
@@ -50,7 +50,7 @@
           <div
             tabindex="0"
             class="icon employee__reloadbtn"
-            :data-title="MISAResource.DataTile.ReloadBtn[language]"
+            :data-title="MISAResource.DataTile.ReloadBtn[getLanguage]"
             @click="reloadData"
             @keydown.enter="reloadData"
           ></div>
@@ -58,7 +58,7 @@
           <div
             tabindex="0"
             class="icon employee__exportbtn"
-            :data-title="MISAResource.DataTile.ExcelBtn[language]"
+            :data-title="MISAResource.DataTile.ExcelBtn[getLanguage]"
             @click="exportToExcel"
             @keydown.enter="exportToExcel"
           ></div>
@@ -76,65 +76,65 @@
             align: 'left',
             propName: 'employeeCode',
             width: '150',
-            name: MISAResource.TableColumn.EmployeeCode[language],
+            name: MISAResource.TableColumn.EmployeeCode[getLanguage],
           },
           {
             align: 'left',
             propName: 'fullName',
             width: '200',
-            name: MISAResource.TableColumn.FullName[language],
+            name: MISAResource.TableColumn.FullName[getLanguage],
           },
           {
             align: 'left',
             propName: 'gender',
             width: '110',
-            name: MISAResource.TableColumn.Gender[language],
+            name: MISAResource.TableColumn.Gender[getLanguage],
             formatGender: true,
           },
           {
             align: 'center',
             propName: 'dateOfBirth',
             width: '130',
-            name: MISAResource.TableColumn.DateOfBirth[language],
+            name: MISAResource.TableColumn.DateOfBirth[getLanguage],
             formatDate: true,
           },
           {
             align: 'left',
             propName: 'identityCard',
             width: '200',
-            name: MISAResource.TableColumn.IdentityCardNumber[language],
+            name: MISAResource.TableColumn.IdentityCardNumber[getLanguage],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'positionName',
             width: '200',
-            name: MISAResource.TableColumn.PositionName[language],
+            name: MISAResource.TableColumn.PositionName[getLanguage],
           },
           {
             align: 'left',
             propName: 'departmentName',
             width: '250',
-            name: MISAResource.TableColumn.DepartmentName[language],
+            name: MISAResource.TableColumn.DepartmentName[getLanguage],
           },
           {
             align: 'left',
             propName: 'bankAccount',
             width: '200',
-            name: MISAResource.TableColumn.BankAccount[language],
+            name: MISAResource.TableColumn.BankAccount[getLanguage],
             formatRight: true,
           },
           {
             align: 'left',
             propName: 'bankName',
             width: '250',
-            name: MISAResource.TableColumn.BankName[language],
+            name: MISAResource.TableColumn.BankName[getLanguage],
           },
           {
             align: 'left',
             propName: 'bankBranch',
             width: '250',
-            name: MISAResource.TableColumn.BankBranch[language],
+            name: MISAResource.TableColumn.BankBranch[getLanguage],
           },
         ]"
       />
@@ -167,7 +167,7 @@
         toggleAskPopUp();
         saveNow();
       "
-      :AskMess="askChangeText"
+      :AskMess="this.MISAResource.PopupMessage.AskChange[getLanguage]"
     />
     <!-- popup hiện lên khi xóa nhân viên, hỏi có muốn xóa không -->
     <MPopup
@@ -179,7 +179,9 @@
       @re-load="loadData"
       @show-toast-message="createToastMessage"
       :AskWarningMess="
-        deleteName !== undefined ? askDeleteOneText : askDeleteManyText
+        deleteName !== undefined
+          ? this.MISAResource.PopupMessage.AskDeleteOne[getLanguage]
+          : this.MISAResource.PopupMessage.AskDeleteMany[getLanguage]
       "
       :AskWarningName="deleteName"
       @delete-now="
@@ -201,7 +203,7 @@
     <!-- toast message thông báo -->
     <MToastMessage
       v-if="toggleToast"
-      :language="language"
+      :language="getLanguage"
       :toastType="toastType"
       :toastText="toastText"
     />
@@ -262,19 +264,11 @@ export default {
       WarningMess: "",
       AlertMess: "",
       searchValue: "",
-      language: "",
     };
   },
   beforeMount() {
     // chèn thông tin từ enum vào
     this.apiTable = this.MISAEnum.API.GETEMPLOYEEFILTER;
-    this.language = this.$store.state.language;
-    this.askChangeText =
-      this.MISAResource.PopupMessage.AskChange[this.language];
-    this.askDeleteOneText =
-      this.MISAResource.PopupMessage.AskDeleteOne[this.language];
-    this.askDeleteManyText =
-      this.MISAResource.PopupMessage.AskDeleteMany[this.language];
     // tải table data
     this.loadData();
   },
@@ -362,19 +356,6 @@ export default {
         this.isAutoActionBoxShow = false;
       }
     },
-    /**
-     * Lấy ra giá trị của ngôn ngữ hiện tại
-     * Author: Tô Nguyễn Đức Mạnh (08/10/2022)
-     */
-    getLanguage() {
-      this.language = this.$store.state.language;
-      this.askChangeText =
-        this.MISAResource.PopupMessage.AskChange[this.language];
-      this.askDeleteOneText =
-        this.MISAResource.PopupMessage.AskDeleteOne[this.language];
-      this.askDeleteManyText =
-        this.MISAResource.PopupMessage.AskDeleteMany[this.language];
-    },
   },
   /**
    * khi mà component bị unmount thì phải trả về giá trị gốc của data
@@ -401,11 +382,9 @@ export default {
      */
     createToastMessage(toastType, toastText) {
       try {
-        let language = this.$store.state.language;
-
         // đẩy các giá trị như loại thông báo, văn bản thông báo, trạng thái thông báo lên trên store của state management
         this.$store.dispatch("changeToastType", toastType);
-        this.$store.dispatch("changeToastText", toastText[language]);
+        this.$store.dispatch("changeToastText", toastText[this.getLanguage]);
         this.$store.dispatch("toggleToast", true);
       } catch (error) {
         console.log(error);
@@ -611,11 +590,11 @@ export default {
       try {
         // gọi ra đoạn resource thông báo trùng mã trước employee code
         let textAlert =
-          this.MISAResource.ErrorValidate.EmployeeCode[this.language];
+          this.MISAResource.ErrorValidate.EmployeeCode[this.getLanguage];
 
         // gọi ra đoạn resource thông báo trùng mã sau employee code
         let textAlertTwo =
-          this.MISAResource.ErrorValidate.IsExisted[this.language];
+          this.MISAResource.ErrorValidate.IsExisted[this.getLanguage];
 
         // tạo ra đoạn chuỗi văn bản thông báo lỗi
         this.WarningMess = `${textAlert} < ${value} > ${textAlertTwo}`;
@@ -757,6 +736,7 @@ export default {
      */
     exportToExcel() {
       try {
+        let me = this;
         let apiExport = this.MISAEnum.API.EXPORTEMPLOYEES;
         fetch(apiExport, {
           method: this.MISAEnum.method.GET,
@@ -781,11 +761,10 @@ export default {
               var url = window.URL.createObjectURL(blob);
               var a = document.createElement("a");
               a.href = url;
-              let language = this.$store.state.language;
 
               // đặt tên cho file excel tải về
               a.download =
-                this.MISAResource.ExportExcel.FileExportName[language];
+                this.MISAResource.ExportExcel.FileExportName[me.getLanguage];
 
               // tạo ra 1 element trong dom để có thể thực hiện thao tác tải về
               // trên trình duyệt firefox
