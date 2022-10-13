@@ -283,7 +283,7 @@ export default {
       isFormShow: false,
       pageSize: 10,
       pageNumber: 1,
-      searchFilter: null,
+      keyword: null,
       apiTable: "https://cukcuk.manhnv.net/api/v1/Employees/filter",
       datepickerValue: "",
     };
@@ -299,8 +299,8 @@ export default {
    */
   beforeMount() {
     let arrFilter = [];
-    if (this.searchFilter != null && this.searchFilter != "") {
-      arrFilter.push(`employeeFilter=${this.searchFilter}`);
+    if (this.keyword != null && this.keyword != "") {
+      arrFilter.push(`employeeFilter=${this.keyword}`);
     }
     if (this.pageSize != null && this.pageSize != "") {
       arrFilter.push(`pageSize=${this.pageSize}`);

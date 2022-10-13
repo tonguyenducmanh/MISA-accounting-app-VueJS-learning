@@ -66,20 +66,24 @@ var MISAResource = {
       EN: "Has error when try to display data from table.",
     },
     DeleteNoti: {
-      VI: "Đã xóa nhân viên khỏi bảng.",
-      EN: "The employee is deleted from table.",
+      One: {
+        VI: "Đã xóa nhân viên khỏi bảng.",
+        EN: "The employee is deleted from table.",
+      },
+      Many: {
+        VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
+        EN: "The employees are deleted from table.",
+      },
     },
-    DeleteManyNoti: {
-      VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
-      EN: "The employees are deleted from table.",
-    },
-    DeleteOneNotiError: {
-      VI: "Thao tác xóa 1 bản ghi thất bại.",
-      EN: "Delete one record action is failure.",
-    },
-    DeleteManyNotiError: {
-      VI: "Thao tác xóa nhiều thất bại.",
-      EN: "Delete many action is failure.",
+    DeleteNotiError: {
+      One: {
+        VI: "Thao tác xóa 1 bản ghi thất bại.",
+        EN: "Delete one record action is failure.",
+      },
+      Many: {
+        VI: "Thao tác xóa nhiều thất bại.",
+        EN: "Delete many action is failure.",
+      },
     },
     AddedNoti: {
       VI: "Đã thêm nhân viên mới vào bảng.",

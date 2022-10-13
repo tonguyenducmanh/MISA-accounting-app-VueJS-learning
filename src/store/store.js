@@ -12,7 +12,7 @@ const store = createStore({
       toastText: "",
       pageSize: 10,
       pageNumber: 1,
-      searchFilter: "",
+      keyword: "",
       totalRecords: 0,
       totalPage: 0,
       method: "",
@@ -32,7 +32,7 @@ const store = createStore({
       }
     },
     changeFilter(state, value) {
-      state.searchFilter = value;
+      state.keyword = value;
     },
     changeDeleteId(state, value) {
       state.deleteId = value;
