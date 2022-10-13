@@ -49,6 +49,14 @@ var MISAResource = {
       VI: "Thông tin!",
       EN: "Information!",
     },
+    ErrorClient: {
+      VI: "Dữ liệu gửi đi bị lỗi, vui lòng kiểm tra lại.",
+      EN: "Data sending is error, please check again.",
+    },
+    ErrorServer: {
+      VI: "Có lỗi xảy ra bên phía server.",
+      EN: "Has error in server side.",
+    },
     ErrorCommon: {
       VI: "Có lỗi xảy ra, vui lòng kiểm tra lại,",
       EN: "Has error when do this action.",
