@@ -36,8 +36,9 @@
         <div class="form__part form__one">
           <!-- phần nhập mã nhân viên -->
           <MInput
-            :isFocus="true"
+            :isFocus="isFocus"
             v-model="formObject['employeeCode']"
+            ref="employeeCodeInput"
             :hasLabel="true"
             :labelText="MISAResource.LabelText.FormCode[getLanguage]"
             :placeHolder="
@@ -322,6 +323,7 @@ export default {
       language: "",
       timeOut: null,
       messArr: [],
+      isFocus: true,
     };
   },
   /**
@@ -677,6 +679,18 @@ export default {
         } else {
           return true;
         }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * focus vào ô nhập liệu đầu tiên nếu đóng các popup
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    focusFirstInput() {
+      try {
+        console.log("hihih");
+        this.$refs.employeeCodeInput.$el.children[1].children[0].focus();
       } catch (error) {
         console.log(error);
       }
