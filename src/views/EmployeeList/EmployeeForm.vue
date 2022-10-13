@@ -538,9 +538,10 @@ export default {
       this.formObject = {};
       // sửa lại method về post
       this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
-      // xóa edit id, edit code đi
+      // xóa edit id, edit code, nhân bản đi
       this.$store.dispatch("changeEditID", "");
       this.$store.dispatch("changeEditCode", "");
+      this.$store.dispatch("changeStatusClone", false);
     },
     /**
      * Tạo địa chỉ api theo method cung cấp
@@ -628,16 +629,24 @@ export default {
      */
     handleSaveRespone(res) {
       try {
+        // nếu là nhân bản thì tý nữa sẽ hiển thị nhân bản
+        let isClone = this.$store.state.isClone;
         switch (res.status) {
           case 200:
             // hiển thị toast message sửa thành công
-            this.showEditedNoti();
-            this.clearForm();
+            if (isClone === true) {
+              this.showDupplicatedNoti();
+            } else {
+              this.showEditedNoti();
+            }
             return true;
           case 201:
             // hiển thị toast message thêm mới thành công
-            this.showAddedNoti();
-            this.clearForm();
+            if (isClone === true) {
+              this.showDupplicatedNoti();
+            } else {
+              this.showAddedNoti();
+            }
             return true;
           case 500:
             // hiển thị toast message có lỗi từ phía server
@@ -723,9 +732,9 @@ export default {
       try {
         // đưa các giá trị về mặc định
         this.clearForm();
-
+        // tải lại danh sách nhân viên
+        this.$emit("update-table");
         if (isCloseForm === true) {
-          this.$emit("update-table");
           this.$emit("hide-all");
         } else {
           this.getNewEmpCode();
