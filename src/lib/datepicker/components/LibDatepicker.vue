@@ -238,6 +238,7 @@ export default {
       if (this.compareToNow === true) {
         this.compareToTodayDate(this.modelValue);
       }
+      this.checkEmptyModel();
     },
     /**
      * Tính toán số năm từ năm hiện tại - 50 năm đến 50 năm sau năm hiện tại
@@ -320,6 +321,23 @@ export default {
         if (value === "" || value === null || value === undefined) {
           // emit value lên theo v-model để bên ngoài component nhận được
           this.$emit("update:modelValue", null);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * kiểm tra xem cố phải modelValue vừa mới rỗng không, nếu rỗng
+     * thì cho input value rỗng theo
+     */
+    checkEmptyModel() {
+      try {
+        if (
+          this.modelValue === "" ||
+          this.modelValue === null ||
+          this.modelValue === undefined
+        ) {
+          this.currentInputValue = "";
         }
       } catch (error) {
         console.log(error);
