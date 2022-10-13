@@ -815,6 +815,10 @@ export default {
     toggleKeyMapPopup() {
       try {
         this.isKeyMapShow = !this.isKeyMapShow;
+        // ẩn keymap popup thì focus vào lại ô input
+        if (this.isKeyMapShow === false) {
+          this.focusInputSearch();
+        }
       } catch (error) {
         console.log(error);
       }

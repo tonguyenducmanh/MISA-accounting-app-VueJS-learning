@@ -689,7 +689,6 @@ export default {
      */
     focusFirstInput() {
       try {
-        console.log("hihih");
         this.$refs.employeeCodeInput.$el.children[1].children[0].focus();
       } catch (error) {
         console.log(error);
