@@ -6,7 +6,7 @@ var MISAResource = {
   },
   // Các đoạn văn bản liên quan tới báo lỗi xác thực dữ liệu
   ErrorValidate: {
-    EmployeeCodeNotEmpty: {
+    employeeCodeNotEmpty: {
       VI: "Mã nhân viên không được phép để trống.",
       EN: "Employee code is not empty.",
     },
@@ -14,11 +14,11 @@ var MISAResource = {
       VI: "Mã nhân viên đã tồn tại.",
       EN: "Employee code is duplicated.",
     },
-    EmployeeNameNotEmpty: {
+    fullNameNotEmpty: {
       VI: "Tên không được phép để trống.",
       EN: "Employee name is not empty.",
     },
-    DepartmentName: {
+    departmentNameNotEmpty: {
       VI: "Đơn vị không được phép để trống.",
       EN: "Department name is not empty.",
     },
