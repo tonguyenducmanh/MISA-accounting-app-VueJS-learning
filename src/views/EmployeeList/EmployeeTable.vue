@@ -16,6 +16,7 @@
               class="checkbox"
               @click-check-box="toggleCheckAll"
               :checkboxStatus="checkAllEnable"
+              @keydown.enter="toggleCheckAll"
             />
           </th>
           <!-- render ra th dựa vào prop theadList -->
@@ -56,6 +57,7 @@
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
                 @click-check-box="toggleSelectedID(employee['employeeID'])"
+                @keydown.enter="toggleSelectedID(employee['employeeID'])"
                 :checkboxStatus="checkToggleCheck(employee['employeeID'])"
               />
             </td>
@@ -118,7 +120,7 @@
                   (index === employeeList.length - 1 ||
                     index === employeeList.length - 2)
                 "
-                @delete-id="deleteEmployee"
+                @delete-id="deleteOneEmployee"
               />
             </td>
           </tr>
@@ -226,18 +228,16 @@ export default {
         this.checkAllEnable = false;
       }
       // 2 độ dài bằng nhau thì mới check all
-      if (this.$store.state.selectedIDs.length === this.employeeList.length) {
+      let temp = this.$store.state.selectedIDs;
+      if (temp.length === this.employeeList.length) {
         // kiểm tra từng id 1 xem có không, không có thì xóa nó khỏi store,
-        // nếu có hết và độ dài store = độ dài employeelist thì mới check all
-        return this.$store.state.selectedIDs.every((element) => {
+        return temp.every((element) => {
           if (this.employeeList.includes(element)) {
             this.checkAllEnable = true;
           } else {
-            let temp = this.$store.state.selectedIDs;
             temp.splice(temp.indexOf(element), 1);
             this.$store.dispatch("changeSelectedIDs", temp);
           }
-
           this.checkAllEnable = false;
         });
       } else {
@@ -283,10 +283,21 @@ export default {
       }
     },
     /**
+     * Xóa nhiều trường
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    deleteManyEmployee() {
+      try {
+        this.$emit("delete-employee");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
      * deleteCurrentId
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
-    deleteEmployee(deleteId, deleteName) {
+    deleteOneEmployee(deleteId, deleteName) {
       try {
         this.$emit("delete-employee", deleteId, deleteName);
       } catch (error) {
@@ -309,15 +320,11 @@ export default {
     postMethod(currentId, currentCode) {
       // chuyển method về put để thực hiện binding dữ liệu giống như là đang edit
       // để ăn gian đoạn logic này
-      this.$store.dispatch("changeEditID", currentId);
-      this.$store.dispatch("changeEditCode", currentCode);
-
-      this.$store.dispatch("changeMethod", MISAEnum.method.PUT);
+      this.putMethod(currentId, currentCode);
       // chuyển method về post để thực hiện tính năng thêm mới, sau đó tạo id mới để sửa
       setTimeout(() => {
         this.$store.dispatch("changeMethod", MISAEnum.method.POST);
       }, 1000);
-      // gọi hàm tạo ra mã id mới để chèn vô form nữa
     },
     /**
      * Thêm hoặc xóa 1 record vào trong store selectedIDs
@@ -385,7 +392,11 @@ export default {
           // nếu là phím Delete thì xóa
           if (event.which === this.MISAEnum.keycode.DELETE) {
             event.preventDefault();
-            this.deleteEmployee(ID, name);
+            if (this.$store.state.selectedIDs.length > 0) {
+              this.deleteManyEmployee();
+            } else {
+              this.deleteOneEmployee(ID, name);
+            }
           }
         };
         clearTimeout(this.timeOut);

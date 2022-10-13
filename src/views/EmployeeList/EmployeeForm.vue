@@ -1,7 +1,7 @@
 <template lang="">
   <!-- form nhập liệu thông tin nhân viên -->
-  <div class="form__wrap" form-type="POST" employee-id="" @keyup="checkKeyUp">
-    <div class="form">
+  <div class="form__wrap" form-type="POST">
+    <div class="form" ref="formbody">
       <!-- phần đầu của form form -->
       <div class="form__heading">
         <!-- phần tiêu đề của form -->
@@ -76,7 +76,6 @@
             buttonClass="combobox__button--white"
             v-model:modelValue="formObject['departmentID']"
             v-model:modelName="formObject['departmentName']"
-            unique=""
             :isNotNull="true"
             :setError="setError.departmentName"
           />
@@ -101,13 +100,6 @@
             buttonClass="datepicker__button--white"
             v-model="formObject['dateOfBirth']"
           />
-
-          <!-- <MDatePicker
-            :labelText="MISAResource.LabelText.FormDateOfBirth[getLanguage]"
-            class="form__dateofbirth"
-            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
-            v-model="formObject['dateOfBirth']"
-          /> -->
           <!-- phần nhập giới tính -->
           <MRadioButton
             :titleText="MISAResource.LabelText.FormGender[getLanguage]"
@@ -151,12 +143,6 @@
             buttonClass="datepicker__button--white"
             v-model="formObject['identityDate']"
           />
-          <!-- <MDatePicker
-            :labelText="MISAResource.LabelText.FormIdentityDate[getLanguage]"
-            :dataTitle="MISAResource.DataTile.FormDate[getLanguage]"
-            class="form__identityDate"
-            v-model="formObject['identityDate']"
-          /> -->
           <!-- phần nhập nơi cấp chứng minh thư -->
           <MInput
             :hasLabel="true"
@@ -254,14 +240,14 @@
             class="form__save--close"
             :buttonName="MISAResource.ButtonText.SaveBtn[getLanguage]"
             :buttonTwo="true"
-            @click="saveNew"
+            @click="handleSave(true)"
           />
           <!-- nút cất và thêm -->
           <MButton
             :data-title="MISAResource.DataTile.FormSaveAndAddBtn[getLanguage]"
             :buttonName="MISAResource.ButtonText.SaveAndAddBtn[getLanguage]"
             class="form__save--readd"
-            @click="saveNewAndAdd"
+            @click="handleSave(false)"
           />
         </div>
       </div>
@@ -331,6 +317,7 @@ export default {
       employeeCodeDataTitle: "Mã nhân viên không được phép để trống.",
       language: "",
       timeOut: null,
+      messArr: [],
     };
   },
   /**
@@ -345,36 +332,21 @@ export default {
     let currentMethod = this.$store.state.method;
     if (currentMethod === this.MISAEnum.method.POST) {
       this.getNewEmpCode();
-    }
-    // fetch data nếu là form edit
-    if (currentMethod === this.MISAEnum.method.PUT) {
-      let currentId = this.$store.state.currentEditID;
-      let apiTest = `${this.MISAEnum.API.GETEMPLOYEELIST}/${currentId}`;
+    } else {
+      let apiTest = this.fetchAPIGenerate();
       // lấy dữ liệu người dùng hiện tại
       fetch(apiTest, { method: this.MISAEnum.method.GET })
         .then((res) => {
-          // convert to json để đọc được data nếu status code là 200 ok
           if (res.status == 200) {
             return res.json();
           } else {
-            // hiện toast message load data thất bại hoặc data rỗng
-            this.$emit(
-              "show-toast-message",
-              this.MISAEnum.toasttype.ERROR,
-              this.MISAResource.ToastMessage.LoadDataFail
-            );
+            // hiện toast message load data thất bại
+            this.showLoadedError();
           }
         })
         .then((res) => {
           // map dữ liệu vào trong form nhập
-          // set value Minput component structure
-          if (res) {
-            this.formObject = res;
-          } else {
-            // nếu đang ở trang thái nhân bản hoặc sửa dữ liệu mà không có dữ liệu truyền vào
-            // thì ẩn form đi
-            this.$emit("hide-all");
-          }
+          this.formObject = res;
           // nếu là nhân bản thì lấy mã nhân viên mới
           if (this.$store.state.isClone) {
             this.getNewEmpCode();
@@ -382,7 +354,31 @@ export default {
         })
         .catch((res) => {
           console.log(res);
+          this.showCommonError();
         });
+    }
+  },
+  /**
+   * Mặc định lúc mounted sẽ thực hiện các hành động phím tắt dạng global
+   * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+   */
+  mounted() {
+    try {
+      // thêm global keyup, dùng để lắng nghe các sự kiện phím tắt hàng loạt ở mọi component trong trang web
+      window.addEventListener("keyup", this.checkKeyUp);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Mặc định khi unmounted thì sẽ xóa bỏ sự kiện lắng nghe các phím tắt dạng global đi
+   * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+   */
+  unmounted() {
+    try {
+      window.removeEventListener("keyup", this.checkKeyUp);
+    } catch (error) {
+      console.log(error);
     }
   },
   computed: {
@@ -394,6 +390,22 @@ export default {
       return this.$store.state.language;
     },
   },
+  watch: {
+    /**
+     * khi formObject thay đổi thì reset các cảnh báo lỗi về giá trị mặc định
+     * vì trường hợp của check mã nhân viên vừa có check trống và check trùng
+     */
+    formObject() {
+      try {
+        this.employeeCodeDataTitle =
+          this.MISAResource.ErrorValidate.employeeCodeNotEmpty[
+            this.getLanguage
+          ];
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
   methods: {
     /**
      * Lấy ra mã người dùng mới rồi focus vào ô đầu tiên
@@ -401,7 +413,6 @@ export default {
      */
     getNewEmpCode() {
       try {
-        // focus vào ô nhập đầu tiên
         // lấy ra api
         let api = this.MISAEnum.API.NEWEMPLOYEECODE;
         fetch(api, { method: this.MISAEnum.method.GET })
@@ -411,25 +422,18 @@ export default {
               return res.text();
             } else {
               // hiện toast message load data thất bại
-              this.$emit(
-                "show-toast-message",
-                this.MISAEnum.toasttype.ERROR,
-                this.MISAResource.ToastMessage.LoadDataFail
-              );
+              this.showLoadedError();
             }
           })
           .then((res) => {
             // gán giá trị tăng 1 đơn vị cần truyền vào trong input
             if (res) {
               this.increamentOne(res);
-            } else {
-              // không có giá trị trả về thì hide form
-              // thì ẩn form đi
-              this.$emit("hide-all");
             }
           })
           .catch((res) => {
             console.log(res);
+            this.showCommonError();
           });
       } catch (error) {
         console.log(error);
@@ -478,334 +482,265 @@ export default {
         console.log(error);
       }
     },
-
     /**
-     * Kiểm tra form xem có trống các ô bắt buộc không ?
+     * Hàm kiểm tra giá trị đầu vào trống không
+     * @param valueCheck : giá trị trong formObject cần kiểm tra
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    checkEmpty(valueCheck) {
+      if (!this.formObject[valueCheck]) {
+        this.messArr.push(
+          this.MISAResource.ErrorValidate[`${valueCheck}NotEmpty`][
+            this.getLanguage
+          ]
+        );
+        this.setError[valueCheck] = true;
+      } else {
+        this.setError[valueCheck] = false;
+      }
+    },
+    /**
+     * Kiểm tra form trước khi thực hiện lưu xem có trống các ô bắt buộc không ?
      * Nếu các ô đó trống thì không cho lưu mà thay vào đó là hiện popup cảnh báo
      * Author : Tô Nguyễn Đức Mạnh (15/09/2022)
      */
     checkBeforeSave() {
       // tạo ra mảng thông báo các ô nhập liệu không được để trống
-      let messArr = [];
-      // thêm đoạn validate ô mã nhân viên
-      if (!this.formObject["employeeCode"]) {
-        messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[this.getLanguage]
-        );
-        this.employeeCodeDataTitle =
-          this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-            this.getLanguage
-          ];
-        this.setError.employeeCode = true;
-      } else {
-        this.setError.employeeCode = false;
-      }
-
-      // thêm đoạn validate ô tên nhân viên
-      if (!this.formObject["fullName"]) {
-        messArr.push(
-          this.MISAResource.ErrorValidate.EmployeeNameNotEmpty[this.getLanguage]
-        );
-        this.setError.fullName = true;
-      } else {
-        this.setError.fullName = false;
-      }
-
-      // thêm đoạn validate ô phòng ban
-      if (
-        !this.formObject["departmentName"] ||
-        !this.formObject["departmentID"]
-      ) {
-        messArr.push(
-          this.MISAResource.ErrorValidate.DepartmentName[this.getLanguage]
-        );
-        this.setError.departmentName = true;
-      } else {
-        this.setError.departmentName = false;
-      }
-
+      this.messArr = [];
+      this.checkEmpty("employeeCode");
+      this.checkEmpty("fullName");
+      this.checkEmpty("departmentName");
       // hiển thị popup cảnh báo khi mảng có số lượng lớn hơn 0
-      if (messArr.length > 0) {
-        this.$emit("alert-popup", messArr.join("#"));
+      if (this.messArr.length > 0) {
+        this.showAlertInputPopup(this.messArr);
         return false;
       } else {
         return true;
       }
     },
     /**
-     * Lấy ra form value và fetch lên api
+     * Xóa toàn bộ input value trong form nhập đi, khôi phục các dữ liệu trên store về mặc định
      * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
      */
-    confirmSave(isReload) {
+    clearForm() {
+      this.formObject = {};
+      // sửa lại method về post
+      this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
+      // xóa edit id, edit code, nhân bản đi
+      this.$store.dispatch("changeEditID", "");
+      this.$store.dispatch("changeEditCode", "");
+      this.$store.dispatch("changeStatusClone", false);
+    },
+    /**
+     * Tạo địa chỉ api theo method cung cấp
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    fetchAPIGenerate() {
       try {
-        let me = this;
-        // tiến hành POST dữ liệu lên api
         let currentMethod = this.$store.state.method;
         let api = this.MISAEnum.API.GETEMPLOYEELIST;
         // check xem là method put hay post, nếu là put thì thêm id vào sau api
         if (currentMethod === this.MISAEnum.method.PUT) {
           api += `/${this.$store.state.currentEditID}`;
         }
-        fetch(api, {
+        return api;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tạo object đính kèm khi tiến hành lưu dữ liệu bên cạnh địa chỉ api
+     * @param currentMethod : method muốn dùng như là GET POST
+     * @param formObject : object muốn tải lên
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    fetchObjectGenerate(currentMethod, formObject) {
+      try {
+        return {
           method: currentMethod,
           headers: {
             "Content-Type": this.MISAEnum.APIHEADER.APPJSON,
           },
-          body: JSON.stringify(me.formObject),
-        })
-          .then((res) => {
-            // kiểm tra giá trị status code là 200 hoặc 201
-            if (res.status === 200 || res.status === 201) {
-              // clear form đi
-              this.clearForm();
-              // lấy lại dữ liệu mới
-              this.getNewEmpCode();
-            } else {
-              // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
-              this.$emit(
-                "show-toast-message",
-                this.MISAEnum.toasttype.ERROR,
-                this.MISAResource.ToastMessage.ErrorCommon
-              );
-            }
-          })
-          .then(() => {
-            if (isReload === true) {
-              this.$emit("update-table");
-            } else {
-              return "";
-            }
-          })
-          .then(() => {
-            // ẩn form
-            if (isReload === true) {
-              this.$emit("hide-all");
-            } else {
-              return "";
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+          body: JSON.stringify(formObject),
+        };
       } catch (error) {
         console.log(error);
-        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
-        this.$emit(
-          "show-toast-message",
-          this.MISAEnum.toasttype.ERROR,
-          this.MISAResource.ToastMessage.ErrorCommon
-        );
       }
     },
     /**
-     * Xóa toàn bộ input value trong form nhập đi.
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     * Hàm xử lý lưu dữ liệu vào db
+     * @param isCloseForm : sau khi đã lưu thì muốn điền thêm hay đóng form, true là
+     * đóng form, false là điền thêm
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
      */
-    clearForm() {
-      this.formObject = {};
-    },
-    /**
-     * Lưu người dùng vào database
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
-     */
-    saveNew() {
+    handleSave(isCloseForm) {
       try {
-        // kiểm tra xem đã điền các trường bắt buộc chưa
-        let inputMustHaveEmpty = this.checkBeforeSave();
-        if (inputMustHaveEmpty === true) {
-          let methodNow = this.$store.state.method;
-          let currentCode = this.$store.state.currentEditCode;
-          let formCode = this.formObject["employeeCode"];
-          let methodPost = this.MISAEnum.method.POST;
-          let methodPut = this.MISAEnum.method.PUT;
-          // kiểm tra xem có cần check mã trùng không, nếu là thêm mới thì luôn check, nếu là sửa
-          // thì chỉ check mã trùng khi mã code khác mã code của nhân viên đang edit
-          if (
-            methodNow === methodPost ||
-            (methodNow === methodPut && currentCode !== formCode)
-          ) {
-            // nếu là thêm mới thì
-            // kiểm tra xem id đã trùng chưa ?
-            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${formCode}`;
-            fetch(apiTest, { method: this.MISAEnum.method.GET })
-              .then((res) => {
-                if (res.status == 200) {
-                  // trả về false
-                  return false;
-                } else {
-                  return true;
-                }
-              })
-              .then((res) => {
-                if (res === false) {
-                  this.isDuplicateCode = true;
-                  this.employeeCodeDataTitle =
-                    this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      this.getLanguage
-                    ];
-                  this.setError.employeeCode = true;
-                  // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-                  this.$emit(
-                    "warning-duplicate",
-                    this.formObject["employeeCode"]
-                  );
-                } else {
-                  {
-                    this.employeeCodeDataTitle =
-                      this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        this.getLanguage
-                      ];
-                    this.setError.employeeCode = false;
-                    this.isDuplicateCode = false;
-                    // thực hiện lưu vào database
-                    this.confirmSave(true);
-                    // hiện thông báo lưu
-                    if (this.$store.state.currentEditID === "") {
-                      // nếu là thêm mới thì hiện là thêm mới
-                      this.showAddedNoti();
-                    } else {
-                      // nếu là nhân bản thì hiện là nhân bản
-                      this.showDupplicatedNoti();
-                      // nếu là nhân bản thì hiện là nhân bản
-                      this.showDupplicatedNoti();
-                      this.$store.dispatch("changeEditID", "");
-                      this.$store.dispatch("changeEditCode", "");
-                    }
-                  }
-                }
-              })
-              .catch((res) => {
-                console.log(res);
-                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
-                this.$emit(
-                  "show-toast-message",
-                  this.MISAEnum.toasttype.ERROR,
-                  this.MISAResource.ToastMessage.ErrorCommon
-                );
-              });
-          } else {
-            // nếu là sửa thì tiến hành update dữ liệu
-            // thực hiện lưu vào database
-            this.confirmSave(true);
-            // hiện thông báo lưu
-            this.showEditedNoti();
-            // sửa lại method về post
-            this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
-            // xóa edit id, edit code đi
-            this.$store.dispatch("changeEditID", "");
-            this.$store.dispatch("changeEditCode", "");
-          }
+        let me = this;
+        let currentMethod = this.$store.state.method;
+        //tạo api tương ứng với sửa hoặc thêm mới
+        let api = this.fetchAPIGenerate();
+        // validate dữ liệu trước 1 lần trên front end đã
+        let test = this.checkBeforeSave();
+        // tiến hành fetch dữ liệu lên server
+        if (test) {
+          fetch(api, this.fetchObjectGenerate(currentMethod, me.formObject))
+            .then((res) => {
+              // xử lý status code trước
+              return this.handleSaveRespone(res) ? true : res.json();
+            })
+            .then((res) => {
+              // nếu có lỗi trả về thì xử lý tiếp bằng cách hiện popup lỗi
+              // validate dữ liệu từ server trả về
+              return this.handleJsonErrorRespone(res) ? true : false;
+            })
+            .then((res) => {
+              // nếu hàm trên trả về true tức là đã lưu được thành công
+              res ? this.closeFormOrAddNewRecord(isCloseForm) : "";
+            })
+            .catch((res) => {
+              console.log(res);
+              this.showCommonError();
+            });
         }
       } catch (error) {
         console.log(error);
-        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
-        this.$emit(
-          "show-toast-message",
-          this.MISAEnum.toasttype.ERROR,
-          this.MISAResource.ToastMessage.ErrorCommon
-        );
+        this.showCommonError();
       }
     },
     /**
-     * Lưu người dùng vào database và giữ form luôn
-     * Author: Tô Nguyễn Đức Mạnh (13/09/2022)
+     * Hàm xử lý respone status trả về từ server sau khi tiến hành lưu
+     * @param res : respone trả về từ server
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
      */
-    saveNewAndAdd() {
+    handleSaveRespone(res) {
       try {
-        // kiểm tra xem đã điền các trường bắt buộc chưa
-
-        let inputMustHaveEmpty = this.checkBeforeSave();
-        if (inputMustHaveEmpty === true) {
-          let methodNow = this.$store.state.method;
-          let currentCode = this.$store.state.currentEditCode;
-          let formCode = this.formObject["employeeCode"];
-          let methodPost = this.MISAEnum.method.POST;
-          let methodPut = this.MISAEnum.method.PUT;
-          // kiểm tra xem có cần check mã trùng không, nếu là thêm mới thì luôn check, nếu là sửa
-          // thì chỉ check mã trùng khi mã code khác mã code của nhân viên đang edit
-          if (
-            methodNow === methodPost ||
-            (methodNow === methodPut && currentCode !== formCode)
-          ) {
-            let apiTest = `${this.MISAEnum.API.CHECKEMPLOYEECODE}${formCode}`;
-            fetch(apiTest, { method: this.MISAEnum.method.GET })
-              .then((res) => {
-                if (res.status == 200) {
-                  // trả về false
-                  return false;
-                } else {
-                  return true;
-                }
-              })
-              .then((res) => {
-                if (res === false) {
-                  this.isDuplicateCode = true;
-                  this.employeeCodeDataTitle =
-                    this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
-                      this.getLanguage
-                    ];
-                  this.setError.employeeCode = true;
-                  // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
-                  this.$emit(
-                    "warning-duplicate",
-                    this.formObject["employeeCode"]
-                  );
-                } else {
-                  {
-                    this.isDuplicateCode = false;
-                    this.employeeCodeDataTitle =
-                      this.MISAResource.ErrorValidate.EmployeeCodeNotEmpty[
-                        this.getLanguage
-                      ];
-                    this.setError.employeeCode = false;
-                    // thực hiện lưu vào database
-                    this.confirmSave(false);
-                    // hiện thông báo lưu
-                    if (this.$store.state.currentEditID === "") {
-                      // nếu là thêm mới thì hiện là thêm mới
-                      this.showAddedNoti();
-                    } else {
-                      // nếu là nhân bản thì hiện là nhân bản
-                      this.showDupplicatedNoti();
-                      this.$store.dispatch("changeEditID", "");
-                      this.$store.dispatch("changeEditCode", "");
-                    }
-                  }
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-                // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
-                this.$emit(
-                  "show-toast-message",
-                  this.MISAEnum.toasttype.ERROR,
-                  this.MISAResource.ToastMessage.ErrorCommon
-                );
-              });
-          } else {
-            // thực hiện lưu vào database
-            this.confirmSave(false);
-            // hiện thông báo lưu
-            this.showEditedNoti();
-            // clear form đi
-            this.clearForm();
-            // lấy lại dữ liệu mới
-            this.getNewEmpCode();
-            // sửa lại method về post
-            this.$store.dispatch("changeMethod", this.MISAEnum.method.POST);
-            // xóa edit id đi
-            this.$store.dispatch("changeEditID", "");
-            this.$store.dispatch("changeEditCode", "");
-          }
+        // nếu là nhân bản thì tý nữa sẽ hiển thị nhân bản
+        let isClone = this.$store.state.isClone;
+        switch (res.status) {
+          case 200:
+            // hiển thị toast message sửa thành công
+            if (isClone === true) {
+              this.showDupplicatedNoti();
+            } else {
+              this.showEditedNoti();
+            }
+            return true;
+          case 201:
+            // hiển thị toast message thêm mới thành công
+            if (isClone === true) {
+              this.showDupplicatedNoti();
+            } else {
+              this.showAddedNoti();
+            }
+            return true;
+          case 500:
+            // hiển thị toast message có lỗi từ phía server
+            this.showServerError();
+            return false;
+          case 400:
+            // hiển thị toast message có lỗi từ phía người dùng
+            this.showClientError();
+            return false;
+          default:
+            return;
         }
       } catch (error) {
         console.log(error);
-        // hiện toast message có lỗi khi thêm mới hoặc sửa người dfung
+        // hiển thị toast message có lỗi từ phía server
+        this.showServerError();
+      }
+    },
+    /**
+     * Hàm xử lý respone json error object từ phía server sau khi tiến hành lưu
+     * @param res : response json error từ server
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    handleJsonErrorRespone(res) {
+      try {
+        if (res !== true && res.errorCode) {
+          switch (res.errorCode) {
+            case this.MISAEnum.errorCode.DuplicateCode:
+              // hiện cảnh báo mã trùng
+              this.showWarningDupplicate();
+              return false;
+            case this.MISAEnum.errorCode.ValidateFail:
+              // hiện cảnh báo dữ liệu nhập bị sai
+              this.showAlertInputPopup(res.moreInfo);
+              return false;
+            default:
+              return false;
+          }
+        } else {
+          return true;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup cảnh báo trùng mã đồng thời thay đổi màu border trùng mà và data title
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showWarningDupplicate() {
+      try {
+        // đưa ra cảnh báo cho người dùng là đã trùng ID rồi
+        this.$emit("warning-duplicate", this.formObject["employeeCode"]);
+        // hiện cảnh báo bao quanh employeeCode
+        this.setError.employeeCode = true;
+        this.employeeCodeDataTitle =
+          this.MISAResource.ErrorValidate.EmployeeCodeIsDuplicated[
+            this.getLanguage
+          ];
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện popup cảnh báo các giá trị nhập vào chưa đúng
+     * @param arr: Mảng các giá trị bị sai
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showAlertInputPopup(arr) {
+      try {
+        // tạo ra mảng thông báo các ô nhập liệu không được để trống
+        this.$emit("alert-popup", arr.join("#"));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tiến hành đóng form nếu là thêm mới, tiến hành clear form và lấy mã nhân viên mới nếu là sửa
+     * @param isCloseForm : Có đóng form hay không ? true là có false là không
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    closeFormOrAddNewRecord(isCloseForm) {
+      try {
+        // đưa các giá trị về mặc định
+        this.clearForm();
+        // tải lại danh sách nhân viên
+        this.$emit("update-table");
+        if (isCloseForm === true) {
+          this.$emit("hide-all");
+        } else {
+          this.getNewEmpCode();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Hiện thông báo lỗi khi load data
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showLoadedError() {
+      try {
         this.$emit(
           "show-toast-message",
           this.MISAEnum.toasttype.ERROR,
-          this.MISAResource.ToastMessage.ErrorCommon
+          this.MISAResource.ToastMessage.LoadDataFail
         );
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
@@ -824,6 +759,55 @@ export default {
         console.log(error);
       }
     },
+    /**
+     * Thông báo lỗi chung
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showCommonError() {
+      try {
+        // hiện toast message có lỗi chung chưa xác định được
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorCommon
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thông báo lỗi từ phía server
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showServerError() {
+      try {
+        // hiện toast message có lỗi từ phía server
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorServer
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Thông báo lỗi từ phía client
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    showClientError() {
+      try {
+        // hiện toast message có lỗi từ phía client
+        this.$emit(
+          "show-toast-message",
+          this.MISAEnum.toasttype.ERROR,
+          this.MISAResource.ToastMessage.ErrorClient
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     /**
      * Hiển thị thông báo là đã sửa thành công
      * Author: Tô Nguyễn Đức Mạnh (14/09/2022)
@@ -865,13 +849,11 @@ export default {
         const check = (event) => {
           // nếu là ấn phím ESC thì đóng
           if (event.which === this.MISAEnum.keycode.ESC) {
-            event.preventDefault();
             this.$emit("hide-form");
           }
           // nếu là ấn phím ctrl và phím F8
           if (event.ctrlKey && event.which === this.MISAEnum.keycode.F8) {
-            event.preventDefault();
-            this.saveNew();
+            this.handleSave(true);
           }
           // nếu là ấn phím ctrl và phím F9 thì hủy thêm hoặc sửa
           if (event.ctrlKey && event.which === this.MISAEnum.keycode.F9) {

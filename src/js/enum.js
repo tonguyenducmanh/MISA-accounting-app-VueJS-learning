@@ -1,4 +1,15 @@
 var MISAEnum = {
+  errorCode: {
+    Exception: 1,
+    DuplicateCode: 2,
+    ValidateFail: 3,
+    InsertFailed: 4,
+    DepartmentError: 5,
+    PositionError: 6,
+    InvalidInput: 7,
+    UpdateFailed: 8,
+    DeleteFailed: 9,
+  },
   // các enum của combobox
   combobox: {
     data: "10 bản ghi trên trang:10;20 bản ghi trên trang:20;50 bản ghi trên trang: 50;100 bản ghi trên trang:100",

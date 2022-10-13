@@ -6,7 +6,7 @@ var MISAResource = {
   },
   // Các đoạn văn bản liên quan tới báo lỗi xác thực dữ liệu
   ErrorValidate: {
-    EmployeeCodeNotEmpty: {
+    employeeCodeNotEmpty: {
       VI: "Mã nhân viên không được phép để trống.",
       EN: "Employee code is not empty.",
     },
@@ -14,11 +14,11 @@ var MISAResource = {
       VI: "Mã nhân viên đã tồn tại.",
       EN: "Employee code is duplicated.",
     },
-    EmployeeNameNotEmpty: {
+    fullNameNotEmpty: {
       VI: "Tên không được phép để trống.",
       EN: "Employee name is not empty.",
     },
-    DepartmentName: {
+    departmentNameNotEmpty: {
       VI: "Đơn vị không được phép để trống.",
       EN: "Department name is not empty.",
     },
@@ -49,6 +49,14 @@ var MISAResource = {
       VI: "Thông tin!",
       EN: "Information!",
     },
+    ErrorClient: {
+      VI: "Dữ liệu gửi đi bị lỗi, vui lòng kiểm tra lại.",
+      EN: "Data sending is error, please check again.",
+    },
+    ErrorServer: {
+      VI: "Có lỗi xảy ra bên phía server.",
+      EN: "Has error in server side.",
+    },
     ErrorCommon: {
       VI: "Có lỗi xảy ra, vui lòng kiểm tra lại,",
       EN: "Has error when do this action.",
@@ -58,20 +66,24 @@ var MISAResource = {
       EN: "Has error when try to display data from table.",
     },
     DeleteNoti: {
-      VI: "Đã xóa nhân viên khỏi bảng.",
-      EN: "The employee is deleted from table.",
+      One: {
+        VI: "Đã xóa nhân viên khỏi bảng.",
+        EN: "The employee is deleted from table.",
+      },
+      Many: {
+        VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
+        EN: "The employees are deleted from table.",
+      },
     },
-    DeleteManyNoti: {
-      VI: "Đã xóa những nhân viên vừa chọn khỏi bảng.",
-      EN: "The employees are deleted from table.",
-    },
-    DeleteOneNotiError: {
-      VI: "Thao tác xóa 1 bản ghi thất bại.",
-      EN: "Delete one record action is failure.",
-    },
-    DeleteManyNotiError: {
-      VI: "Thao tác xóa nhiều thất bại.",
-      EN: "Delete many action is failure.",
+    DeleteNotiError: {
+      One: {
+        VI: "Thao tác xóa 1 bản ghi thất bại.",
+        EN: "Delete one record action is failure.",
+      },
+      Many: {
+        VI: "Thao tác xóa nhiều thất bại.",
+        EN: "Delete many action is failure.",
+      },
     },
     AddedNoti: {
       VI: "Đã thêm nhân viên mới vào bảng.",
@@ -634,12 +646,12 @@ var MISAResource = {
       EN: "Add new employee",
     },
     Edit: {
-      VI: "Sửa 1 nhân viên",
-      EN: "Edit one employee",
+      VI: "Sửa 1 nhân viên (theo tabindex)",
+      EN: "Edit one employee (by tabindex)",
     },
     Delete: {
-      VI: "Xóa 1 nhân viên",
-      EN: "Delete one employee",
+      VI: "Xóa 1 hoặc nhiều nhân viên (theo tabindex)",
+      EN: "Delete one or many employee (by tabindex)",
     },
     Save: {
       VI: "Lưu 1 nhân viên",
