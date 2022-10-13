@@ -64,6 +64,11 @@
               buttonTwo="F8"
             />
             <MKeyMapItem
+              :keyMapName="MISAResource.KeyMap.SaveAndAdd[getLanguage]"
+              buttonOne="Ctrl Shift"
+              buttonTwo="F8"
+            />
+            <MKeyMapItem
               :keyMapName="MISAResource.KeyMap.Cancel[getLanguage]"
               buttonOne="Ctrl"
               buttonTwo="F9"
