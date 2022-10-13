@@ -733,7 +733,6 @@ export default {
      */
     exportToExcel() {
       try {
-        let me = this;
         let apiExport = this.MISAEnum.API.EXPORTEMPLOYEES;
         fetch(apiExport, {
           method: this.MISAEnum.method.GET,
@@ -753,24 +752,37 @@ export default {
             }
           })
           .then((blob) => {
-            if (blob) {
-              // tạo ra 1 popup hỏi lưu file tải về
-              let url = window.URL.createObjectURL(blob);
-              let a = document.createElement("a");
-              a.href = url;
-              // đặt tên cho file excel tải về
-              a.download =
-                this.MISAResource.ExportExcel.FileExportName[me.getLanguage];
-              // tạo ra 1 element trong dom để có thể thực hiện thao tác tải về
-              // trên trình duyệt firefox
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-            }
+            // tạo file excell để xuất khẩu
+            this.handleExcelPopup(blob);
           })
           .catch((res) => {
             console.log(res);
           });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * xử lý việc hiện popup hỏi lưu file excell
+     * @param blob : file excell cần lưu
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    handleExcelPopup(blob) {
+      try {
+        if (blob) {
+          // tạo ra 1 popup hỏi lưu file tải về
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          // đặt tên cho file excel tải về
+          a.download =
+            this.MISAResource.ExportExcel.FileExportName[this.getLanguage];
+          // tạo ra 1 element trong dom để có thể thực hiện thao tác tải về
+          // trên trình duyệt firefox
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
       } catch (error) {
         console.log(error);
       }
