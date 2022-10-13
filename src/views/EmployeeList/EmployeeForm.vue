@@ -524,7 +524,7 @@ export default {
 
       // hiển thị popup cảnh báo khi mảng có số lượng lớn hơn 0
       if (messArr.length > 0) {
-        this.showAlertInputPopup();
+        this.showAlertInputPopup(messArr);
         return false;
       } else {
         return true;
@@ -664,7 +664,6 @@ export default {
     handleJsonErrorRespone(res) {
       try {
         if (res !== true) {
-          console.log(res);
           switch (res.errorCode) {
             case this.MISAEnum.errorCode.DuplicateCode:
               // hiện cảnh báo mã trùng
