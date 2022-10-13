@@ -173,6 +173,7 @@
             getFullDayValue();
             hideSelect();
           "
+          @keydown.tab="hideSelect"
         >
           <div class="datepicker__today">Hôm nay</div>
         </div>
