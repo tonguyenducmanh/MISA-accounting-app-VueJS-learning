@@ -739,7 +739,10 @@ export default {
         if (isCloseForm === true) {
           this.$emit("hide-all");
         } else {
+          // lấy mã nhân viên mới
           this.getNewEmpCode();
+          // focus lại vào ô nhập đầu tiên
+          this.focusFirstInput();
         }
       } catch (error) {
         console.log(error);
@@ -869,8 +872,20 @@ export default {
             this.$emit("hide-form");
           }
           // nếu là ấn phím ctrl và phím F8
-          if (event.ctrlKey && event.which === this.MISAEnum.keycode.F8) {
+          if (
+            event.ctrlKey &&
+            !event.shiftKey &&
+            event.which === this.MISAEnum.keycode.F8
+          ) {
             this.handleSave(true);
+          }
+          // nếu là ấn phím ctrl phím shift và phím F8
+          if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            event.which === this.MISAEnum.keycode.F8
+          ) {
+            this.handleSave(false);
           }
           // nếu là ấn phím ctrl và phím F9 thì hủy thêm hoặc sửa
           if (event.ctrlKey && event.which === this.MISAEnum.keycode.F9) {

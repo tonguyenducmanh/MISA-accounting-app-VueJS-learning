@@ -657,6 +657,10 @@ var MISAResource = {
       VI: "Lưu 1 nhân viên",
       EN: "Save one employee",
     },
+    SaveAndAdd: {
+      VI: "Lưu và thêm nhân viên",
+      EN: "Save one and add employee",
+    },
     Cancel: {
       VI: "Hủy thêm hoặc sửa 1 nhân viên",
       EN: "Cancel add or edit one employee",
