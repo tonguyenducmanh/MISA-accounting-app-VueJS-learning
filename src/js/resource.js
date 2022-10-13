@@ -183,7 +183,7 @@ var MISAResource = {
       EN: "Date must smaller than today.",
     },
     FormNumber: {
-      VI: "Chỉ đường điền các số từ 0-9.",
+      VI: "Chỉ điền các số từ 0-9.",
       EN: "Just typing number 0-9.",
     },
     FormEmail: {
