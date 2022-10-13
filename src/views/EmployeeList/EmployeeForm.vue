@@ -15,6 +15,8 @@
           :checkboxStatus="formObject['employeeType'] === 1 ? true : false"
           :checkboxValue="formObject['employeeType'] === 1 ? '1' : ''"
           ref="checkboxKH"
+          tabindex="0"
+          @keydown.enter="changeCheckboxOption(1)"
           @click-label-box="changeCheckboxOption(1)"
         />
         <MCheckbox
@@ -23,6 +25,8 @@
           :checkboxStatus="formObject['employeeType'] === 2 ? true : false"
           :checkboxValue="formObject['employeeType'] === 2 ? '2' : ''"
           ref="checkboxNCC"
+          tabindex="0"
+          @keydown.enter="changeCheckboxOption(2)"
           @click-label-box="changeCheckboxOption(2)"
         />
       </div>
