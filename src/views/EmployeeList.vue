@@ -508,7 +508,7 @@ export default {
      */
     saveNow() {
       // trigger tới method saveNew nằm trong component EmployeeForm thông qua refs
-      this.$refs.employeeForm.saveNew();
+      this.$refs.employeeForm.handleSave(true);
     },
     /**
      * chọn số lượng trang và load lại trang với số lượng đó
