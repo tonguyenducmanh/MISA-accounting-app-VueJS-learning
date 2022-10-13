@@ -171,12 +171,12 @@ var MISAResource = {
       EN: "Home",
     },
     ReloadBtn: {
-      VI: "Lấy lại dữ liệu.",
-      EN: "Reload data.",
+      VI: "Lấy lại dữ liệu. (Alt + R)",
+      EN: "Reload data. (Alt + R)",
     },
     ExcelBtn: {
-      VI: "Xuất ra file Excel.",
-      EN: "Export to excel.",
+      VI: "Xuất ra file Excel. (Ctrl + Q)",
+      EN: "Export to excel. (Ctrl + Q)",
     },
     InputSearch: {
       VI: "Ấn  CTRL + F3 để nhập.",
@@ -211,8 +211,8 @@ var MISAResource = {
       EN: "Save (CTRL + F8).",
     },
     FormSaveAndAddBtn: {
-      VI: "Cất và thêm (ctrl + shift + S).",
-      EN: "Save and add (ctrl + shift + S).",
+      VI: "Cất và thêm (CTRL + SHIFT + F8).",
+      EN: "Save and add (CTRL + SHIFT + F8).",
     },
     FormHelp: {
       VI: "Form thêm mới nhân viên, vui lòng điền đầy đủ các mục có dấu *.",
