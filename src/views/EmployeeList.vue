@@ -276,7 +276,9 @@ export default {
     this.loadData();
   },
   /**
-   * mặc định lúc mounted sẽ focus luôn vào ô tìm kiếm
+   * Mặc định lúc mounted sẽ thực hiện các hành động phím tắt dạng global
+   * và sẽ focus luôn vào ô tìm kiếm
+   * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
    */
   mounted() {
     this.$refs.inputSearch.$el.children[0].children[0].focus();
@@ -866,6 +868,7 @@ export default {
         }
         // nếu là ấn phím insert thì hiện form thêm mới
         if (event.which === this.MISAEnum.keycode.INSERT) {
+          this.$store.dispatch("changeMethod", "POST");
           this.showForm();
         }
       } catch (error) {

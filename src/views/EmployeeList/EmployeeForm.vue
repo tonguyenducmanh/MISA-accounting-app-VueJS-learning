@@ -1,7 +1,7 @@
 <template lang="">
   <!-- form nhập liệu thông tin nhân viên -->
-  <div class="form__wrap" form-type="POST" employee-id="" @keyup="checkKeyUp">
-    <div class="form">
+  <div class="form__wrap" form-type="POST">
+    <div class="form" ref="formbody">
       <!-- phần đầu của form form -->
       <div class="form__heading">
         <!-- phần tiêu đề của form -->
@@ -374,6 +374,29 @@ export default {
         .catch((res) => {
           console.log(res);
         });
+    }
+  },
+  /**
+   * Mặc định lúc mounted sẽ thực hiện các hành động phím tắt dạng global
+   * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+   */
+  mounted() {
+    try {
+      // thêm global keyup, dùng để lắng nghe các sự kiện phím tắt hàng loạt ở mọi component trong trang web
+      window.addEventListener("keyup", this.checkKeyUp);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  /**
+   * Mặc định khi unmounted thì sẽ xóa bỏ sự kiện lắng nghe các phím tắt dạng global đi
+   * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+   */
+  unmounted() {
+    try {
+      window.removeEventListener("keyup", this.checkKeyUp);
+    } catch (error) {
+      console.log(error);
     }
   },
   computed: {
@@ -864,13 +887,11 @@ export default {
         const check = (event) => {
           // nếu là ấn phím ESC thì đóng
           if (event.which === this.MISAEnum.keycode.ESC) {
-            event.preventDefault();
             this.$emit("hide-form");
           }
           // nếu là ấn phím ctrl và phím F8
           if (event.ctrlKey && event.which === this.MISAEnum.keycode.F8) {
-            event.preventDefault();
-            this.saveNew();
+            this.handleSave(true);
           }
           // nếu là ấn phím ctrl và phím F9 thì hủy thêm hoặc sửa
           if (event.ctrlKey && event.which === this.MISAEnum.keycode.F9) {
