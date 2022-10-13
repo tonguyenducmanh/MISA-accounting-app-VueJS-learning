@@ -16,6 +16,7 @@
               class="checkbox"
               @click-check-box="toggleCheckAll"
               :checkboxStatus="checkAllEnable"
+              @keydown.enter="toggleCheckAll"
             />
           </th>
           <!-- render ra th dựa vào prop theadList -->
@@ -56,6 +57,7 @@
                 :value="employee['employeeID']"
                 :checkboxId="`checkbox__${index}`"
                 @click-check-box="toggleSelectedID(employee['employeeID'])"
+                @keydown.enter="toggleSelectedID(employee['employeeID'])"
                 :checkboxStatus="checkToggleCheck(employee['employeeID'])"
               />
             </td>
@@ -118,7 +120,7 @@
                   (index === employeeList.length - 1 ||
                     index === employeeList.length - 2)
                 "
-                @delete-id="deleteEmployee"
+                @delete-id="deleteOneEmployee"
               />
             </td>
           </tr>
@@ -283,10 +285,21 @@ export default {
       }
     },
     /**
+     * Xóa nhiều trường
+     * Author: Tô Nguyễn Đức Mạnh (13/10/2022)
+     */
+    deleteManyEmployee() {
+      try {
+        this.$emit("delete-employee");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
      * deleteCurrentId
      * Author: Tô Nguyễn Đức Mạnh (12/09/2022)
      */
-    deleteEmployee(deleteId, deleteName) {
+    deleteOneEmployee(deleteId, deleteName) {
       try {
         this.$emit("delete-employee", deleteId, deleteName);
       } catch (error) {
@@ -385,7 +398,11 @@ export default {
           // nếu là phím Delete thì xóa
           if (event.which === this.MISAEnum.keycode.DELETE) {
             event.preventDefault();
-            this.deleteEmployee(ID, name);
+            if (this.$store.state.selectedIDs.length > 0) {
+              this.deleteManyEmployee();
+            } else {
+              this.deleteOneEmployee(ID, name);
+            }
           }
         };
         clearTimeout(this.timeOut);

@@ -642,12 +642,12 @@ var MISAResource = {
       EN: "Add new employee",
     },
     Edit: {
-      VI: "Sửa 1 nhân viên",
-      EN: "Edit one employee",
+      VI: "Sửa 1 nhân viên (theo tabindex)",
+      EN: "Edit one employee (by tabindex)",
     },
     Delete: {
-      VI: "Xóa 1 nhân viên",
-      EN: "Delete one employee",
+      VI: "Xóa 1 hoặc nhiều nhân viên (theo tabindex)",
+      EN: "Delete one or many employee (by tabindex)",
     },
     Save: {
       VI: "Lưu 1 nhân viên",

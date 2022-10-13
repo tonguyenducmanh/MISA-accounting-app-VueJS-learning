@@ -11,13 +11,16 @@
             class="employee__menuleft"
             :buttonName="MISAResource.ButtonText.MultiActionBtn[language]"
             :buttonTwo="true"
+            tabindex="0"
             @click="toggleMoreActionMenu"
             v-click-out="hideMoreActionMenu"
           />
           <!-- nút xóa nhiều tùy chỉnh (không theo component MButton do có style riêng và logic riêng) -->
           <div
             v-if="isAutoActionShow"
+            tabindex="0"
             class="employee__deletecontext"
+            @keydown.enter="toggleAskWarningPopUp"
             @click="toggleAskWarningPopUp"
           >
             {{ this.MISAResource.ButtonText.DeleteBtn[language] }}
